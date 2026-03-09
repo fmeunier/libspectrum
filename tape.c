@@ -1,5 +1,5 @@
 /* tape.c: Routines for handling tape files
-   Copyright (c) 2001-2018 Philip Kendall, Darren Salt, Fredrick Meunier
+   Copyright (c) 2001-2021 Philip Kendall, Darren Salt, Fredrick Meunier
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

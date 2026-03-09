@@ -1,5 +1,5 @@
 /* szx.c: Routines for .szx snapshots
-   Copyright (c) 1998-2016 Philip Kendall, Fredrick Meunier, Stuart Brady
+   Copyright (c) 1998-2023 Philip Kendall, Fredrick Meunier, Stuart Brady
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

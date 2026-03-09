@@ -1,6 +1,6 @@
 /* sna.c: Routines for handling .sna snapshots
-   Copyright (c) 2001-2002 Philip Kendall
-   Copyright (c) 2016 Fredrick Meunier
+   Copyright (c) 2001-2023 Philip Kendall
+   Copyright (c) 2016,2023 Fredrick Meunier
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by

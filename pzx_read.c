@@ -1,6 +1,6 @@
 /* pzx_read.c: Routines for reading .pzx files
-   Copyright (c) 2001, 2002 Philip Kendall, Darren Salt
-   Copyright (c) 2011-2015 Fredrick Meunier
+   Copyright (c) 2001, 2002, 2021 Philip Kendall, Darren Salt
+   Copyright (c) 2011-2021 Fredrick Meunier
 
    This program is free software; you can redistribute it and/or modify
    it under the terms of the GNU General Public License as published by
