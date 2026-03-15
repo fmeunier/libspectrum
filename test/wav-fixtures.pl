@@ -10,7 +10,8 @@ my( $channels, $sample_rate, @samples );
 if( $fixture eq 'mono-threshold' ) {
   $channels = 1;
   $sample_rate = 22050;
-  @samples = ( 1000, -1000, 1, 0, 32767, -32768, -1, 2000 );
+  @samples = ( 2000, -2000, 12000, -12000,
+               32767, -32768, -4000, 8000 );
 
 } elsif( $fixture eq 'stereo-mixdown' ) {
   $channels = 2;
