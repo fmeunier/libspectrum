@@ -40,6 +40,9 @@
             pages (Miroslav Ďurčík).
           * Add LIBSPECTRUM_ERROR_MISSING_ZLIB to public error enum (Miroslav
             Ďurčík).
+          * Add native macOS WAV support and LIBSPECTRUM_SUPPORTS_WAV,
+            replacing the deprecated LIBSPECTRUM_SUPPORTS_AUDIOFILE macro
+            (Fredrick Meunier).
 
 
 2021-02-27  Philip Kendall  <philip-fuse@shadowmagic.org.uk>
@@ -627,4 +630,3 @@
 
 	* libspectrum separated from Fuse just before the 0.5.0 release of
 	  Fuse; see Fuse's ChangeLog for changes up to this point
-

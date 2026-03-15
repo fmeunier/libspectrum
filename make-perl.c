@@ -364,10 +364,13 @@ int main(void)
   printf( "#define	LIBSPECTRUM_SUPPORTS_BZ2_COMPRESSION	(1)\n\n" );
 #endif				/* #ifdef HAVE_LIBBZ2 */
 
-#ifdef HAVE_LIB_AUDIOFILE
+#ifdef HAVE_WAV_BACKEND
   printf( "\n/* we support wav files */\n" );
-  printf( "#define	LIBSPECTRUM_SUPPORTS_AUDIOFILE	(1)\n\n" );
-#endif				/* #ifdef HAVE_LIB_AUDIOFILE */
+  printf( "/* LIBSPECTRUM_SUPPORTS_AUDIOFILE is deprecated; use "
+          "LIBSPECTRUM_SUPPORTS_WAV instead. */\n" );
+  printf( "#define	LIBSPECTRUM_SUPPORTS_AUDIOFILE	(1)\n" );
+  printf( "#define	LIBSPECTRUM_SUPPORTS_WAV	(1)\n\n" );
+#endif				/* #ifdef HAVE_WAV_BACKEND */
 
   printf( "CODE\n}\n\n" );
 

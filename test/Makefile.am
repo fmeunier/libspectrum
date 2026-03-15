@@ -31,18 +31,32 @@ test_test_SOURCES = \
 
 test_test_CFLAGS = -DSRCDIR='"$(srcdir)"'
 
-noinst_DATA += test/complete-tzx.tzx
+test_test_DEPENDENCIES = libspectrum.la \
+			 test/complete-tzx.tzx \
+			 test/wav-mono-threshold.wav \
+			 test/wav-stereo-mixdown.wav
+
+noinst_DATA += test/complete-tzx.tzx \
+		test/wav-mono-threshold.wav \
+		test/wav-stereo-mixdown.wav
 
 noinst_HEADERS += test/test.h
 
 test/complete-tzx.tzx: test/complete-tzx.pl
 	$(AM_V_GEN)$(PERL) $< > $@.tmp && mv $@.tmp $@
 
+test/wav-mono-threshold.wav: test/wav-fixtures.pl
+	$(AM_V_GEN)$(PERL) $< mono-threshold > $@.tmp && mv $@.tmp $@
+
+test/wav-stereo-mixdown.wav: test/wav-fixtures.pl
+	$(AM_V_GEN)$(PERL) $< stereo-mixdown > $@.tmp && mv $@.tmp $@
+
 test_test_LDADD = libspectrum.la
 
 EXTRA_DIST += \
 	test/Makefile.am \
 	test/complete-tzx.pl \
+	test/wav-fixtures.pl \
 	test/empty-drb.tzx \
 	test/empty.csw \
 	test/empty.szx \
@@ -93,4 +107,6 @@ EXTRA_DIST += \
 
 CLEANFILES += \
 	test/.libs/test \
-	test/complete-tzx.tzx
+	test/complete-tzx.tzx \
+	test/wav-mono-threshold.wav \
+	test/wav-stereo-mixdown.wav

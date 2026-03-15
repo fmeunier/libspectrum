@@ -166,6 +166,81 @@ play_tape( const char *filename )
   return TEST_PASS;
 }
 
+#ifdef HAVE_WAV_BACKEND
+static test_return_t
+check_wav_block( const char *filename, libspectrum_dword expected_bit_length,
+                 libspectrum_byte expected_byte )
+{
+  libspectrum_tape *tape;
+  libspectrum_tape_iterator it;
+  libspectrum_tape_block *block;
+  libspectrum_byte *data;
+  test_return_t r;
+
+  r = load_tape( &tape, filename, LIBSPECTRUM_ERROR_NONE );
+  if( r != TEST_PASS ) return r;
+
+  block = libspectrum_tape_iterator_init( &it, tape );
+  if( !block ) {
+    fprintf( stderr, "%s: `%s' did not produce a tape block\n", progname,
+             filename );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_RAW_DATA ) {
+    fprintf( stderr, "%s: `%s' produced block type %d, expected raw data\n",
+             progname, filename, libspectrum_tape_block_type( block ) );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  if( libspectrum_tape_block_bit_length( block ) != expected_bit_length ) {
+    fprintf( stderr, "%s: `%s' produced bit length %lu, expected %lu\n",
+             progname, filename,
+             (unsigned long)libspectrum_tape_block_bit_length( block ),
+             (unsigned long)expected_bit_length );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  if( libspectrum_tape_block_bits_in_last_byte( block ) != 8 ) {
+    fprintf( stderr, "%s: `%s' used %lu bits in last byte, expected 8\n",
+             progname, filename,
+             (unsigned long)libspectrum_tape_block_bits_in_last_byte( block ) );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  if( libspectrum_tape_block_data_length( block ) != 1 ) {
+    fprintf( stderr, "%s: `%s' produced data length %lu, expected 1\n",
+             progname, filename,
+             (unsigned long)libspectrum_tape_block_data_length( block ) );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  data = libspectrum_tape_block_data( block );
+  if( !data || data[0] != expected_byte ) {
+    fprintf( stderr, "%s: `%s' produced data byte 0x%02x, expected 0x%02x\n",
+             progname, filename, data ? data[0] : 0, expected_byte );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  if( libspectrum_tape_iterator_next( &it ) ) {
+    fprintf( stderr, "%s: `%s' produced more than one tape block\n", progname,
+             filename );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  if( libspectrum_tape_free( tape ) ) return TEST_INCOMPLETE;
+
+  return TEST_PASS;
+}
+#endif
+
 /* Specific tests begin here */
 
 /* Test for bugs #47 and #78: tape object incorrectly freed after reading
@@ -918,6 +993,28 @@ test_72( void )
   return r;
 }
 
+static test_return_t
+test_75( void )
+{
+#ifndef HAVE_WAV_BACKEND
+  return TEST_SKIPPED;
+#else
+  return check_wav_block( DYNAMIC_TEST_PATH( "wav-mono-threshold.wav" ),
+                          3500000 / 22050, 0xa9 );
+#endif
+}
+
+static test_return_t
+test_76( void )
+{
+#ifndef WAV_INTERNAL_MACOS
+  return TEST_SKIPPED;
+#else
+  return check_wav_block( DYNAMIC_TEST_PATH( "wav-stereo-mixdown.wav" ),
+                          3500000 / 22050, 0x8d );
+#endif
+}
+
 struct test_description {
 
   test_fn test;
@@ -1000,7 +1097,9 @@ static struct test_description tests[] = {
   { test_71, "Write RZX with incompressible snap", 0 },
   { test_72, "Tape peek next block", 0 },
   { test_73, "Read TZX RAW block edge handling", 0 },
-  { test_74, "Trailing pause block TZX file", 0 }
+  { test_74, "Trailing pause block TZX file", 0 },
+  { test_75, "Read mono WAV threshold fixture", 0 },
+  { test_76, "Read stereo WAV mixdown fixture", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );

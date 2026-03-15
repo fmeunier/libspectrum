@@ -43,8 +43,11 @@ LIBSPECTRUM_SUPPORTS_ZLIB_COMPRESSION will be defined and non-zero. If
 the library does not support zlib compression, then the constant will
 not be defined.
 
-Bzip2 compression is similarly covered by LIBSPECTRUM_SUPPORTS_BZ2_COMPRESSION
-and WAV file support is covered by LIBSPECTRUM_SUPPORTS_AUDIOFILE.
+Bzip2 compression is similarly covered by LIBSPECTRUM_SUPPORTS_BZ2_COMPRESSION.
+
+WAV file support is covered by LIBSPECTRUM_SUPPORTS_WAV.
+LIBSPECTRUM_SUPPORTS_AUDIOFILE remains defined as a deprecated compatibility
+alias for older code, but new code should use LIBSPECTRUM_SUPPORTS_WAV.
 
 Defined types
 =============

@@ -57,11 +57,22 @@ libspectrum_la_SOURCES = bzip2.c \
 			 tzx_write.c \
 			 utilities.c \
 			 warajevo_read.c \
-			 wav.c \
-                         windres.rc \
+			 windres.rc \
 			 z80.c \
 			 z80em.c \
 			 zxs.c
+
+if WAV_SUPPORT
+libspectrum_la_SOURCES += wav.c
+endif
+
+if WAV_INTERNAL_AUDIOFILE
+libspectrum_la_SOURCES += wav_audiofile.c
+endif
+
+if WAV_INTERNAL_MACOS
+libspectrum_la_SOURCES += wav_macos.c
+endif
 
 if HAVE_ZLIB
 libspectrum_la_SOURCES += zip.c \
@@ -77,9 +88,9 @@ endif
 ## * Always increase the revision value.
 ## * Increase the age value only if the changes made to the ABI are backward
 ##   compatible.
-libspectrum_la_LDFLAGS = -version-info 18:0:0 -no-undefined @WINDRES_LDFLAGS@
+libspectrum_la_LDFLAGS = -version-info 18:0:0 -no-undefined @WINDRES_LDFLAGS@ @WAV_BACKEND_LDFLAGS@
 
-libspectrum_la_LIBADD = @AUDIOFILE_LIBS@ @GLIB_LIBS@ -lm
+libspectrum_la_LIBADD = @WAV_BACKEND_LIBADD@ @GLIB_LIBS@ -lm
 
 libspectrum_la_DEPENDENCIES = @WINDRES_OBJ@
 
@@ -87,6 +98,7 @@ BUILT_SOURCES = libspectrum.h snap_accessors.c tape_accessors.c tape_set.c
 
 nodist_include_HEADERS = libspectrum.h
 noinst_HEADERS = internals.h \
+			 wav_internals.h \
 			 zip.h
 
 noinst_PROGRAMS =
@@ -120,7 +132,7 @@ tape_set.c: tape_set.pl tape_accessors.txt
 windres.o: windres.rc
 	$(AM_V_GEN)$(WINDRES) -I. $(srcdir)/windres.rc windres.o
 
-AM_CPPFLAGS = @GLIB_CFLAGS@ @AUDIOFILE_CFLAGS@
+AM_CPPFLAGS = @GLIB_CFLAGS@ @WAV_BACKEND_CPPFLAGS@
 
 EXTRA_DIST = accessor.pl \
 	     buffer_license.txt \

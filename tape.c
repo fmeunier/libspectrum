@@ -235,16 +235,16 @@ libspectrum_tape_read( libspectrum_tape *tape, const libspectrum_byte *buffer,
     error = libspectrum_csw_read( tape, buffer, length ); break;
 
   case LIBSPECTRUM_ID_TAPE_WAV:
-#ifdef HAVE_LIB_AUDIOFILE
+#ifdef HAVE_WAV_BACKEND
     error = libspectrum_wav_read( tape, filename ); break;
-#else     /* #ifdef HAVE_LIB_AUDIOFILE */
+#else     /* #ifdef HAVE_WAV_BACKEND */
     error = LIBSPECTRUM_ERROR_LOGIC;
     libspectrum_print_error(
       LIBSPECTRUM_ERROR_LOGIC,
-      "libspectrum_tape_read: format not supported without libaudiofile"
+      "libspectrum_tape_read: format not supported without a WAV backend"
     );
     break;
-#endif    /* #ifdef HAVE_LIB_AUDIOFILE */
+#endif    /* #ifdef HAVE_WAV_BACKEND */
 
   case LIBSPECTRUM_ID_TAPE_PZX:
     error = internal_pzx_read( tape, buffer, length ); break;
