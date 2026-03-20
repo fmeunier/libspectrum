@@ -186,21 +186,21 @@ jobs:
           cd ${GITHUB_WORKSPACE}
           
           echo "Copying mandatory dependency dlls.."
-          cp ${CYGWIN_LIBDIR}libgcc_s_sjlj-1.dll .
-          cp ${CYGWIN_LIBDIR}libwinpthread-1.dll .
-          cp ${CYGWIN_LIBDIR}libgpg-error-0.dll .
-          cp ${CYGWIN_LIBDIR}libstdc++-6.dll .
+          cp -f ${CYGWIN_LIBDIR}libgcc_s_sjlj-1.dll .
+          cp -f ${CYGWIN_LIBDIR}libwinpthread-1.dll .
+          cp -f ${CYGWIN_LIBDIR}libgpg-error-0.dll .
+          cp -f ${CYGWIN_LIBDIR}libstdc++-6.dll .
           
           echo "Copying optional dependency dlls.."
-          ${{ inputs.use_zlib         && 'cp ${CYGWIN_LIBDIR}zlib1.dll .'          || ''}}
-          ${{ inputs.use_bzip2        && 'cp ${CYGWIN_LIBDIR}libbz2-1.dll .'       || ''}}
-          ${{ inputs.use_libgcrypt    && 'cp ${CYGWIN_LIBDIR}libgcrypt-20.dll .'   || ''}}
-          ${{ inputs.use_libaudiofile && 'cp ${CYGWIN_LIBDIR}libaudiofile-1.dll .' || ''}}
-          ${{ inputs.use_libaudiofile && 'cp ${CYGWIN_LIBDIR}libFLAC-8.dll .'      || ''}}
-          ${{ inputs.use_libaudiofile && 'cp ${CYGWIN_LIBDIR}libOGG-0.dll .'       || ''}}
+          ${{ inputs.use_zlib         && 'cp -f ${CYGWIN_LIBDIR}zlib1.dll .'          || ''}}
+          ${{ inputs.use_bzip2        && 'cp -f ${CYGWIN_LIBDIR}libbz2-1.dll .'       || ''}}
+          ${{ inputs.use_libgcrypt    && 'cp -f ${CYGWIN_LIBDIR}libgcrypt-20.dll .'   || ''}}
+          ${{ inputs.use_libaudiofile && 'cp -f ${CYGWIN_LIBDIR}libaudiofile-1.dll .' || ''}}
+          ${{ inputs.use_libaudiofile && 'cp -f ${CYGWIN_LIBDIR}libFLAC-8.dll .'      || ''}}
+          ${{ inputs.use_libaudiofile && 'cp -f ${CYGWIN_LIBDIR}libOGG-0.dll .'       || ''}}
           
           echo "Copying own dll.."
-          cp .libs/libspectrum-9.dll .
+          cp -f .libs/libspectrum-*.dll .
           
       - name: (12) Run tests
         id: run-tests
