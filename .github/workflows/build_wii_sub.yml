@@ -169,7 +169,7 @@ jobs:
           -C /opt/devkitpro/devkitPPC/ -T.tar_files
 
       - name: (15) Upload generated tar file
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with: 
           name: libspectrum-installed-wii-${{ inputs.key }}
           path: |
