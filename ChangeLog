@@ -1,4 +1,4 @@
-2023-??-??  Philip Kendall  <philip-fuse@shadowmagic.org.uk>
+2023-03-21  Philip Kendall  <philip-fuse@shadowmagic.org.uk>
 
         * libspectrum 1.6.0 released.
 
@@ -43,16 +43,7 @@
           * Add native macOS WAV support and LIBSPECTRUM_SUPPORTS_WAV,
             replacing the deprecated LIBSPECTRUM_SUPPORTS_AUDIOFILE macro
             (Fredrick Meunier).
-          * Update GitHub Actions artifact uploads to use upload-artifact v4
-            after the v3 deprecation (Fredrick Meunier).
-          * Remove libaudiofile from macOS GitHub Actions builds now that
-            native WAV support is available (Fredrick Meunier).
-          * Fix Windows GitHub Actions packaging to copy the current
-            libspectrum DLL soname (Fredrick Meunier).
-          * Refresh apt package indexes before Linux GitHub Actions dependency
-            installs to avoid stale Ubuntu package metadata failures (Fredrick
-            Meunier).
-
+          * Fixes for GitHub Actions CI workflows (Fredrick Meunier).
 
 2021-02-27  Philip Kendall  <philip-fuse@shadowmagic.org.uk>
 
