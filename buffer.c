@@ -95,20 +95,20 @@ void
 libspectrum_buffer_write_word( libspectrum_buffer *buffer,
                                const libspectrum_word data )
 {
-  libspectrum_word lsb_data;
-  libspectrum_byte* lsb_data_ptr = (libspectrum_byte*)&lsb_data;
-  libspectrum_write_word( &lsb_data_ptr, data );
-  libspectrum_buffer_write( buffer, &lsb_data, sizeof( libspectrum_word ) ) ;
+  libspectrum_byte lsb_data[2];
+  libspectrum_byte *ptr = lsb_data;
+  libspectrum_write_word( &ptr, data );
+  libspectrum_buffer_write( buffer, lsb_data, sizeof( lsb_data ) );
 }
 
 void
 libspectrum_buffer_write_dword( libspectrum_buffer *buffer,
                                 const libspectrum_dword data )
 {
-  libspectrum_dword lsb_data;
-  libspectrum_byte* lsb_data_ptr = (libspectrum_byte*)&lsb_data;
-  libspectrum_write_dword( &lsb_data_ptr, data );
-  libspectrum_buffer_write( buffer, &lsb_data, sizeof( libspectrum_dword ) ) ;
+  libspectrum_byte lsb_data[4];
+  libspectrum_byte *ptr = lsb_data;
+  libspectrum_write_dword( &ptr, data );
+  libspectrum_buffer_write( buffer, lsb_data, sizeof( lsb_data ) );
 }
 
 void
