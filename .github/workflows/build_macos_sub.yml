@@ -92,13 +92,12 @@ jobs:
             bzip2 \
             libgcrypt \
             libtool \
-            glib \
-            libxml2
+            glib
 
           echo "Configuring Homebrew search paths .."
-          echo "CPPFLAGS=-I$(brew --prefix)/include -I$(brew --prefix bzip2)/include -I$(brew --prefix libgcrypt)/include -I$(brew --prefix glib)/include -I$(brew --prefix libxml2)/include" >> "$GITHUB_ENV"
-          echo "LDFLAGS=-L$(brew --prefix)/lib -L$(brew --prefix bzip2)/lib -L$(brew --prefix libgcrypt)/lib -L$(brew --prefix glib)/lib -L$(brew --prefix libxml2)/lib" >> "$GITHUB_ENV"
-          echo "PKG_CONFIG_PATH=$(brew --prefix)/lib/pkgconfig:$(brew --prefix bzip2)/lib/pkgconfig:$(brew --prefix libgcrypt)/lib/pkgconfig:$(brew --prefix glib)/lib/pkgconfig:$(brew --prefix libxml2)/lib/pkgconfig" >> "$GITHUB_ENV"
+          echo "CPPFLAGS=-I$(brew --prefix)/include -I$(brew --prefix bzip2)/include -I$(brew --prefix libgcrypt)/include -I$(brew --prefix glib)/include" >> "$GITHUB_ENV"
+          echo "LDFLAGS=-L$(brew --prefix)/lib -L$(brew --prefix bzip2)/lib -L$(brew --prefix libgcrypt)/lib -L$(brew --prefix glib)/lib" >> "$GITHUB_ENV"
+          echo "PKG_CONFIG_PATH=$(brew --prefix)/lib/pkgconfig:$(brew --prefix bzip2)/lib/pkgconfig:$(brew --prefix libgcrypt)/lib/pkgconfig:$(brew --prefix glib)/lib/pkgconfig" >> "$GITHUB_ENV"
 
           autoreconf -i
 

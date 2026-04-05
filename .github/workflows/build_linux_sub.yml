@@ -95,8 +95,7 @@ jobs:
             libaudiofile-dev \
             libbz2-dev \
             libgcrypt-dev \
-            libglib2.0-dev \
-            libxml2-dev
+            libglib2.0-dev
 
       - name: (5) Save lib packages
         run: |
