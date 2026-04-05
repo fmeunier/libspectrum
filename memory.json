@@ -1,19 +1,13 @@
 {
-  "last_run": "2026-04-04T11:53:59Z",
-  "last_run_id": "23978329129",
+  "last_run": "2026-04-05T11:54:20Z",
+  "last_run_id": "24000949293",
   "comments_made": {},
   "prs_created": [
     {
-      "branch": "repo-assist/improve-buffer-write-types-2026-04-04-90041078d80626bd",
-      "description": "buffer: use byte arrays in write_word and write_dword",
-      "status": "superseded",
-      "note": "Changes committed directly to master as e7030f4. PR #4 is stale and should be closed."
-    },
-    {
-      "branch": "repo-assist/test-buffer-write-2026-04-04",
-      "description": "test: add buffer write function tests (tests 77-83)",
-      "status": "open",
-      "note": "Tests for libspectrum_buffer write API: write_byte, write_word, write_dword, write_buffer, is_empty, clear, set"
+      "number": 6,
+      "branch": "repo-assist/eng-remove-libxml2-ci-2026-04-05",
+      "description": "ci: remove unused libxml2 dependency from Linux and macOS workflows",
+      "status": "open"
     }
   ],
   "monthly_activity_issue": {
@@ -23,5 +17,5 @@
     "status": "open"
   },
   "backlog_cursor": null,
-  "notes": "No real open issues in the repo. Issue #2 and PR #4 are stale (buffer.c change already in master). Buffer test PR created this run. Next run: consider investigating other untested code areas or the FIXME items in csw.c, szx.c, or libspectrum.c."
+  "notes": "No regular open issues in the repo. Previous PRs #4 and #5 were closed by maintainer (changes applied directly to master). All 3 suggested actions from last run were checked off by maintainer. PR #6 is open: remove libxml2 from CI. Task 2 was a no-op this run (no non-bot issues). Next run: check if PR #6 was reviewed; look for more CI improvements or test coverage gaps (accessor functions, creator, IDE, microdrive)."
 }
