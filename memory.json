@@ -1,13 +1,14 @@
 {
-  "last_run": "2026-04-05T11:54:20Z",
-  "last_run_id": "24000949293",
+  "last_run": "2026-04-06T12:01:44Z",
+  "last_run_id": "24030943298",
   "comments_made": {},
   "prs_created": [
     {
-      "number": 6,
-      "branch": "repo-assist/eng-remove-libxml2-ci-2026-04-05",
-      "description": "ci: remove unused libxml2 dependency from Linux and macOS workflows",
-      "status": "open"
+      "number": null,
+      "branch": "repo-assist/eng-ci-typo-and-macos-2026-04-06",
+      "description": "ci: fix Bulding typo in all sub-workflows and remove redundant autoreconf -i from macOS step (4)",
+      "status": "patch_pending",
+      "note": "Workflow files are protected — patch created, maintainer must apply manually. See activity issue for instructions."
     }
   ],
   "monthly_activity_issue": {
@@ -17,5 +18,5 @@
     "status": "open"
   },
   "backlog_cursor": null,
-  "notes": "No regular open issues in the repo. Previous PRs #4 and #5 were closed by maintainer (changes applied directly to master). All 3 suggested actions from last run were checked off by maintainer. PR #6 is open: remove libxml2 from CI. Task 2 was a no-op this run (no non-bot issues). Next run: check if PR #6 was reviewed; look for more CI improvements or test coverage gaps (accessor functions, creator, IDE, microdrive)."
+  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected - GitHub Actions cannot push them; safeoutputs creates a patch and an issue for manual application. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4). Task 1 labelling is a no-op (no unlabelled issues). Next run: check if CI typo patch was applied; look for more improvements (apt caching for Linux, test coverage for accessor functions, creator, IDE, microdrive)."
 }
