@@ -1222,6 +1222,77 @@ done:
   return r;
 }
 
+static test_return_t
+test_83( void )
+{
+  /* libspectrum_buffer_set: N bytes are filled with given value */
+  libspectrum_buffer *buf = libspectrum_buffer_alloc();
+  test_return_t r = TEST_FAIL;
+  const libspectrum_byte *data;
+  size_t i;
+
+  libspectrum_buffer_set( buf, 0x5a, 4 );
+
+  if( libspectrum_buffer_get_data_size( buf ) != 4 ) {
+    fprintf( stderr, "%s: test_83: expected size 4, got %lu\n", progname,
+             (unsigned long)libspectrum_buffer_get_data_size( buf ) );
+    goto done;
+  }
+
+  data = libspectrum_buffer_get_data( buf );
+  for( i = 0; i < 4; i++ ) {
+    if( data[i] != 0x5a ) {
+      fprintf( stderr, "%s: test_83: byte %lu: expected 0x5a, got 0x%02x\n",
+               progname, (unsigned long)i, data[i] );
+      goto done;
+    }
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_buffer_free( buf );
+  return r;
+}
+
+static test_return_t
+test_84( void )
+{
+  /* libspectrum_buffer_append: contents of src are appended to raw buffer */
+  libspectrum_buffer *src = libspectrum_buffer_alloc();
+  libspectrum_byte *raw = NULL;
+  size_t raw_len = 0;
+  libspectrum_byte *ptr;
+  test_return_t r = TEST_FAIL;
+
+  libspectrum_buffer_write_byte( src, 0x11 );
+  libspectrum_buffer_write_byte( src, 0x22 );
+  libspectrum_buffer_write_byte( src, 0x33 );
+
+  ptr = raw;
+  libspectrum_buffer_append( &raw, &raw_len, &ptr, src );
+
+  if( (size_t)( ptr - raw ) != 3 ) {
+    fprintf( stderr, "%s: test_84: expected 3 bytes written, got %lu\n",
+             progname, (unsigned long)( ptr - raw ) );
+    goto done;
+  }
+
+  if( raw[0] != 0x11 || raw[1] != 0x22 || raw[2] != 0x33 ) {
+    fprintf( stderr,
+             "%s: test_84: expected 0x11 0x22 0x33, got 0x%02x 0x%02x 0x%02x\n",
+             progname, raw[0], raw[1], raw[2] );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_free( raw );
+  libspectrum_buffer_free( src );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -1312,7 +1383,9 @@ static struct test_description tests[] = {
   { test_79, "Buffer write_dword stores little-endian dword", 0 },
   { test_80, "Buffer write_buffer copies src contents to dest", 0 },
   { test_81, "Buffer is_empty and is_not_empty", 0 },
-  { test_82, "Buffer clear resets data size to zero", 0 }
+  { test_82, "Buffer clear resets data size to zero", 0 },
+  { test_83, "Buffer set fills N bytes with given value", 0 },
+  { test_84, "Buffer append copies src to raw byte buffer", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
