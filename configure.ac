@@ -35,9 +35,9 @@ m4_define([libspectrum_rc_version],
 dnl Package info
 m4_define([libspectrum_copyright], ["(c) 1999-2026 Philip Kendall and others"])
 m4_define([libspectrum_url],
-          [http://fuse-emulator.sourceforge.net/libspectrum.php])
+          [https://fuse-emulator.sourceforge.net/libspectrum.php])
 m4_define([libspectrum_bugreport],
-          [http://sourceforge.net/p/fuse-emulator/bugs/])
+          [https://sourceforge.net/p/fuse-emulator/bugs/])
 
 AC_INIT([libspectrum],[libspectrum_version],[libspectrum_bugreport],
         [libspectrum],[libspectrum_url])
