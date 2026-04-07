@@ -143,7 +143,7 @@ jobs:
       - name: (12) Run tests
         id: run-tests
         run: |
-          echo "Bulding and running tests .."
+          echo "Building and running tests .."
           make check
 
       - name: (13) Verbose check tests (on failure)
