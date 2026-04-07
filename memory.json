@@ -1,14 +1,21 @@
 {
-  "last_run": "2026-04-06T12:01:44Z",
-  "last_run_id": "24030943298",
+  "last_run": "2026-04-07T12:03:13Z",
+  "last_run_id": "24080240211",
   "comments_made": {},
   "prs_created": [
     {
       "number": null,
-      "branch": "repo-assist/eng-ci-typo-and-macos-2026-04-06",
-      "description": "ci: fix Bulding typo in all sub-workflows and remove redundant autoreconf -i from macOS step (4)",
+      "branch": "repo-assist/test-buffer-set-append-2026-04-07",
+      "description": "test: add tests for libspectrum_buffer_set and libspectrum_buffer_append (tests 83-84)",
       "status": "patch_pending",
-      "note": "Workflow files are protected — patch created, maintainer must apply manually. See activity issue for instructions."
+      "note": "Workflow files are protected — patch created, maintainer must apply manually."
+    },
+    {
+      "number": null,
+      "branch": "repo-assist/eng-https-urls-2026-04-07",
+      "description": "build: upgrade SourceForge URLs from http:// to https://",
+      "status": "patch_pending",
+      "note": "Patch created, maintainer must apply manually."
     }
   ],
   "monthly_activity_issue": {
@@ -18,5 +25,8 @@
     "status": "open"
   },
   "backlog_cursor": null,
-  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected - GitHub Actions cannot push them; safeoutputs creates a patch and an issue for manual application. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4). Task 1 labelling is a no-op (no unlabelled issues). Next run: check if CI typo patch was applied; look for more improvements (apt caching for Linux, test coverage for accessor functions, creator, IDE, microdrive)."
+  "checked_off_by_maintainer": [
+    "Apply patch for CI typo fix + macOS autoreconf cleanup (applied as commit 24bfa0d)"
+  ],
+  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected - GitHub Actions cannot push them; safeoutputs creates a patch for manual application. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d). Task 1 labelling is a no-op (no unlabelled issues). Buffer functions tested so far: write_byte, write_word, write_dword, write_buffer, is_empty, is_not_empty, clear, get_data_size, get_data (implicitly), set (test_83), append (test_84). Next run: consider tests for accessor functions (snap_accessors, tape_accessors), creator.c, IDE functions, or microdrive functions."
 }
