@@ -69,7 +69,7 @@ libspectrum_creator_set_program( libspectrum_creator *creator,
 }
 
 const char*
-libspectrum_creator_program( libspectrum_creator *creator )
+libspectrum_creator_program( const libspectrum_creator *creator )
 {
   return creator->program;
 }
@@ -82,7 +82,7 @@ libspectrum_error libspectrum_creator_set_major( libspectrum_creator *creator,
 }
 
 libspectrum_word
-libspectrum_creator_major( libspectrum_creator *creator )
+libspectrum_creator_major( const libspectrum_creator *creator )
 {
   return creator->major;
 }
@@ -95,7 +95,7 @@ libspectrum_error libspectrum_creator_set_minor( libspectrum_creator *creator,
 }
 
 libspectrum_word
-libspectrum_creator_minor( libspectrum_creator *creator )
+libspectrum_creator_minor( const libspectrum_creator *creator )
 {
   return creator->minor;
 }
@@ -109,7 +109,7 @@ libspectrum_creator_set_competition_code( libspectrum_creator *creator,
 }
 
 libspectrum_dword
-libspectrum_creator_competition_code( libspectrum_creator *creator )
+libspectrum_creator_competition_code( const libspectrum_creator *creator )
 {
   return creator->competition_code;
 }
@@ -124,13 +124,13 @@ libspectrum_creator_set_custom( libspectrum_creator *creator,
 }
 
 libspectrum_byte*
-libspectrum_creator_custom( libspectrum_creator *creator )
+libspectrum_creator_custom( const libspectrum_creator *creator )
 {
   return creator->custom;
 }
 
 size_t
-libspectrum_creator_custom_length( libspectrum_creator *creator )
+libspectrum_creator_custom_length( const libspectrum_creator *creator )
 {
   return creator->custom_length;
 }
