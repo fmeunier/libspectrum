@@ -1,21 +1,14 @@
 {
-  "last_run": "2026-04-07T12:03:13Z",
-  "last_run_id": "24080240211",
+  "last_run": "2026-04-08T12:04:04Z",
+  "last_run_id": "24134254375",
   "comments_made": {},
   "prs_created": [
     {
       "number": null,
-      "branch": "repo-assist/test-buffer-set-append-2026-04-07",
-      "description": "test: add tests for libspectrum_buffer_set and libspectrum_buffer_append (tests 83-84)",
+      "branch": "repo-assist/eng-update-pkg-m4-2026-04-08",
+      "description": "build: update bundled pkg.m4 from serial 1 (0.24) to serial 12 (0.29.2) + api: add const to libspectrum_creator getter function parameters",
       "status": "patch_pending",
-      "note": "Workflow files are protected — patch created, maintainer must apply manually."
-    },
-    {
-      "number": null,
-      "branch": "repo-assist/eng-https-urls-2026-04-07",
-      "description": "build: upgrade SourceForge URLs from http:// to https://",
-      "status": "patch_pending",
-      "note": "Patch created, maintainer must apply manually."
+      "note": "Two commits in one patch. Maintainer can apply with git am."
     }
   ],
   "monthly_activity_issue": {
@@ -26,7 +19,9 @@
   },
   "backlog_cursor": null,
   "checked_off_by_maintainer": [
-    "Apply patch for CI typo fix + macOS autoreconf cleanup (applied as commit 24bfa0d)"
+    "Apply patch for CI typo fix + macOS autoreconf cleanup (applied as commit 24bfa0d)",
+    "Apply patch for new buffer tests (test_83, test_84) - applied as commit 0cee5e9",
+    "Apply patch to upgrade SourceForge URLs from http to https - applied as commit 03276e4"
   ],
-  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected - GitHub Actions cannot push them; safeoutputs creates a patch for manual application. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d). Task 1 labelling is a no-op (no unlabelled issues). Buffer functions tested so far: write_byte, write_word, write_dword, write_buffer, is_empty, is_not_empty, clear, get_data_size, get_data (implicitly), set (test_83), append (test_84). Next run: consider tests for accessor functions (snap_accessors, tape_accessors), creator.c, IDE functions, or microdrive functions."
+  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected - GitHub Actions cannot push them; safeoutputs creates a patch for manual application. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d), buffer set/append tests (0cee5e9), HTTPS URLs (03276e4). Task 1 labelling is a no-op (no unlabelled issues). Buffer functions fully tested (tests 77-84). Creator getter const-correctness patch pending (2026-04-08). Next runs: consider tests for creator.c functions, snap_accessors, tape_accessors, IDE functions, microdrive functions. Also consider updating m4/ax_create_stdint_h.m4 if newer version found."
 }
