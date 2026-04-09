@@ -87,9 +87,6 @@ AC_SUBST(PERL)
 dnl Checks for header files.
 AC_CHECK_HEADERS(stdint.h strings.h unistd.h)
 
-dnl Checks for typedefs, structures, and compiler characteristics.
-AC_C_CONST
-
 dnl Check for host specific programs
 WINDRES_OBJ=
 WINDRES_LDFLAGS=
