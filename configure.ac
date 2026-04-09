@@ -182,9 +182,22 @@ AS_IF([test "$myglib" = no], [
     AC_MSG_ERROR([GLib not found])
   )
 ])
+stdatomic_available=no
 AS_IF([test "$myglib" = yes], [
-  AC_CHECK_HEADERS(
-    stdatomic.h, [stdatomic_available=yes])
+  AC_MSG_CHECKING([whether stdatomic.h provides usable atomics])
+  AC_COMPILE_IFELSE([
+    AC_LANG_PROGRAM([[#include <stdatomic.h>]], [[
+      static atomic_char lock_var = 0;
+      char desired = 1;
+      char expected = 0;
+      return atomic_compare_exchange_strong( &lock_var, &expected, 1 ) ? 0 : 1;
+    ]])
+  ], [
+    stdatomic_available=yes
+    AC_DEFINE([HAVE_STDATOMIC_H], [1],
+              [Defined if stdatomic.h provides usable atomics])
+  ])
+  AC_MSG_RESULT([$stdatomic_available])
 ])
 
 AM_CONDITIONAL(USE_MYGLIB, test "$myglib" = yes)
