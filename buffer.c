@@ -121,8 +121,12 @@ libspectrum_buffer_write_buffer( libspectrum_buffer *dest,
 static void
 reallocate_to_new_size( libspectrum_buffer *buffer, const size_t size )
 {
-  while ( size > buffer->buffer_size - buffer->bytes_used ) {
-    libspectrum_buffer_reallocate( buffer, 2 * buffer->buffer_size );
+  if( size > buffer->buffer_size - buffer->bytes_used ) {
+    size_t new_size = buffer->buffer_size;
+    do {
+      new_size *= 2;
+    } while( new_size - buffer->bytes_used < size );
+    libspectrum_buffer_reallocate( buffer, new_size );
   }
 }
 
