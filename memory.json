@@ -1,14 +1,14 @@
 {
-  "last_run": "2026-04-09T12:03:32Z",
-  "last_run_id": "24189071557",
+  "last_run": "2026-04-10T10:02:43Z",
+  "last_run_id": "24237536036",
   "comments_made": {},
   "prs_created": [
     {
       "number": null,
-      "branch": "repo-assist/perf-buffer-realloc-once",
-      "description": "perf: optimize buffer realloc to single call; build: drop AC_C_CONST",
-      "status": "patch_pending",
-      "note": "Patch at aw-repo-assist-perf-buffer-realloc-once.patch. Apply with git am."
+      "branch": "repo-assist/test-creator-2026-04-10",
+      "description": "Add tests for libspectrum_creator API (tests 85-87)",
+      "status": "branch_committed_awaiting_push",
+      "note": "Branch committed locally. safeoutputs MCP tools unavailable in this run - push_to_pull_request_branch or create_pull_request must be called when available."
     }
   ],
   "monthly_activity_issue": {
@@ -23,7 +23,8 @@
     "Apply patch for new buffer tests (test_83, test_84) - applied as commit 0cee5e9",
     "Apply patch to upgrade SourceForge URLs from http to https - applied as commit 03276e4",
     "Apply patch for pkg.m4 update (applied as commit b35d447)",
-    "Apply patch for creator const-correctness (applied as commit f9c310a)"
+    "Apply patch for creator const-correctness (applied as commit f9c310a)",
+    "Apply patch for buffer realloc optimization + AC_C_CONST removal (applied as commits e7cd26e and 03e922f)"
   ],
-  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d), buffer set/append tests (0cee5e9), HTTPS URLs (03276e4), pkg.m4 update (b35d447), creator const (f9c310a), stdatomic C23 fix (ec5e009). Buffer functions fully tested (tests 77-84). 2026-04-09 patch: optimize buffer reallocate_to_new_size to single realloc call; remove obsolete AC_C_CONST from configure.ac. Next runs: consider tests for creator.c functions, snap_accessors, tape_accessors, IDE functions, microdrive functions."
+  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d), buffer set/append tests (0cee5e9), HTTPS URLs (03276e4), pkg.m4 update (b35d447), creator const (f9c310a), stdatomic C23 fix (ec5e009), buffer realloc optimize (e7cd26e), remove AC_C_CONST (03e922f). Buffer functions fully tested (tests 77-84). Creator API now tested (tests 85-87) - branch repo-assist/test-creator-2026-04-10 ready. Next runs: create PR for creator tests, then consider tests for snap_accessors, tape_accessors, IDE functions, microdrive functions."
 }
