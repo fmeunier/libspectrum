@@ -1293,6 +1293,115 @@ done:
   return r;
 }
 
+static test_return_t
+test_85( void )
+{
+  /* libspectrum_creator: alloc/free and program getter/setter */
+  libspectrum_creator *creator = libspectrum_creator_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !creator ) {
+    fprintf( stderr, "%s: test_85: creator_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_creator_set_program( creator, "TestApp" );
+
+  if( strcmp( (const char *)libspectrum_creator_program( creator ), "TestApp" ) != 0 ) {
+    fprintf( stderr, "%s: test_85: expected program \"TestApp\", got \"%s\"\n",
+             progname, (const char *)libspectrum_creator_program( creator ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_creator_free( creator );
+  return r;
+}
+
+static test_return_t
+test_86( void )
+{
+  /* libspectrum_creator: major and minor version getter/setter */
+  libspectrum_creator *creator = libspectrum_creator_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !creator ) {
+    fprintf( stderr, "%s: test_86: creator_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_creator_set_major( creator, 2 );
+  libspectrum_creator_set_minor( creator, 7 );
+
+  if( libspectrum_creator_major( creator ) != 2 ) {
+    fprintf( stderr, "%s: test_86: expected major 2, got %d\n",
+             progname, libspectrum_creator_major( creator ) );
+    goto done;
+  }
+
+  if( libspectrum_creator_minor( creator ) != 7 ) {
+    fprintf( stderr, "%s: test_86: expected minor 7, got %d\n",
+             progname, libspectrum_creator_minor( creator ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_creator_free( creator );
+  return r;
+}
+
+static test_return_t
+test_87( void )
+{
+  /* libspectrum_creator: competition_code and custom data getter/setter */
+  libspectrum_creator *creator = libspectrum_creator_alloc();
+  libspectrum_byte *custom_data;
+  const libspectrum_byte *got_custom;
+  test_return_t r = TEST_FAIL;
+
+  if( !creator ) {
+    fprintf( stderr, "%s: test_87: creator_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_creator_set_competition_code( creator, 0x1234 );
+
+  if( libspectrum_creator_competition_code( creator ) != 0x1234 ) {
+    fprintf( stderr, "%s: test_87: expected competition_code 0x1234, got 0x%04x\n",
+             progname, libspectrum_creator_competition_code( creator ) );
+    goto done;
+  }
+
+  custom_data = libspectrum_new( libspectrum_byte, 4 );
+  custom_data[0] = 0xde; custom_data[1] = 0xad;
+  custom_data[2] = 0xbe; custom_data[3] = 0xef;
+
+  libspectrum_creator_set_custom( creator, custom_data, 4 );
+
+  if( libspectrum_creator_custom_length( creator ) != 4 ) {
+    fprintf( stderr, "%s: test_87: expected custom_length 4, got %lu\n",
+             progname, (unsigned long)libspectrum_creator_custom_length( creator ) );
+    goto done;
+  }
+
+  got_custom = libspectrum_creator_custom( creator );
+  if( got_custom[0] != 0xde || got_custom[1] != 0xad ||
+      got_custom[2] != 0xbe || got_custom[3] != 0xef ) {
+    fprintf( stderr, "%s: test_87: custom data mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_creator_free( creator );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -1385,7 +1494,10 @@ static struct test_description tests[] = {
   { test_81, "Buffer is_empty and is_not_empty", 0 },
   { test_82, "Buffer clear resets data size to zero", 0 },
   { test_83, "Buffer set fills N bytes with given value", 0 },
-  { test_84, "Buffer append copies src to raw byte buffer", 0 }
+  { test_84, "Buffer append copies src to raw byte buffer", 0 },
+  { test_85, "Creator alloc/free and program getter/setter", 0 },
+  { test_86, "Creator major and minor version getter/setter", 0 },
+  { test_87, "Creator competition_code and custom data getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
