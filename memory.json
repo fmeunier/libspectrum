@@ -1,11 +1,16 @@
 {
-  "last_run": "2026-04-11T00:17:24Z",
-  "last_run_id": "24269985549",
+  "last_run": "2026-04-11T11:54:39Z",
+  "last_run_id": "24281898275",
   "comments_made": {},
   "prs_created": [
     {
-      "branch": "repo-assist/test-creator-2026-04-11",
-      "description": "Add tests for libspectrum_creator API (tests 85-87)",
+      "branch": "repo-assist/test-snap-accessors-2026-04-11",
+      "description": "Add tests for libspectrum_snap Z80 register accessors (tests 88-90)",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/improve-creator-alloc-init-2026-04-11",
+      "description": "Fix: zero-initialise libspectrum_creator struct in alloc",
       "status": "open"
     }
   ],
@@ -22,7 +27,8 @@
     "Apply patch to upgrade SourceForge URLs from http to https - applied as commit 03276e4",
     "Apply patch for pkg.m4 update (applied as commit b35d447)",
     "Apply patch for creator const-correctness (applied as commit f9c310a)",
-    "Apply patch for buffer realloc optimization + AC_C_CONST removal (applied as commits e7cd26e and 03e922f)"
+    "Apply patch for buffer realloc optimization + AC_C_CONST removal (applied as commits e7cd26e and 03e922f)",
+    "Creator tests PR (tests 85-87) merged as commit 094ae28"
   ],
-  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d), buffer set/append tests (0cee5e9), HTTPS URLs (03276e4), pkg.m4 update (b35d447), creator const (f9c310a), stdatomic C23 fix (ec5e009), buffer realloc optimize (e7cd26e), remove AC_C_CONST (03e922f). Buffer functions fully tested (tests 77-84). Creator API tests (tests 85-87) in open PR branch repo-assist/test-creator-2026-04-11. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: after creator PR merged, consider tests for snap_accessors, tape_accessors, IDE functions, microdrive functions."
+  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d), buffer set/append tests (0cee5e9), HTTPS URLs (03276e4), pkg.m4 update (b35d447), creator const (f9c310a), stdatomic C23 fix (ec5e009), buffer realloc optimize (e7cd26e), remove AC_C_CONST (03e922f), creator API tests 85-87 (094ae28). Buffer functions fully tested (tests 77-84). Creator API tested (tests 85-87). Snap Z80 register accessors tests (tests 88-90) in open PR. creator_alloc zero-init fix in open PR. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: after PRs merged, consider tests for tape_accessors, IDE functions, microdrive functions, snap non-register fields (custom_rom, pages, etc.)."
 }
