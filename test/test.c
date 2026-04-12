@@ -1402,6 +1402,139 @@ done:
   return r;
 }
 
+static test_return_t
+test_88( void )
+{
+  /* libspectrum_microdrive: alloc/free and write_protect getter/setter */
+  libspectrum_microdrive *mdr = libspectrum_microdrive_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !mdr ) {
+    fprintf( stderr, "%s: test_88: microdrive_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_microdrive_set_write_protect( mdr, 1 );
+  if( libspectrum_microdrive_write_protect( mdr ) != 1 ) {
+    fprintf( stderr, "%s: test_88: expected write_protect 1, got %d\n",
+             progname, libspectrum_microdrive_write_protect( mdr ) );
+    goto done;
+  }
+
+  libspectrum_microdrive_set_write_protect( mdr, 0 );
+  if( libspectrum_microdrive_write_protect( mdr ) != 0 ) {
+    fprintf( stderr, "%s: test_88: expected write_protect 0, got %d\n",
+             progname, libspectrum_microdrive_write_protect( mdr ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_microdrive_free( mdr );
+  return r;
+}
+
+static test_return_t
+test_89( void )
+{
+  /* libspectrum_microdrive: cartridge_len and data getter/setter */
+  libspectrum_microdrive *mdr = libspectrum_microdrive_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !mdr ) {
+    fprintf( stderr, "%s: test_89: microdrive_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_microdrive_set_cartridge_len( mdr, 10 );
+  if( libspectrum_microdrive_cartridge_len( mdr ) != 10 ) {
+    fprintf( stderr, "%s: test_89: expected cartridge_len 10, got %d\n",
+             progname, (int)libspectrum_microdrive_cartridge_len( mdr ) );
+    goto done;
+  }
+
+  libspectrum_microdrive_set_data( mdr, 0, 0xa5 );
+  if( libspectrum_microdrive_data( mdr, 0 ) != 0xa5 ) {
+    fprintf( stderr, "%s: test_89: expected data[0] 0xa5, got 0x%02x\n",
+             progname, (unsigned)libspectrum_microdrive_data( mdr, 0 ) );
+    goto done;
+  }
+
+  libspectrum_microdrive_set_data( mdr, 100, 0x5a );
+  if( libspectrum_microdrive_data( mdr, 100 ) != 0x5a ) {
+    fprintf( stderr, "%s: test_89: expected data[100] 0x5a, got 0x%02x\n",
+             progname, (unsigned)libspectrum_microdrive_data( mdr, 100 ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_microdrive_free( mdr );
+  return r;
+}
+
+static test_return_t
+test_90( void )
+{
+  /* libspectrum_microdrive: mdr_write/mdr_read roundtrip */
+  libspectrum_microdrive *mdr1 = libspectrum_microdrive_alloc();
+  libspectrum_microdrive *mdr2 = libspectrum_microdrive_alloc();
+  libspectrum_byte *buf = NULL;
+  size_t buf_len = 0;
+  test_return_t r = TEST_FAIL;
+
+  if( !mdr1 || !mdr2 ) {
+    fprintf( stderr, "%s: test_90: microdrive_alloc returned NULL\n", progname );
+    r = TEST_INCOMPLETE;
+    goto done;
+  }
+
+  libspectrum_microdrive_set_write_protect( mdr1, 1 );
+  libspectrum_microdrive_set_cartridge_len( mdr1, 10 );
+  libspectrum_microdrive_set_data( mdr1, 5, 0xcc );
+
+  libspectrum_microdrive_mdr_write( mdr1, &buf, &buf_len );
+  if( !buf ) {
+    fprintf( stderr, "%s: test_90: mdr_write returned NULL buffer\n", progname );
+    r = TEST_INCOMPLETE;
+    goto done;
+  }
+
+  if( libspectrum_microdrive_mdr_read( mdr2, buf, buf_len ) !=
+      LIBSPECTRUM_ERROR_NONE ) {
+    fprintf( stderr, "%s: test_90: mdr_read failed\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_microdrive_write_protect( mdr2 ) != 1 ) {
+    fprintf( stderr, "%s: test_90: roundtrip write_protect: expected 1, got %d\n",
+             progname, libspectrum_microdrive_write_protect( mdr2 ) );
+    goto done;
+  }
+
+  if( libspectrum_microdrive_cartridge_len( mdr2 ) != 10 ) {
+    fprintf( stderr, "%s: test_90: roundtrip cartridge_len: expected 10, got %d\n",
+             progname, (int)libspectrum_microdrive_cartridge_len( mdr2 ) );
+    goto done;
+  }
+
+  if( libspectrum_microdrive_data( mdr2, 5 ) != 0xcc ) {
+    fprintf( stderr, "%s: test_90: roundtrip data[5]: expected 0xcc, got 0x%02x\n",
+             progname, (unsigned)libspectrum_microdrive_data( mdr2, 5 ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_free( buf );
+  if( mdr1 ) libspectrum_microdrive_free( mdr1 );
+  if( mdr2 ) libspectrum_microdrive_free( mdr2 );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -1497,7 +1630,10 @@ static struct test_description tests[] = {
   { test_84, "Buffer append copies src to raw byte buffer", 0 },
   { test_85, "Creator alloc/free and program getter/setter", 0 },
   { test_86, "Creator major and minor version getter/setter", 0 },
-  { test_87, "Creator competition_code and custom data getter/setter", 0 }
+  { test_87, "Creator competition_code and custom data getter/setter", 0 },
+  { test_88, "Microdrive alloc/free and write_protect getter/setter", 0 },
+  { test_89, "Microdrive cartridge_len and data getter/setter", 0 },
+  { test_90, "Microdrive mdr_write/mdr_read roundtrip", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
