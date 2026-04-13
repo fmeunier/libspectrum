@@ -1591,6 +1591,251 @@ done:
   return r;
 }
 
+static test_return_t
+test_91( void )
+{
+  /* libspectrum_microdrive: alloc/free and write_protect getter/setter */
+  libspectrum_microdrive *mdr = libspectrum_microdrive_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !mdr ) {
+    fprintf( stderr, "%s: test_91: microdrive_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_microdrive_set_write_protect( mdr, 1 );
+  if( libspectrum_microdrive_write_protect( mdr ) != 1 ) {
+    fprintf( stderr, "%s: test_91: expected write_protect 1, got %d\n",
+             progname, libspectrum_microdrive_write_protect( mdr ) );
+    goto done;
+  }
+
+  libspectrum_microdrive_set_write_protect( mdr, 0 );
+  if( libspectrum_microdrive_write_protect( mdr ) != 0 ) {
+    fprintf( stderr, "%s: test_91: expected write_protect 0, got %d\n",
+             progname, libspectrum_microdrive_write_protect( mdr ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_microdrive_free( mdr );
+  return r;
+}
+
+static test_return_t
+test_92( void )
+{
+  /* libspectrum_microdrive: cartridge_len and data getter/setter */
+  libspectrum_microdrive *mdr = libspectrum_microdrive_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !mdr ) {
+    fprintf( stderr, "%s: test_92: microdrive_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_microdrive_set_cartridge_len( mdr, 10 );
+  if( libspectrum_microdrive_cartridge_len( mdr ) != 10 ) {
+    fprintf( stderr, "%s: test_92: expected cartridge_len 10, got %d\n",
+             progname, (int)libspectrum_microdrive_cartridge_len( mdr ) );
+    goto done;
+  }
+
+  libspectrum_microdrive_set_data( mdr, 0, 0xa5 );
+  if( libspectrum_microdrive_data( mdr, 0 ) != 0xa5 ) {
+    fprintf( stderr, "%s: test_92: expected data[0] 0xa5, got 0x%02x\n",
+             progname, (unsigned)libspectrum_microdrive_data( mdr, 0 ) );
+    goto done;
+  }
+
+  libspectrum_microdrive_set_data( mdr, 100, 0x5a );
+  if( libspectrum_microdrive_data( mdr, 100 ) != 0x5a ) {
+    fprintf( stderr, "%s: test_92: expected data[100] 0x5a, got 0x%02x\n",
+             progname, (unsigned)libspectrum_microdrive_data( mdr, 100 ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_microdrive_free( mdr );
+  return r;
+}
+
+static test_return_t
+test_93( void )
+{
+  /* libspectrum_microdrive: mdr_write/mdr_read roundtrip */
+  libspectrum_microdrive *mdr1 = libspectrum_microdrive_alloc();
+  libspectrum_microdrive *mdr2 = libspectrum_microdrive_alloc();
+  libspectrum_byte *buf = NULL;
+  size_t buf_len = 0;
+  test_return_t r = TEST_FAIL;
+
+  if( !mdr1 || !mdr2 ) {
+    fprintf( stderr, "%s: test_93: microdrive_alloc returned NULL\n", progname );
+    r = TEST_INCOMPLETE;
+    goto done;
+  }
+
+  libspectrum_microdrive_set_write_protect( mdr1, 1 );
+  libspectrum_microdrive_set_cartridge_len( mdr1, 10 );
+  libspectrum_microdrive_set_data( mdr1, 5, 0xcc );
+
+  libspectrum_microdrive_mdr_write( mdr1, &buf, &buf_len );
+  if( !buf ) {
+    fprintf( stderr, "%s: test_93: mdr_write returned NULL buffer\n", progname );
+    r = TEST_INCOMPLETE;
+    goto done;
+  }
+
+  if( libspectrum_microdrive_mdr_read( mdr2, buf, buf_len ) !=
+      LIBSPECTRUM_ERROR_NONE ) {
+    fprintf( stderr, "%s: test_93: mdr_read failed\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_microdrive_write_protect( mdr2 ) != 1 ) {
+    fprintf( stderr, "%s: test_93: roundtrip write_protect: expected 1, got %d\n",
+             progname, libspectrum_microdrive_write_protect( mdr2 ) );
+    goto done;
+  }
+
+  if( libspectrum_microdrive_cartridge_len( mdr2 ) != 10 ) {
+    fprintf( stderr, "%s: test_93: roundtrip cartridge_len: expected 10, got %d\n",
+             progname, (int)libspectrum_microdrive_cartridge_len( mdr2 ) );
+    goto done;
+  }
+
+  if( libspectrum_microdrive_data( mdr2, 5 ) != 0xcc ) {
+    fprintf( stderr, "%s: test_93: roundtrip data[5]: expected 0xcc, got 0x%02x\n",
+             progname, (unsigned)libspectrum_microdrive_data( mdr2, 5 ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_free( buf );
+  if( mdr1 ) libspectrum_microdrive_free( mdr1 );
+  if( mdr2 ) libspectrum_microdrive_free( mdr2 );
+  return r;
+}
+
+static test_return_t
+test_94( void )
+{
+  /* libspectrum_snap: machine type getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_94: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_machine( snap ) != LIBSPECTRUM_MACHINE_UNKNOWN ) {
+    fprintf( stderr, "%s: test_94: default machine should be UNKNOWN, got %d\n",
+             progname, (int)libspectrum_snap_machine( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_machine( snap, LIBSPECTRUM_MACHINE_48 );
+  if( libspectrum_snap_machine( snap ) != LIBSPECTRUM_MACHINE_48 ) {
+    fprintf( stderr, "%s: test_94: expected MACHINE_48, got %d\n",
+             progname, (int)libspectrum_snap_machine( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_machine( snap, LIBSPECTRUM_MACHINE_128 );
+  if( libspectrum_snap_machine( snap ) != LIBSPECTRUM_MACHINE_128 ) {
+    fprintf( stderr, "%s: test_94: expected MACHINE_128, got %d\n",
+             progname, (int)libspectrum_snap_machine( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_95( void )
+{
+  /* libspectrum_snap: memptr getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_95: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_snap_set_memptr( snap, 0xabcd );
+  if( libspectrum_snap_memptr( snap ) != 0xabcd ) {
+    fprintf( stderr, "%s: test_95: expected memptr=0xabcd, got 0x%04x\n",
+             progname, libspectrum_snap_memptr( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_memptr( snap, 0x0000 );
+  if( libspectrum_snap_memptr( snap ) != 0x0000 ) {
+    fprintf( stderr, "%s: test_95: expected memptr=0x0000, got 0x%04x\n",
+             progname, libspectrum_snap_memptr( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_96( void )
+{
+  /* libspectrum_snap: ULA and 128K memory port getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_96: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_snap_set_out_ula( snap, 0x07 );
+  if( libspectrum_snap_out_ula( snap ) != 0x07 ) {
+    fprintf( stderr, "%s: test_96: expected out_ula=0x07, got 0x%02x\n",
+             progname, libspectrum_snap_out_ula( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_out_128_memoryport( snap, 0x05 );
+  if( libspectrum_snap_out_128_memoryport( snap ) != 0x05 ) {
+    fprintf( stderr, "%s: test_96: expected out_128_memoryport=0x05, got 0x%02x\n",
+             progname, libspectrum_snap_out_128_memoryport( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_out_ay_registerport( snap, 0x0e );
+  if( libspectrum_snap_out_ay_registerport( snap ) != 0x0e ) {
+    fprintf( stderr, "%s: test_96: expected out_ay_registerport=0x0e, got 0x%02x\n",
+             progname, libspectrum_snap_out_ay_registerport( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -1689,7 +1934,13 @@ static struct test_description tests[] = {
   { test_87, "Creator competition_code and custom data getter/setter", 0 },
   { test_88, "Snap main Z80 register getter/setter (a, f, bc, de, hl, alternates)", 0 },
   { test_89, "Snap index and special register getter/setter (ix, iy, i, r, sp, pc)", 0 },
-  { test_90, "Snap Z80 status getter/setter (iff1, iff2, im, tstates, halted)", 0 }
+  { test_90, "Snap Z80 status getter/setter (iff1, iff2, im, tstates, halted)", 0 },
+  { test_91, "Microdrive alloc/free and write_protect getter/setter", 0 },
+  { test_92, "Microdrive cartridge_len and data getter/setter", 0 },
+  { test_93, "Microdrive mdr_write/mdr_read roundtrip", 0 },
+  { test_94, "Snap machine type getter/setter and default value", 0 },
+  { test_95, "Snap memptr getter/setter", 0 },
+  { test_96, "Snap ULA, 128K memory port, and AY register port getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
