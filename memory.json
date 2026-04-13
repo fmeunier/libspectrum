@@ -1,24 +1,12 @@
 {
-  "last_run": "2026-04-12T11:55:31Z",
-  "last_run_id": "24306122391",
+  "last_run": "2026-04-13T12:08:37Z",
+  "last_run_id": "24342463093",
   "comments_made": {},
   "prs_created": [
     {
-      "branch": "repo-assist/test-snap-accessors-2026-04-11-e18e7b5a87eaed0b",
-      "pr_number": 15,
-      "description": "Add tests for libspectrum_snap Z80 register accessors (tests 88-90)",
-      "status": "open"
-    },
-    {
-      "branch": "repo-assist/improve-creator-alloc-init-2026-04-11-a63f7b7286443e56",
-      "pr_number": 16,
-      "description": "Fix: zero-initialise libspectrum_creator struct in alloc",
-      "status": "open"
-    },
-    {
-      "branch": "repo-assist/test-microdrive-2026-04-12",
-      "pr_number": 17,
-      "description": "Add microdrive API tests (tests 88-90: write_protect, cartridge_len/data, mdr roundtrip)",
+      "branch": "repo-assist/test-microdrive-and-snap-peripherals-2026-04-13",
+      "pr_number": 18,
+      "description": "Add microdrive API tests (91-93) and snap peripheral tests (94-96) - supersedes PR #17",
       "status": "open"
     }
   ],
@@ -36,7 +24,9 @@
     "Apply patch for pkg.m4 update (applied as commit b35d447)",
     "Apply patch for creator const-correctness (applied as commit f9c310a)",
     "Apply patch for buffer realloc optimization + AC_C_CONST removal (applied as commits e7cd26e and 03e922f)",
-    "Creator tests PR (tests 85-87) merged as commit 094ae28"
+    "Creator tests PR (tests 85-87) merged as commit 094ae28",
+    "PR #15 snap Z80 register tests (88-90) merged as commit d9e921a",
+    "PR #16 creator_alloc zero-init fix merged as commit d84f7ee"
   ],
-  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d), buffer set/append tests (0cee5e9), HTTPS URLs (03276e4), pkg.m4 update (b35d447), creator const (f9c310a), stdatomic C23 fix (ec5e009), buffer realloc optimize (e7cd26e), remove AC_C_CONST (03e922f), creator API tests 85-87 (094ae28). Buffer functions fully tested (tests 77-84). Creator API tested (tests 85-87). Three open PRs: #15 snap Z80 register tests (88-90), #16 creator_alloc zero-init fix, #17 microdrive API tests (88-90). Note: PRs #15 and #17 both use test numbers 88-90; maintainer should rebase one after merging the other. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: after PRs merged, consider tests for tape_accessors, IDE functions, snap non-register fields (custom_rom, pages, etc.)."
+  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d), buffer set/append tests (0cee5e9), HTTPS URLs (03276e4), pkg.m4 update (b35d447), creator const (f9c310a), stdatomic C23 fix (ec5e009), buffer realloc optimize (e7cd26e), remove AC_C_CONST (03e922f), creator API tests 85-87 (094ae28), snap Z80 register tests 88-90 (d9e921a), creator_alloc zero-init (d84f7ee). PR #17 (microdrive tests 88-90) superseded by PR #18 which renumbers to 91-93 and adds snap peripheral tests 94-96. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: after PR #18 merged, consider tests for tape_accessors, IDE functions, snap custom_rom/pages/interface1 fields."
 }
