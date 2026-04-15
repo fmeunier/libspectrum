@@ -1836,6 +1836,164 @@ done:
   return r;
 }
 
+static test_return_t
+test_97( void )
+{
+  /* libspectrum_snap: custom_rom flag and custom_rom_pages getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_97: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_custom_rom( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_97: default custom_rom should be 0, got %d\n",
+             progname, libspectrum_snap_custom_rom( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_custom_rom( snap, 1 );
+  if( libspectrum_snap_custom_rom( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_97: expected custom_rom=1, got %d\n",
+             progname, libspectrum_snap_custom_rom( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_custom_rom( snap, 0 );
+  if( libspectrum_snap_custom_rom( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_97: expected custom_rom=0, got %d\n",
+             progname, libspectrum_snap_custom_rom( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_custom_rom_pages( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_97: default custom_rom_pages should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_snap_custom_rom_pages( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_custom_rom_pages( snap, 2 );
+  if( libspectrum_snap_custom_rom_pages( snap ) != 2 ) {
+    fprintf( stderr, "%s: test_97: expected custom_rom_pages=2, got %lu\n",
+             progname, (unsigned long)libspectrum_snap_custom_rom_pages( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_98( void )
+{
+  /* libspectrum_snap: RAM pages getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *page;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_98: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_pages( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_98: default pages[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  page = libspectrum_new( libspectrum_byte, 0x4000 );
+  page[0] = 0xaa;
+  page[0x3fff] = 0x55;
+
+  libspectrum_snap_set_pages( snap, 0, page );
+  if( libspectrum_snap_pages( snap, 0 ) != page ) {
+    fprintf( stderr, "%s: test_98: pages[0] pointer mismatch after set\n", progname );
+    libspectrum_free( page );
+    goto done;
+  }
+
+  if( libspectrum_snap_pages( snap, 0 )[0] != 0xaa ||
+      libspectrum_snap_pages( snap, 0 )[0x3fff] != 0x55 ) {
+    fprintf( stderr, "%s: test_98: pages[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_pages( snap, 1 ) != NULL ) {
+    fprintf( stderr, "%s: test_98: pages[1] should still be NULL\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  /* snap_free frees all pages including the one we set */
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_99( void )
+{
+  /* libspectrum_snap: interface1 active, paged, and drive_count getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_99: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_interface1_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_99: default interface1_active should be 0, got %d\n",
+             progname, libspectrum_snap_interface1_active( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_interface1_active( snap, 1 );
+  if( libspectrum_snap_interface1_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_99: expected interface1_active=1, got %d\n",
+             progname, libspectrum_snap_interface1_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_interface1_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_99: default interface1_paged should be 0, got %d\n",
+             progname, libspectrum_snap_interface1_paged( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_interface1_paged( snap, 1 );
+  if( libspectrum_snap_interface1_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_99: expected interface1_paged=1, got %d\n",
+             progname, libspectrum_snap_interface1_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_interface1_drive_count( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_99: default interface1_drive_count should be 0, got %d\n",
+             progname, libspectrum_snap_interface1_drive_count( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_interface1_drive_count( snap, 4 );
+  if( libspectrum_snap_interface1_drive_count( snap ) != 4 ) {
+    fprintf( stderr, "%s: test_99: expected interface1_drive_count=4, got %d\n",
+             progname, libspectrum_snap_interface1_drive_count( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -1940,7 +2098,10 @@ static struct test_description tests[] = {
   { test_93, "Microdrive mdr_write/mdr_read roundtrip", 0 },
   { test_94, "Snap machine type getter/setter and default value", 0 },
   { test_95, "Snap memptr getter/setter", 0 },
-  { test_96, "Snap ULA, 128K memory port, and AY register port getter/setter", 0 }
+  { test_96, "Snap ULA, 128K memory port, and AY register port getter/setter", 0 },
+  { test_97, "Snap custom_rom flag and custom_rom_pages getter/setter", 0 },
+  { test_98, "Snap RAM pages getter/setter", 0 },
+  { test_99, "Snap interface1 active, paged, and drive_count getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
