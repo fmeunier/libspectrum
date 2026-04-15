@@ -51,11 +51,7 @@ libspectrum_buffer_reallocate( libspectrum_buffer *buffer,
 libspectrum_buffer*
 libspectrum_buffer_alloc( void )
 {
-  libspectrum_buffer *buffer = libspectrum_new( libspectrum_buffer, 1 );
-
-  buffer->buffer = NULL;
-  buffer->buffer_size = 0;
-  buffer->bytes_used = 0;
+  libspectrum_buffer *buffer = libspectrum_new0( libspectrum_buffer, 1 );
 
   libspectrum_buffer_reallocate( buffer, 65536 );
 
