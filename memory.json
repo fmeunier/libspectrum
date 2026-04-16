@@ -1,18 +1,18 @@
 {
-  "last_run": "2026-04-15T12:04:51Z",
-  "last_run_id": "24453412630",
+  "last_run": "2026-04-16T12:07:02Z",
+  "last_run_id": "24509226190",
   "comments_made": {},
   "prs_created": [
     {
-      "branch": "repo-assist/improve-use-new0-in-alloc-funcs",
-      "pr_number": 19,
-      "description": "refactor: use libspectrum_new0 in buffer, rzx, and dck alloc functions",
+      "branch": "repo-assist/test-snap-ay-beta-zxatasp-20260416",
+      "pr_number": "pending",
+      "description": "test: add snap AY registers and peripheral flag tests (100–102)",
       "status": "open"
     },
     {
-      "branch": "repo-assist/test-snap-fields-20260415",
-      "pr_number": "aw_pr20",
-      "description": "test: add snap custom_rom, RAM pages, and interface1 tests (97-99)",
+      "branch": "repo-assist/improve-microdrive-new0-alloc",
+      "pr_number": "pending",
+      "description": "refactor: use libspectrum_new0 in libspectrum_microdrive_alloc",
       "status": "open"
     }
   ],
@@ -33,7 +33,9 @@
     "Creator tests PR (tests 85-87) merged as commit 094ae28",
     "PR #15 snap Z80 register tests (88-90) merged as commit d9e921a",
     "PR #16 creator_alloc zero-init fix merged as commit d84f7ee",
-    "PR #18 microdrive API tests (91-93) and snap peripheral tests (94-96) merged as commit bcd05f3"
+    "PR #18 microdrive API tests (91-93) and snap peripheral tests (94-96) merged as commit bcd05f3",
+    "PR #19 (libspectrum_new0 in buffer/rzx/dck alloc) merged as commit 462290d",
+    "PR aw_pr20 (snap custom_rom, RAM pages, interface1 tests 97-99) merged as commit aba0042"
   ],
-  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master: libxml2 CI removal (5367634), buffer tests (0251ad2), buffer byte arrays (e7030f4), CI typo fix (24bfa0d), buffer set/append tests (0cee5e9), HTTPS URLs (03276e4), pkg.m4 update (b35d447), creator const (f9c310a), stdatomic C23 fix (ec5e009), buffer realloc optimize (e7cd26e), remove AC_C_CONST (03e922f), creator API tests 85-87 (094ae28), snap Z80 register tests 88-90 (d9e921a), creator_alloc zero-init (d84f7ee), microdrive+snap peripheral tests 91-96 (bcd05f3). PR #19 (libspectrum_new0 in buffer/rzx/dck alloc) is open. PR aw_pr20 (snap custom_rom, RAM pages, interface1 tests 97-99) is open. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: after PRs merged, consider tests for AY registers array, Betadisk, ZXATASP snap fields, tape_accessors, IDE functions."
+  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master up to aba0042. Two new PRs created this run: test: add snap AY registers and peripheral flag tests (100-102) on branch repo-assist/test-snap-ay-beta-zxatasp-20260416, and refactor: use libspectrum_new0 in microdrive_alloc on branch repo-assist/improve-microdrive-new0-alloc. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: after PRs merged, consider tests for divide, specdrum, fuller_box, multiface snap fields, tape_accessors, IDE functions."
 }
