@@ -1,6 +1,6 @@
 {
-  "last_run": "2026-04-17T12:03:13Z",
-  "last_run_id": "24564015828",
+  "last_run": "2026-04-18T11:56:10Z",
+  "last_run_id": "24604115959",
   "comments_made": {},
   "prs_created": [
     {
@@ -17,14 +17,20 @@
     },
     {
       "branch": "repo-assist/test-snap-divide-specdrum-fuller-multiface-20260417",
-      "pr_number": "aw_pr23",
+      "pr_number": 23,
       "description": "test: add snap DivIDE, SpecDrum, Fuller Box, and Multiface tests (100-103)",
       "status": "open"
     },
     {
       "branch": "repo-assist/improve-tape-block-alloc-new0",
-      "pr_number": "aw_pr24",
+      "pr_number": 24,
       "description": "refactor: use libspectrum_new0 in libspectrum_tape_block_alloc",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/fix-ide-alloc-new0-20260418",
+      "pr_number": "aw_pr25",
+      "description": "refactor: use libspectrum_new0 in libspectrum_ide_alloc",
       "status": "open"
     }
   ],
@@ -49,5 +55,5 @@
     "PR #19 (libspectrum_new0 in buffer/rzx/dck alloc) merged as commit 462290d",
     "PR aw_pr20 (snap custom_rom, RAM pages, interface1 tests 97-99) merged as commit aba0042"
   ],
-  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master up to aba0042. Four open PRs: #21 (microdrive new0), #22 (snap AY/beta/ZXATASP tests 100-102), aw_pr23 (snap DivIDE/SpecDrum/Fuller/Multiface tests 100-103), aw_pr24 (tape_block new0). Note: PRs #22 and aw_pr23 both number tests starting at 100 - maintainer must renumber when merging. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: after PRs merged, consider tests for tape_accessors, IDE functions, zxatasp_port_a/b/c, divide_pages, multiface_ram pointer accessors."
+  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master up to aba0042. Five open PRs: #21 (microdrive new0), #22 (snap AY/beta/ZXATASP tests 100-102), #23 (snap DivIDE/SpecDrum/Fuller/Multiface tests 100-103), #24 (tape_block new0), aw_pr25 (ide_alloc new0). Note: PRs #22 and #23 both number tests starting at 100 - maintainer must renumber when merging. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: consider tests for tape_accessors (libspectrum_tape_block accessors), zxatasp_port_a/b/c, divide_pages, multiface_ram pointer accessors, Spectranet accessors, ULAplus, DISCiPLE."
 }
