@@ -1994,6 +1994,265 @@ done:
   return r;
 }
 
+static test_return_t
+test_100( void )
+{
+  /* libspectrum_snap: DivIDE interface flags getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_100: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_divide_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_100: default divide_active should be 0, got %d\n",
+             progname, libspectrum_snap_divide_active( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_divide_active( snap, 1 );
+  if( libspectrum_snap_divide_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_100: expected divide_active=1, got %d\n",
+             progname, libspectrum_snap_divide_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_divide_eprom_writeprotect( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_100: default divide_eprom_writeprotect should be 0, got %d\n",
+             progname, libspectrum_snap_divide_eprom_writeprotect( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_divide_eprom_writeprotect( snap, 1 );
+  if( libspectrum_snap_divide_eprom_writeprotect( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_100: expected divide_eprom_writeprotect=1, got %d\n",
+             progname, libspectrum_snap_divide_eprom_writeprotect( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_divide_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_100: default divide_paged should be 0, got %d\n",
+             progname, libspectrum_snap_divide_paged( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_divide_paged( snap, 1 );
+  if( libspectrum_snap_divide_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_100: expected divide_paged=1, got %d\n",
+             progname, libspectrum_snap_divide_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_divide_control( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_100: default divide_control should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_divide_control( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_divide_control( snap, 0xa3 );
+  if( libspectrum_snap_divide_control( snap ) != 0xa3 ) {
+    fprintf( stderr, "%s: test_100: expected divide_control=0xa3, got 0x%02x\n",
+             progname, libspectrum_snap_divide_control( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_101( void )
+{
+  /* libspectrum_snap: SpecDrum active flag and DAC getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_101: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_specdrum_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_101: default specdrum_active should be 0, got %d\n",
+             progname, libspectrum_snap_specdrum_active( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_specdrum_active( snap, 1 );
+  if( libspectrum_snap_specdrum_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_101: expected specdrum_active=1, got %d\n",
+             progname, libspectrum_snap_specdrum_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_specdrum_dac( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_101: default specdrum_dac should be 0, got %d\n",
+             progname, (int)libspectrum_snap_specdrum_dac( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_specdrum_dac( snap, -42 );
+  if( libspectrum_snap_specdrum_dac( snap ) != -42 ) {
+    fprintf( stderr, "%s: test_101: expected specdrum_dac=-42, got %d\n",
+             progname, (int)libspectrum_snap_specdrum_dac( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_specdrum_dac( snap, 100 );
+  if( libspectrum_snap_specdrum_dac( snap ) != 100 ) {
+    fprintf( stderr, "%s: test_101: expected specdrum_dac=100, got %d\n",
+             progname, (int)libspectrum_snap_specdrum_dac( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_102( void )
+{
+  /* libspectrum_snap: Fuller Box active flag getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_102: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_fuller_box_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_102: default fuller_box_active should be 0, got %d\n",
+             progname, libspectrum_snap_fuller_box_active( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_fuller_box_active( snap, 1 );
+  if( libspectrum_snap_fuller_box_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_102: expected fuller_box_active=1, got %d\n",
+             progname, libspectrum_snap_fuller_box_active( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_fuller_box_active( snap, 0 );
+  if( libspectrum_snap_fuller_box_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_102: expected fuller_box_active=0, got %d\n",
+             progname, libspectrum_snap_fuller_box_active( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_103( void )
+{
+  /* libspectrum_snap: Multiface interface flags getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_103: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_multiface_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_103: default multiface_active should be 0, got %d\n",
+             progname, libspectrum_snap_multiface_active( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_multiface_active( snap, 1 );
+  if( libspectrum_snap_multiface_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_103: expected multiface_active=1, got %d\n",
+             progname, libspectrum_snap_multiface_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_multiface_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_103: default multiface_paged should be 0, got %d\n",
+             progname, libspectrum_snap_multiface_paged( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_multiface_paged( snap, 1 );
+  if( libspectrum_snap_multiface_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_103: expected multiface_paged=1, got %d\n",
+             progname, libspectrum_snap_multiface_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_multiface_model_one( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_103: default multiface_model_one should be 0, got %d\n",
+             progname, libspectrum_snap_multiface_model_one( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_multiface_model_one( snap, 1 );
+  if( libspectrum_snap_multiface_model_one( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_103: expected multiface_model_one=1, got %d\n",
+             progname, libspectrum_snap_multiface_model_one( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_multiface_model_128( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_103: default multiface_model_128 should be 0, got %d\n",
+             progname, libspectrum_snap_multiface_model_128( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_multiface_model_128( snap, 1 );
+  if( libspectrum_snap_multiface_model_128( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_103: expected multiface_model_128=1, got %d\n",
+             progname, libspectrum_snap_multiface_model_128( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_multiface_disabled( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_103: default multiface_disabled should be 0, got %d\n",
+             progname, libspectrum_snap_multiface_disabled( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_multiface_disabled( snap, 1 );
+  if( libspectrum_snap_multiface_disabled( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_103: expected multiface_disabled=1, got %d\n",
+             progname, libspectrum_snap_multiface_disabled( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_multiface_software_lockout( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_103: default multiface_software_lockout should be 0, got %d\n",
+             progname, libspectrum_snap_multiface_software_lockout( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_multiface_software_lockout( snap, 1 );
+  if( libspectrum_snap_multiface_software_lockout( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_103: expected multiface_software_lockout=1, got %d\n",
+             progname, libspectrum_snap_multiface_software_lockout( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -2101,7 +2360,11 @@ static struct test_description tests[] = {
   { test_96, "Snap ULA, 128K memory port, and AY register port getter/setter", 0 },
   { test_97, "Snap custom_rom flag and custom_rom_pages getter/setter", 0 },
   { test_98, "Snap RAM pages getter/setter", 0 },
-  { test_99, "Snap interface1 active, paged, and drive_count getter/setter", 0 }
+  { test_99, "Snap interface1 active, paged, and drive_count getter/setter", 0 },
+  { test_100, "Snap DivIDE active, eprom_writeprotect, paged, and control getter/setter", 0 },
+  { test_101, "Snap SpecDrum active flag and signed DAC getter/setter", 0 },
+  { test_102, "Snap Fuller Box active flag getter/setter", 0 },
+  { test_103, "Snap Multiface active, paged, model, disabled, and software_lockout getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
