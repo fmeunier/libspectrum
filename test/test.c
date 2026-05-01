@@ -2253,6 +2253,76 @@ done:
   return r;
 }
 
+/* Test that PZX archive info tags (title + author) are correctly parsed.
+   Regression test for the pzx_read_string bug where *ptr was set to end,
+   causing all tag-value pairs after the title to be silently ignored. */
+static test_return_t
+test_104( void )
+{
+  const char *filename = STATIC_TEST_PATH( "pzx-archive-info-tags.pzx" );
+  libspectrum_tape *tape = NULL;
+  libspectrum_tape_iterator it;
+  libspectrum_tape_block *block;
+  test_return_t r = TEST_INCOMPLETE;
+
+  if( load_tape( &tape, filename, LIBSPECTRUM_ERROR_NONE ) ) return TEST_INCOMPLETE;
+
+  /* Find the ARCHIVE_INFO block */
+  for( block = libspectrum_tape_iterator_init( &it, tape );
+       block;
+       block = libspectrum_tape_iterator_next( &it ) ) {
+    if( libspectrum_tape_block_type( block ) == LIBSPECTRUM_TAPE_BLOCK_ARCHIVE_INFO )
+      break;
+  }
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_104: no ARCHIVE_INFO block found\n", progname );
+    goto done;
+  }
+
+  /* Expect: title (ID 0x00, "Test Game") and Author (ID 0x02, "Joe Bloggs") */
+  if( libspectrum_tape_block_count( block ) != 2 ) {
+    fprintf( stderr, "%s: test_104: expected 2 archive info entries, got %zu\n",
+             progname, libspectrum_tape_block_count( block ) );
+    r = TEST_FAIL;
+    goto done;
+  }
+
+  if( libspectrum_tape_block_ids( block, 0 ) != 0x00 ) {
+    fprintf( stderr, "%s: test_104: expected ID 0x00 for entry 0, got 0x%02x\n",
+             progname, libspectrum_tape_block_ids( block, 0 ) );
+    r = TEST_FAIL;
+    goto done;
+  }
+
+  if( strcmp( libspectrum_tape_block_texts( block, 0 ), "Test Game" ) != 0 ) {
+    fprintf( stderr, "%s: test_104: expected title 'Test Game', got '%s'\n",
+             progname, libspectrum_tape_block_texts( block, 0 ) );
+    r = TEST_FAIL;
+    goto done;
+  }
+
+  if( libspectrum_tape_block_ids( block, 1 ) != 0x02 ) {
+    fprintf( stderr, "%s: test_104: expected ID 0x02 (Author) for entry 1, got 0x%02x\n",
+             progname, libspectrum_tape_block_ids( block, 1 ) );
+    r = TEST_FAIL;
+    goto done;
+  }
+
+  if( strcmp( libspectrum_tape_block_texts( block, 1 ), "Joe Bloggs" ) != 0 ) {
+    fprintf( stderr, "%s: test_104: expected author 'Joe Bloggs', got '%s'\n",
+             progname, libspectrum_tape_block_texts( block, 1 ) );
+    r = TEST_FAIL;
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -2364,7 +2434,8 @@ static struct test_description tests[] = {
   { test_100, "Snap DivIDE active, eprom_writeprotect, paged, and control getter/setter", 0 },
   { test_101, "Snap SpecDrum active flag and signed DAC getter/setter", 0 },
   { test_102, "Snap Fuller Box active flag getter/setter", 0 },
-  { test_103, "Snap Multiface active, paged, model, disabled, and software_lockout getter/setter", 0 }
+  { test_103, "Snap Multiface active, paged, model, disabled, and software_lockout getter/setter", 0 },
+  { test_104, "PZX archive info tags (title and Author) correctly parsed", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
