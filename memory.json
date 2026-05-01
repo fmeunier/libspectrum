@@ -1,43 +1,55 @@
 {
-  "last_run": "2026-04-18T11:56:10Z",
-  "last_run_id": "24604115959",
+  "last_run": "2026-05-01T00:00:00Z",
+  "last_run_id": "25213623935",
   "comments_made": {},
   "prs_created": [
     {
       "branch": "repo-assist/test-snap-ay-beta-zxatasp-20260416",
       "pr_number": 22,
       "description": "test: add snap AY registers and peripheral flag tests (100-102)",
-      "status": "open"
+      "status": "open - superseded, commented to close"
     },
     {
       "branch": "repo-assist/improve-microdrive-new0-alloc",
       "pr_number": 21,
       "description": "refactor: use libspectrum_new0 in microdrive_alloc",
-      "status": "open"
+      "status": "closed/merged by maintainer"
     },
     {
       "branch": "repo-assist/test-snap-divide-specdrum-fuller-multiface-20260417",
       "pr_number": 23,
       "description": "test: add snap DivIDE, SpecDrum, Fuller Box, and Multiface tests (100-103)",
-      "status": "open"
+      "status": "closed/merged by maintainer"
     },
     {
       "branch": "repo-assist/improve-tape-block-alloc-new0",
       "pr_number": 24,
       "description": "refactor: use libspectrum_new0 in libspectrum_tape_block_alloc",
-      "status": "open"
+      "status": "closed/merged by maintainer"
     },
     {
       "branch": "repo-assist/fix-ide-alloc-new0-20260418",
-      "pr_number": "aw_pr25",
+      "pr_number": 25,
       "description": "refactor: use libspectrum_new0 in libspectrum_ide_alloc",
+      "status": "closed/merged by maintainer"
+    },
+    {
+      "branch": "repo-assist/fix-pzx-read-string-null-advance-20260501",
+      "pr_number": "aw_fixpzx",
+      "description": "fix: advance past null terminator in pzx_read_string",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/test-snap-ay-beta-zxatasp-plus-20260501",
+      "pr_number": "aw_snappr",
+      "description": "test: add snap AY registers, beta disk, and ZXATASP accessor tests (104-108)",
       "status": "open"
     }
   ],
   "monthly_activity_issue": {
-    "number": 3,
-    "month": "2026-04",
-    "title": "[Repo Assist] Monthly Activity 2026-04",
+    "number": "aw_may26",
+    "month": "2026-05",
+    "title": "[Repo Assist] Monthly Activity 2026-05",
     "status": "open"
   },
   "backlog_cursor": null,
@@ -47,13 +59,17 @@
     "Apply patch to upgrade SourceForge URLs from http to https - applied as commit 03276e4",
     "Apply patch for pkg.m4 update (applied as commit b35d447)",
     "Apply patch for creator const-correctness (applied as commit f9c310a)",
-    "Apply patch for buffer realloc optimization + AC_C_CONST removal (applied as commits e7cd26e and 03e922f)",
+    "Apply patch for buffer realloc optimization + AC_C_CONST removal",
     "Creator tests PR (tests 85-87) merged as commit 094ae28",
-    "PR #15 snap Z80 register tests (88-90) merged as commit d9e921a",
-    "PR #16 creator_alloc zero-init fix merged as commit d84f7ee",
+    "PR #15 snap Z80 register tests (88-90) merged",
+    "PR #16 creator_alloc zero-init fix merged",
     "PR #18 microdrive API tests (91-93) and snap peripheral tests (94-96) merged as commit bcd05f3",
-    "PR #19 (libspectrum_new0 in buffer/rzx/dck alloc) merged as commit 462290d",
-    "PR aw_pr20 (snap custom_rom, RAM pages, interface1 tests 97-99) merged as commit aba0042"
+    "PR #19 (libspectrum_new0 in buffer/rzx/dck alloc) merged",
+    "PR aw_pr20 (snap custom_rom, RAM pages, interface1 tests 97-99) merged as commit aba0042",
+    "PR #21 microdrive new0 - closed/merged",
+    "PR #23 snap DivIDE/SpecDrum/Fuller/Multiface tests 100-103 - closed/merged",
+    "PR #24 tape_block new0 - closed/merged",
+    "PR #25 ide_alloc new0 - closed/merged"
   ],
-  "notes": "No regular open issues in the repo. Workflow files (.github/workflows/) are protected. Past changes applied by maintainer directly to master up to aba0042. Five open PRs: #21 (microdrive new0), #22 (snap AY/beta/ZXATASP tests 100-102), #23 (snap DivIDE/SpecDrum/Fuller/Multiface tests 100-103), #24 (tape_block new0), aw_pr25 (ide_alloc new0). Note: PRs #22 and #23 both number tests starting at 100 - maintainer must renumber when merging. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: consider tests for tape_accessors (libspectrum_tape_block accessors), zxatasp_port_a/b/c, divide_pages, multiface_ram pointer accessors, Spectranet accessors, ULAplus, DISCiPLE."
+  "notes": "No regular open issues in the repo. Two open Repo Assist PRs: aw_fixpzx (pzx_read_string bug fix + test_104) and aw_snappr (snap accessor tests 104-108). Note: if aw_fixpzx is merged first, aw_snappr tests need renumbering to 105-109. PR #22 open and superseded - commented to close. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: consider tests for tape_accessors, divide_pages, multiface_ram pointer accessors, Spectranet accessors, ULAplus, DISCiPLE."
 }
