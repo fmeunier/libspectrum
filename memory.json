@@ -1,53 +1,59 @@
 {
-  "last_run": "2026-05-01T00:00:00Z",
-  "last_run_id": "25213623935",
+  "last_run": "2026-05-02T12:01:23Z",
+  "last_run_id": "25251400100",
   "comments_made": {},
   "prs_created": [
     {
       "branch": "repo-assist/test-snap-ay-beta-zxatasp-20260416",
       "pr_number": 22,
       "description": "test: add snap AY registers and peripheral flag tests (100-102)",
-      "status": "open - superseded, commented to close"
+      "status": "closed - applied directly by maintainer"
     },
     {
       "branch": "repo-assist/improve-microdrive-new0-alloc",
       "pr_number": 21,
       "description": "refactor: use libspectrum_new0 in microdrive_alloc",
-      "status": "closed/merged by maintainer"
+      "status": "closed - applied directly by maintainer"
     },
     {
       "branch": "repo-assist/test-snap-divide-specdrum-fuller-multiface-20260417",
       "pr_number": 23,
       "description": "test: add snap DivIDE, SpecDrum, Fuller Box, and Multiface tests (100-103)",
-      "status": "closed/merged by maintainer"
+      "status": "closed - applied directly by maintainer"
     },
     {
       "branch": "repo-assist/improve-tape-block-alloc-new0",
       "pr_number": 24,
       "description": "refactor: use libspectrum_new0 in libspectrum_tape_block_alloc",
-      "status": "closed/merged by maintainer"
+      "status": "closed - applied directly by maintainer"
     },
     {
       "branch": "repo-assist/fix-ide-alloc-new0-20260418",
       "pr_number": 25,
       "description": "refactor: use libspectrum_new0 in libspectrum_ide_alloc",
-      "status": "closed/merged by maintainer"
+      "status": "closed - applied directly by maintainer"
     },
     {
       "branch": "repo-assist/fix-pzx-read-string-null-advance-20260501",
-      "pr_number": "aw_fixpzx",
+      "pr_number": 28,
       "description": "fix: advance past null terminator in pzx_read_string",
-      "status": "open"
+      "status": "closed - applied directly by maintainer as commit c9cf395"
     },
     {
       "branch": "repo-assist/test-snap-ay-beta-zxatasp-plus-20260501",
-      "pr_number": "aw_snappr",
+      "pr_number": 29,
       "description": "test: add snap AY registers, beta disk, and ZXATASP accessor tests (104-108)",
+      "status": "closed - applied directly by maintainer as commit 24d175e"
+    },
+    {
+      "branch": "repo-assist/test-snap-divide-divmmc-20260502",
+      "pr_number": "aw_divmmc",
+      "description": "test: add snap DivIDE pages/eprom and DivMMC accessor tests (110-113)",
       "status": "open"
     }
   ],
   "monthly_activity_issue": {
-    "number": "aw_may26",
+    "number": 30,
     "month": "2026-05",
     "title": "[Repo Assist] Monthly Activity 2026-05",
     "status": "open"
@@ -69,7 +75,11 @@
     "PR #21 microdrive new0 - closed/merged",
     "PR #23 snap DivIDE/SpecDrum/Fuller/Multiface tests 100-103 - closed/merged",
     "PR #24 tape_block new0 - closed/merged",
-    "PR #25 ide_alloc new0 - closed/merged"
+    "PR #25 ide_alloc new0 - closed/merged",
+    "PR #27/#28 pzx_read_string fix - applied as commit c9cf395",
+    "PR #29 snap AY/beta/ZXATASP tests 104-108 - applied as commit 24d175e (test 109 = PZX test)",
+    "PR #22 superseded tests - closed",
+    "Monthly activity suggested actions all checked off by maintainer"
   ],
-  "notes": "No regular open issues in the repo. Two open Repo Assist PRs: aw_fixpzx (pzx_read_string bug fix + test_104) and aw_snappr (snap accessor tests 104-108). Note: if aw_fixpzx is merged first, aw_snappr tests need renumbering to 105-109. PR #22 open and superseded - commented to close. Build: ./autogen.sh && ./configure --with-fake-glib && make. Tests: make check. Next runs: consider tests for tape_accessors, divide_pages, multiface_ram pointer accessors, Spectranet accessors, ULAplus, DISCiPLE."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 113. Remaining untested snap areas: spectranet flags+pointers, disciple flags+pointers, plusd flags+pointers, zxatasp_ram pointer array, multiface_ram pointer, divmmc_ram pointer array. Next runs: consider spectranet accessor tests (many int fields + word + 3 pointer fields), disciple accessor tests, or plusd accessor tests."
 }
