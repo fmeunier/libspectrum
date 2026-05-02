@@ -2253,11 +2253,284 @@ done:
   return r;
 }
 
+static test_return_t
+test_104( void )
+{
+  /* libspectrum_snap: ay_registers array getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+  int i;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_104: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  /* Default: all 16 AY registers should be zero */
+  for( i = 0; i < 16; i++ ) {
+    if( libspectrum_snap_ay_registers( snap, i ) != 0 ) {
+      fprintf( stderr, "%s: test_104: default ay_registers[%d] should be 0, got %d\n",
+               progname, i, libspectrum_snap_ay_registers( snap, i ) );
+      goto done;
+    }
+  }
+
+  /* Set each register to a unique value and verify round-trip */
+  for( i = 0; i < 16; i++ )
+    libspectrum_snap_set_ay_registers( snap, i, (libspectrum_byte)(i + 1) );
+
+  for( i = 0; i < 16; i++ ) {
+    if( libspectrum_snap_ay_registers( snap, i ) != (libspectrum_byte)(i + 1) ) {
+      fprintf( stderr, "%s: test_104: expected ay_registers[%d]=%d, got %d\n",
+               progname, i, i + 1, libspectrum_snap_ay_registers( snap, i ) );
+      goto done;
+    }
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_105( void )
+{
+  /* libspectrum_snap: beta disk interface getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_105: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_beta_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_105: default beta_active should be 0, got %d\n",
+             progname, libspectrum_snap_beta_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_beta_active( snap, 1 );
+  if( libspectrum_snap_beta_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_105: expected beta_active=1, got %d\n",
+             progname, libspectrum_snap_beta_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_beta_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_105: default beta_paged should be 0, got %d\n",
+             progname, libspectrum_snap_beta_paged( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_beta_paged( snap, 1 );
+  if( libspectrum_snap_beta_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_105: expected beta_paged=1, got %d\n",
+             progname, libspectrum_snap_beta_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_beta_autoboot( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_105: default beta_autoboot should be 0, got %d\n",
+             progname, libspectrum_snap_beta_autoboot( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_beta_autoboot( snap, 1 );
+  if( libspectrum_snap_beta_autoboot( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_105: expected beta_autoboot=1, got %d\n",
+             progname, libspectrum_snap_beta_autoboot( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_beta_drive_count( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_105: default beta_drive_count should be 0, got %d\n",
+             progname, libspectrum_snap_beta_drive_count( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_beta_drive_count( snap, 4 );
+  if( libspectrum_snap_beta_drive_count( snap ) != 4 ) {
+    fprintf( stderr, "%s: test_105: expected beta_drive_count=4, got %d\n",
+             progname, libspectrum_snap_beta_drive_count( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_106( void )
+{
+  /* libspectrum_snap: ZXATASP active/upload/writeprotect getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_106: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_zxatasp_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_106: default zxatasp_active should be 0, got %d\n",
+             progname, libspectrum_snap_zxatasp_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_active( snap, 1 );
+  if( libspectrum_snap_zxatasp_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_106: expected zxatasp_active=1, got %d\n",
+             progname, libspectrum_snap_zxatasp_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxatasp_upload( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_106: default zxatasp_upload should be 0, got %d\n",
+             progname, libspectrum_snap_zxatasp_upload( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_upload( snap, 1 );
+  if( libspectrum_snap_zxatasp_upload( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_106: expected zxatasp_upload=1, got %d\n",
+             progname, libspectrum_snap_zxatasp_upload( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxatasp_writeprotect( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_106: default zxatasp_writeprotect should be 0, got %d\n",
+             progname, libspectrum_snap_zxatasp_writeprotect( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_writeprotect( snap, 1 );
+  if( libspectrum_snap_zxatasp_writeprotect( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_106: expected zxatasp_writeprotect=1, got %d\n",
+             progname, libspectrum_snap_zxatasp_writeprotect( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_107( void )
+{
+  /* libspectrum_snap: ZXATASP port_a/b/c and control getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_107: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_zxatasp_port_a( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_107: default zxatasp_port_a should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_zxatasp_port_a( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_port_a( snap, 0xaa );
+  if( libspectrum_snap_zxatasp_port_a( snap ) != 0xaa ) {
+    fprintf( stderr, "%s: test_107: expected zxatasp_port_a=0xaa, got 0x%02x\n",
+             progname, libspectrum_snap_zxatasp_port_a( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxatasp_port_b( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_107: default zxatasp_port_b should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_zxatasp_port_b( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_port_b( snap, 0xbb );
+  if( libspectrum_snap_zxatasp_port_b( snap ) != 0xbb ) {
+    fprintf( stderr, "%s: test_107: expected zxatasp_port_b=0xbb, got 0x%02x\n",
+             progname, libspectrum_snap_zxatasp_port_b( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxatasp_port_c( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_107: default zxatasp_port_c should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_zxatasp_port_c( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_port_c( snap, 0xcc );
+  if( libspectrum_snap_zxatasp_port_c( snap ) != 0xcc ) {
+    fprintf( stderr, "%s: test_107: expected zxatasp_port_c=0xcc, got 0x%02x\n",
+             progname, libspectrum_snap_zxatasp_port_c( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxatasp_control( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_107: default zxatasp_control should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_zxatasp_control( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_control( snap, 0x9b );
+  if( libspectrum_snap_zxatasp_control( snap ) != 0x9b ) {
+    fprintf( stderr, "%s: test_107: expected zxatasp_control=0x9b, got 0x%02x\n",
+             progname, libspectrum_snap_zxatasp_control( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_108( void )
+{
+  /* libspectrum_snap: ZXATASP pages and current_page getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_108: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_zxatasp_pages( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_108: default zxatasp_pages should be 0, got %zu\n",
+             progname, libspectrum_snap_zxatasp_pages( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_pages( snap, 8 );
+  if( libspectrum_snap_zxatasp_pages( snap ) != 8 ) {
+    fprintf( stderr, "%s: test_108: expected zxatasp_pages=8, got %zu\n",
+             progname, libspectrum_snap_zxatasp_pages( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxatasp_current_page( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_108: default zxatasp_current_page should be 0, got %zu\n",
+             progname, libspectrum_snap_zxatasp_current_page( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxatasp_current_page( snap, 5 );
+  if( libspectrum_snap_zxatasp_current_page( snap ) != 5 ) {
+    fprintf( stderr, "%s: test_108: expected zxatasp_current_page=5, got %zu\n",
+             progname, libspectrum_snap_zxatasp_current_page( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
 /* Test that PZX archive info tags (title + author) are correctly parsed.
    Regression test for the pzx_read_string bug where *ptr was set to end,
    causing all tag-value pairs after the title to be silently ignored. */
 static test_return_t
-test_104( void )
+test_109( void )
 {
   const char *filename = STATIC_TEST_PATH( "pzx-archive-info-tags.pzx" );
   libspectrum_tape *tape = NULL;
@@ -2435,7 +2708,12 @@ static struct test_description tests[] = {
   { test_101, "Snap SpecDrum active flag and signed DAC getter/setter", 0 },
   { test_102, "Snap Fuller Box active flag getter/setter", 0 },
   { test_103, "Snap Multiface active, paged, model, disabled, and software_lockout getter/setter", 0 },
-  { test_104, "PZX archive info tags (title and Author) correctly parsed", 0 }
+  { test_104, "Snap AY registers array getter/setter (all 16 registers)", 0 },
+  { test_105, "Snap beta disk active, paged, autoboot, and drive_count getter/setter", 0 },
+  { test_106, "Snap ZXATASP active, upload, and writeprotect getter/setter", 0 },
+  { test_107, "Snap ZXATASP port_a/b/c and control getter/setter", 0 },
+  { test_108, "Snap ZXATASP pages and current_page getter/setter", 0 },
+  { test_109, "PZX archive info tags (title and Author) correctly parsed", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
