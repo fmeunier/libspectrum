@@ -2526,6 +2526,229 @@ done:
   return r;
 }
 
+static test_return_t
+test_110( void )
+{
+  /* libspectrum_snap: DivIDE pages count and divide_eprom single-pointer */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *eprom;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_110: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_divide_pages( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_110: default divide_pages should be 0, got %zu\n",
+             progname, libspectrum_snap_divide_pages( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_divide_pages( snap, 3 );
+  if( libspectrum_snap_divide_pages( snap ) != 3 ) {
+    fprintf( stderr, "%s: test_110: expected divide_pages=3, got %zu\n",
+             progname, libspectrum_snap_divide_pages( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_divide_eprom( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_110: default divide_eprom[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  eprom = libspectrum_new( libspectrum_byte, 0x2000 );
+  eprom[0]      = 0xde;
+  eprom[0x1fff] = 0xad;
+
+  libspectrum_snap_set_divide_eprom( snap, 0, eprom );
+  if( libspectrum_snap_divide_eprom( snap, 0 ) != eprom ) {
+    fprintf( stderr, "%s: test_110: divide_eprom[0] pointer mismatch after set\n", progname );
+    libspectrum_free( eprom );
+    goto done;
+  }
+  if( libspectrum_snap_divide_eprom( snap, 0 )[0]      != 0xde ||
+      libspectrum_snap_divide_eprom( snap, 0 )[0x1fff] != 0xad ) {
+    fprintf( stderr, "%s: test_110: divide_eprom[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_111( void )
+{
+  /* libspectrum_snap: DivIDE RAM page pointer array (SNAPSHOT_DIVIDE_PAGES pages) */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *page0, *page1;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_111: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_divide_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_111: default divide_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  page0 = libspectrum_new( libspectrum_byte, 0x2000 );
+  page0[0]      = 0x11;
+  page0[0x1fff] = 0x22;
+
+  libspectrum_snap_set_divide_ram( snap, 0, page0 );
+  if( libspectrum_snap_divide_ram( snap, 0 ) != page0 ) {
+    fprintf( stderr, "%s: test_111: divide_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( page0 );
+    goto done;
+  }
+  if( libspectrum_snap_divide_ram( snap, 0 )[0]      != 0x11 ||
+      libspectrum_snap_divide_ram( snap, 0 )[0x1fff] != 0x22 ) {
+    fprintf( stderr, "%s: test_111: divide_ram[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  page1 = libspectrum_new( libspectrum_byte, 0x2000 );
+  page1[0] = 0x33;
+  libspectrum_snap_set_divide_ram( snap, 1, page1 );
+
+  if( libspectrum_snap_divide_ram( snap, 2 ) != NULL ) {
+    fprintf( stderr, "%s: test_111: divide_ram[2] should still be NULL\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_112( void )
+{
+  /* libspectrum_snap: DivMMC flags (active, eprom_writeprotect, paged, control) */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_112: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_divmmc_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_112: default divmmc_active should be 0, got %d\n",
+             progname, libspectrum_snap_divmmc_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_divmmc_active( snap, 1 );
+  if( libspectrum_snap_divmmc_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_112: expected divmmc_active=1, got %d\n",
+             progname, libspectrum_snap_divmmc_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_divmmc_eprom_writeprotect( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_112: default divmmc_eprom_writeprotect should be 0, got %d\n",
+             progname, libspectrum_snap_divmmc_eprom_writeprotect( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_divmmc_eprom_writeprotect( snap, 1 );
+  if( libspectrum_snap_divmmc_eprom_writeprotect( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_112: expected divmmc_eprom_writeprotect=1, got %d\n",
+             progname, libspectrum_snap_divmmc_eprom_writeprotect( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_divmmc_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_112: default divmmc_paged should be 0, got %d\n",
+             progname, libspectrum_snap_divmmc_paged( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_divmmc_paged( snap, 1 );
+  if( libspectrum_snap_divmmc_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_112: expected divmmc_paged=1, got %d\n",
+             progname, libspectrum_snap_divmmc_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_divmmc_control( snap ) != 0x00 ) {
+    fprintf( stderr, "%s: test_112: default divmmc_control should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_divmmc_control( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_divmmc_control( snap, 0xc7 );
+  if( libspectrum_snap_divmmc_control( snap ) != 0xc7 ) {
+    fprintf( stderr, "%s: test_112: expected divmmc_control=0xc7, got 0x%02x\n",
+             progname, libspectrum_snap_divmmc_control( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_113( void )
+{
+  /* libspectrum_snap: DivMMC pages count and divmmc_eprom single-pointer */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *eprom;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_113: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_divmmc_pages( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_113: default divmmc_pages should be 0, got %zu\n",
+             progname, libspectrum_snap_divmmc_pages( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_divmmc_pages( snap, 16 );
+  if( libspectrum_snap_divmmc_pages( snap ) != 16 ) {
+    fprintf( stderr, "%s: test_113: expected divmmc_pages=16, got %zu\n",
+             progname, libspectrum_snap_divmmc_pages( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_divmmc_eprom( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_113: default divmmc_eprom[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  eprom = libspectrum_new( libspectrum_byte, 0x4000 );
+  eprom[0]      = 0xbe;
+  eprom[0x3fff] = 0xef;
+
+  libspectrum_snap_set_divmmc_eprom( snap, 0, eprom );
+  if( libspectrum_snap_divmmc_eprom( snap, 0 ) != eprom ) {
+    fprintf( stderr, "%s: test_113: divmmc_eprom[0] pointer mismatch after set\n", progname );
+    libspectrum_free( eprom );
+    goto done;
+  }
+  if( libspectrum_snap_divmmc_eprom( snap, 0 )[0]      != 0xbe ||
+      libspectrum_snap_divmmc_eprom( snap, 0 )[0x3fff] != 0xef ) {
+    fprintf( stderr, "%s: test_113: divmmc_eprom[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
 /* Test that PZX archive info tags (title + author) are correctly parsed.
    Regression test for the pzx_read_string bug where *ptr was set to end,
    causing all tag-value pairs after the title to be silently ignored. */
@@ -2713,7 +2936,11 @@ static struct test_description tests[] = {
   { test_106, "Snap ZXATASP active, upload, and writeprotect getter/setter", 0 },
   { test_107, "Snap ZXATASP port_a/b/c and control getter/setter", 0 },
   { test_108, "Snap ZXATASP pages and current_page getter/setter", 0 },
-  { test_109, "PZX archive info tags (title and Author) correctly parsed", 0 }
+  { test_109, "PZX archive info tags (title and Author) correctly parsed", 0 },
+  { test_110, "Snap DivIDE pages count and divide_eprom pointer getter/setter", 0 },
+  { test_111, "Snap DivIDE RAM page pointer array getter/setter", 0 },
+  { test_112, "Snap DivMMC active, eprom_writeprotect, paged, and control getter/setter", 0 },
+  { test_113, "Snap DivMMC pages count and divmmc_eprom pointer getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
