@@ -1,6 +1,6 @@
 {
-  "last_run": "2026-05-03T12:00:17Z",
-  "last_run_id": "25278545557",
+  "last_run": "2026-05-04T00:00:00Z",
+  "last_run_id": "25318336779",
   "comments_made": {},
   "prs_created": [
     {
@@ -49,18 +49,30 @@
       "branch": "repo-assist/test-snap-divide-divmmc-20260502",
       "pr_number": 31,
       "description": "test: add snap DivIDE pages/eprom and DivMMC accessor tests (110-113)",
-      "status": "open"
+      "status": "closed - applied directly by maintainer as commit d6dfd02"
     },
     {
       "branch": "repo-assist/improve-dck-block-alloc-new0",
       "pr_number": "aw_dckblk",
       "description": "refactor: use libspectrum_new0 in libspectrum_dck_block_alloc",
-      "status": "open"
+      "status": "closed - applied directly by maintainer as commit c63f07b"
     },
     {
       "branch": "repo-assist/test-snap-plusd-20260503",
-      "pr_number": "aw_plusdpr",
+      "pr_number": 32,
       "description": "test: add snap Plus D accessor tests (114-116)",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/test-snap-opus-spectranet-disciple-20260504",
+      "pr_number": "aw_snaptst",
+      "description": "test: add snap accessor tests for ZXATASP RAM, Opus Discovery, Spectranet, DISCiPLE (tests 114-122)",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/perf-buffer-initial-size-20260504",
+      "pr_number": "aw_bufperf",
+      "description": "buffer: reduce initial allocation from 65536 to 1024 bytes",
       "status": "open"
     }
   ],
@@ -91,7 +103,9 @@
     "PR #27/#28 pzx_read_string fix - applied as commit c9cf395",
     "PR #29 snap AY/beta/ZXATASP tests 104-108 - applied as commit 24d175e (test 109 = PZX test)",
     "PR #22 superseded tests - closed",
+    "PR #31 DivIDE/DivMMC tests 110-113 - applied as commit d6dfd02",
+    "PR aw_dckblk dck_block_alloc new0 refactor - applied as commit c63f07b",
     "Monthly activity suggested actions all checked off by maintainer"
   ],
-  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 109 on master. PR #31 (tests 110-113, DivIDE/DivMMC) is open. aw_dckblk (dck_block_alloc new0 refactor) is open. aw_plusdpr (Plus D accessor tests 114-116) is open. Remaining untested snap areas after Plus D: spectranet accessor tests (many int fields + word + 3 pointer fields), disciple accessor tests, opus accessor tests, zxatasp_ram pointer array."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 113 on master. PR #32 (Plus D tests 114-116) is open. aw_snaptst (ZXATASP RAM, Opus, Spectranet, DISCiPLE tests 114-122) is open - note numbering conflict with #32; maintainer will renumber on apply. aw_bufperf (buffer initial size 65536->1024) is open. All major snap accessor areas now covered: Z80 regs, AY, beta disk, ZXATASP flags, DivIDE, DivMMC, Plus D, Opus Discovery, Spectranet, DISCiPLE. Remaining: tape and rzx accessor coverage."
 }
