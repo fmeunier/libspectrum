@@ -62,6 +62,14 @@ libspectrum_buffer_alloc( void )
   return buffer;
 }
 
+libspectrum_buffer*
+libspectrum_buffer_alloc_hint( size_t hint )
+{
+  libspectrum_buffer *buffer = libspectrum_new0( libspectrum_buffer, 1 );
+  libspectrum_buffer_reallocate( buffer, hint > 0 ? hint : 1024 );
+  return buffer;
+}
+
 void
 libspectrum_buffer_free( libspectrum_buffer *buffer )
 {

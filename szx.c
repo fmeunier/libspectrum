@@ -3419,7 +3419,7 @@ write_ram_page( libspectrum_buffer *buffer, libspectrum_buffer *block_data,
 
   if( !data ) return;
 
-  data_buffer = libspectrum_buffer_alloc();
+  data_buffer = libspectrum_buffer_alloc_hint( data_length );
   use_compression = compress_data( data_buffer, data, data_length, compress );
 
   if( use_compression ) extra_flags |= ZXSTRF_COMPRESSED;
