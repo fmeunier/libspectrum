@@ -1,78 +1,36 @@
 {
-  "last_run": "2026-05-04T00:00:00Z",
-  "last_run_id": "25318336779",
+  "last_run": "2026-05-05T00:00:00Z",
+  "last_run_id": "25375357393",
   "comments_made": {},
   "prs_created": [
-    {
-      "branch": "repo-assist/test-snap-ay-beta-zxatasp-20260416",
-      "pr_number": 22,
-      "description": "test: add snap AY registers and peripheral flag tests (100-102)",
-      "status": "closed - applied directly by maintainer"
-    },
-    {
-      "branch": "repo-assist/improve-microdrive-new0-alloc",
-      "pr_number": 21,
-      "description": "refactor: use libspectrum_new0 in microdrive_alloc",
-      "status": "closed - applied directly by maintainer"
-    },
-    {
-      "branch": "repo-assist/test-snap-divide-specdrum-fuller-multiface-20260417",
-      "pr_number": 23,
-      "description": "test: add snap DivIDE, SpecDrum, Fuller Box, and Multiface tests (100-103)",
-      "status": "closed - applied directly by maintainer"
-    },
-    {
-      "branch": "repo-assist/improve-tape-block-alloc-new0",
-      "pr_number": 24,
-      "description": "refactor: use libspectrum_new0 in libspectrum_tape_block_alloc",
-      "status": "closed - applied directly by maintainer"
-    },
-    {
-      "branch": "repo-assist/fix-ide-alloc-new0-20260418",
-      "pr_number": 25,
-      "description": "refactor: use libspectrum_new0 in libspectrum_ide_alloc",
-      "status": "closed - applied directly by maintainer"
-    },
-    {
-      "branch": "repo-assist/fix-pzx-read-string-null-advance-20260501",
-      "pr_number": 28,
-      "description": "fix: advance past null terminator in pzx_read_string",
-      "status": "closed - applied directly by maintainer as commit c9cf395"
-    },
-    {
-      "branch": "repo-assist/test-snap-ay-beta-zxatasp-plus-20260501",
-      "pr_number": 29,
-      "description": "test: add snap AY registers, beta disk, and ZXATASP accessor tests (104-108)",
-      "status": "closed - applied directly by maintainer as commit 24d175e"
-    },
-    {
-      "branch": "repo-assist/test-snap-divide-divmmc-20260502",
-      "pr_number": 31,
-      "description": "test: add snap DivIDE pages/eprom and DivMMC accessor tests (110-113)",
-      "status": "closed - applied directly by maintainer as commit d6dfd02"
-    },
-    {
-      "branch": "repo-assist/improve-dck-block-alloc-new0",
-      "pr_number": "aw_dckblk",
-      "description": "refactor: use libspectrum_new0 in libspectrum_dck_block_alloc",
-      "status": "closed - applied directly by maintainer as commit c63f07b"
-    },
     {
       "branch": "repo-assist/test-snap-plusd-20260503",
       "pr_number": 32,
       "description": "test: add snap Plus D accessor tests (114-116)",
-      "status": "open"
+      "status": "closed - applied directly by maintainer as commit 4d49eef"
     },
     {
       "branch": "repo-assist/test-snap-opus-spectranet-disciple-20260504",
-      "pr_number": "aw_snaptst",
+      "pr_number": 34,
       "description": "test: add snap accessor tests for ZXATASP RAM, Opus Discovery, Spectranet, DISCiPLE (tests 114-122)",
       "status": "open"
     },
     {
       "branch": "repo-assist/perf-buffer-initial-size-20260504",
-      "pr_number": "aw_bufperf",
+      "pr_number": 35,
       "description": "buffer: reduce initial allocation from 65536 to 1024 bytes",
+      "status": "closed - applied directly by maintainer as commit bef3313"
+    },
+    {
+      "branch": "repo-assist/fix-pzx-read-memory-leaks",
+      "pr_number": "aw_pzxfix1",
+      "description": "Fix memory leaks in pzx_read.c read_pzxt_block error paths (ids/strings arrays, info_tag)",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/perf-buffer-alloc-hint-20260505",
+      "pr_number": "aw_bufhint",
+      "description": "perf: add libspectrum_buffer_alloc_hint() to avoid reallocs in write_ram_page",
       "status": "open"
     }
   ],
@@ -105,7 +63,9 @@
     "PR #22 superseded tests - closed",
     "PR #31 DivIDE/DivMMC tests 110-113 - applied as commit d6dfd02",
     "PR aw_dckblk dck_block_alloc new0 refactor - applied as commit c63f07b",
+    "PR #32 Plus D tests 114-116 - applied as commit 4d49eef",
+    "PR #35 buffer initial size reduction - applied as commit bef3313",
     "Monthly activity suggested actions all checked off by maintainer"
   ],
-  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 113 on master. PR #32 (Plus D tests 114-116) is open. aw_snaptst (ZXATASP RAM, Opus, Spectranet, DISCiPLE tests 114-122) is open - note numbering conflict with #32; maintainer will renumber on apply. aw_bufperf (buffer initial size 65536->1024) is open. All major snap accessor areas now covered: Z80 regs, AY, beta disk, ZXATASP flags, DivIDE, DivMMC, Plus D, Opus Discovery, Spectranet, DISCiPLE. Remaining: tape and rzx accessor coverage."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 116 on master. PR #34 (ZXATASP RAM, Opus, Spectranet, DISCiPLE tests 114-122) is open. aw_pzxfix1 (pzx_read.c memory leak fix) is open. aw_bufhint (libspectrum_buffer_alloc_hint performance) is open. All major snap accessor areas now covered: Z80 regs, AY, beta disk, ZXATASP flags, DivIDE, DivMMC, Plus D, Opus Discovery, Spectranet, DISCiPLE. Remaining: tape and rzx accessor coverage."
 }
