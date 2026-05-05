@@ -2819,6 +2819,226 @@ done:
   return r;
 }
 
+static test_return_t
+test_114( void )
+{
+  /* libspectrum_snap: Plus D active, paged, drive_count, custom_rom, direction */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_114: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_plusd_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_114: default plusd_active should be 0, got %d\n",
+             progname, libspectrum_snap_plusd_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_active( snap, 1 );
+  if( libspectrum_snap_plusd_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_114: expected plusd_active=1, got %d\n",
+             progname, libspectrum_snap_plusd_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_114: default plusd_paged should be 0, got %d\n",
+             progname, libspectrum_snap_plusd_paged( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_paged( snap, 1 );
+  if( libspectrum_snap_plusd_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_114: expected plusd_paged=1, got %d\n",
+             progname, libspectrum_snap_plusd_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_drive_count( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_114: default plusd_drive_count should be 0, got %d\n",
+             progname, libspectrum_snap_plusd_drive_count( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_drive_count( snap, 2 );
+  if( libspectrum_snap_plusd_drive_count( snap ) != 2 ) {
+    fprintf( stderr, "%s: test_114: expected plusd_drive_count=2, got %d\n",
+             progname, libspectrum_snap_plusd_drive_count( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_custom_rom( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_114: default plusd_custom_rom should be 0, got %d\n",
+             progname, libspectrum_snap_plusd_custom_rom( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_custom_rom( snap, 1 );
+  if( libspectrum_snap_plusd_custom_rom( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_114: expected plusd_custom_rom=1, got %d\n",
+             progname, libspectrum_snap_plusd_custom_rom( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_direction( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_114: default plusd_direction should be 0, got %d\n",
+             progname, libspectrum_snap_plusd_direction( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_direction( snap, 1 );
+  if( libspectrum_snap_plusd_direction( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_114: expected plusd_direction=1, got %d\n",
+             progname, libspectrum_snap_plusd_direction( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_115( void )
+{
+  /* libspectrum_snap: Plus D FDC byte registers (control, track, sector, data, status) */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_115: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_plusd_control( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_115: default plusd_control should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_plusd_control( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_control( snap, 0xd4 );
+  if( libspectrum_snap_plusd_control( snap ) != 0xd4 ) {
+    fprintf( stderr, "%s: test_115: expected plusd_control=0xd4, got 0x%02x\n",
+             progname, libspectrum_snap_plusd_control( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_track( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_115: default plusd_track should be 0, got %d\n",
+             progname, libspectrum_snap_plusd_track( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_track( snap, 39 );
+  if( libspectrum_snap_plusd_track( snap ) != 39 ) {
+    fprintf( stderr, "%s: test_115: expected plusd_track=39, got %d\n",
+             progname, libspectrum_snap_plusd_track( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_sector( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_115: default plusd_sector should be 0, got %d\n",
+             progname, libspectrum_snap_plusd_sector( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_sector( snap, 9 );
+  if( libspectrum_snap_plusd_sector( snap ) != 9 ) {
+    fprintf( stderr, "%s: test_115: expected plusd_sector=9, got %d\n",
+             progname, libspectrum_snap_plusd_sector( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_data( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_115: default plusd_data should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_plusd_data( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_data( snap, 0x5a );
+  if( libspectrum_snap_plusd_data( snap ) != 0x5a ) {
+    fprintf( stderr, "%s: test_115: expected plusd_data=0x5a, got 0x%02x\n",
+             progname, libspectrum_snap_plusd_data( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_status( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_115: default plusd_status should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_plusd_status( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_plusd_status( snap, 0x81 );
+  if( libspectrum_snap_plusd_status( snap ) != 0x81 ) {
+    fprintf( stderr, "%s: test_115: expected plusd_status=0x81, got 0x%02x\n",
+             progname, libspectrum_snap_plusd_status( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_116( void )
+{
+  /* libspectrum_snap: Plus D ROM and RAM single-pointer getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *rom, *ram;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_116: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_plusd_rom( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_116: default plusd_rom[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  rom = libspectrum_new( libspectrum_byte, 0x2000 );
+  rom[0]      = 0xc3;
+  rom[0x1fff] = 0xff;
+
+  libspectrum_snap_set_plusd_rom( snap, 0, rom );
+  if( libspectrum_snap_plusd_rom( snap, 0 ) != rom ) {
+    fprintf( stderr, "%s: test_116: plusd_rom[0] pointer mismatch after set\n", progname );
+    libspectrum_free( rom );
+    goto done;
+  }
+  if( libspectrum_snap_plusd_rom( snap, 0 )[0]      != 0xc3 ||
+      libspectrum_snap_plusd_rom( snap, 0 )[0x1fff] != 0xff ) {
+    fprintf( stderr, "%s: test_116: plusd_rom[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_plusd_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_116: default plusd_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  ram = libspectrum_new( libspectrum_byte, 0x2000 );
+  ram[0]      = 0x11;
+  ram[0x1fff] = 0x22;
+
+  libspectrum_snap_set_plusd_ram( snap, 0, ram );
+  if( libspectrum_snap_plusd_ram( snap, 0 ) != ram ) {
+    fprintf( stderr, "%s: test_116: plusd_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( ram );
+    goto done;
+  }
+  if( libspectrum_snap_plusd_ram( snap, 0 )[0]      != 0x11 ||
+      libspectrum_snap_plusd_ram( snap, 0 )[0x1fff] != 0x22 ) {
+    fprintf( stderr, "%s: test_116: plusd_ram[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -2940,7 +3160,10 @@ static struct test_description tests[] = {
   { test_110, "Snap DivIDE pages count and divide_eprom pointer getter/setter", 0 },
   { test_111, "Snap DivIDE RAM page pointer array getter/setter", 0 },
   { test_112, "Snap DivMMC active, eprom_writeprotect, paged, and control getter/setter", 0 },
-  { test_113, "Snap DivMMC pages count and divmmc_eprom pointer getter/setter", 0 }
+  { test_113, "Snap DivMMC pages count and divmmc_eprom pointer getter/setter", 0 },
+  { test_114, "Snap Plus D active, paged, drive_count, custom_rom, and direction getter/setter", 0 },
+  { test_115, "Snap Plus D FDC byte registers (control, track, sector, data, status) getter/setter", 0 },
+  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
