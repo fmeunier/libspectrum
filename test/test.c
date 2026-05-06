@@ -3039,6 +3039,803 @@ done:
   return r;
 }
 
+static test_return_t
+test_117( void )
+{
+  /* libspectrum_snap: ZXATASP RAM page pointer array (SNAPSHOT_ZXATASP_PAGES pages) */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *page0, *page1;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_117: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_zxatasp_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_117: default zxatasp_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  page0 = libspectrum_new( libspectrum_byte, 0x4000 );
+  page0[0]      = 0x11;
+  page0[0x3fff] = 0x22;
+
+  libspectrum_snap_set_zxatasp_ram( snap, 0, page0 );
+  if( libspectrum_snap_zxatasp_ram( snap, 0 ) != page0 ) {
+    fprintf( stderr, "%s: test_117: zxatasp_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( page0 );
+    goto done;
+  }
+  if( libspectrum_snap_zxatasp_ram( snap, 0 )[0]      != 0x11 ||
+      libspectrum_snap_zxatasp_ram( snap, 0 )[0x3fff] != 0x22 ) {
+    fprintf( stderr, "%s: test_117: zxatasp_ram[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  page1 = libspectrum_new( libspectrum_byte, 0x4000 );
+  page1[0] = 0x33;
+  libspectrum_snap_set_zxatasp_ram( snap, 1, page1 );
+
+  if( libspectrum_snap_zxatasp_ram( snap, 2 ) != NULL ) {
+    fprintf( stderr, "%s: test_117: zxatasp_ram[2] should still be NULL\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_118( void )
+{
+  /* libspectrum_snap: Opus Discovery int flags getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_118: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_opus_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_118: default opus_active should be 0, got %d\n",
+             progname, libspectrum_snap_opus_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_active( snap, 1 );
+  if( libspectrum_snap_opus_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_118: expected opus_active=1, got %d\n",
+             progname, libspectrum_snap_opus_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_118: default opus_paged should be 0, got %d\n",
+             progname, libspectrum_snap_opus_paged( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_paged( snap, 1 );
+  if( libspectrum_snap_opus_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_118: expected opus_paged=1, got %d\n",
+             progname, libspectrum_snap_opus_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_drive_count( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_118: default opus_drive_count should be 0, got %d\n",
+             progname, libspectrum_snap_opus_drive_count( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_drive_count( snap, 2 );
+  if( libspectrum_snap_opus_drive_count( snap ) != 2 ) {
+    fprintf( stderr, "%s: test_118: expected opus_drive_count=2, got %d\n",
+             progname, libspectrum_snap_opus_drive_count( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_custom_rom( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_118: default opus_custom_rom should be 0, got %d\n",
+             progname, libspectrum_snap_opus_custom_rom( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_custom_rom( snap, 1 );
+  if( libspectrum_snap_opus_custom_rom( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_118: expected opus_custom_rom=1, got %d\n",
+             progname, libspectrum_snap_opus_custom_rom( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_direction( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_118: default opus_direction should be 0, got %d\n",
+             progname, libspectrum_snap_opus_direction( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_direction( snap, 1 );
+  if( libspectrum_snap_opus_direction( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_118: expected opus_direction=1, got %d\n",
+             progname, libspectrum_snap_opus_direction( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_119( void )
+{
+  /* libspectrum_snap: Opus Discovery FDC byte registers getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_119: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_opus_track( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_track should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_track( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_track( snap, 0x12 );
+  if( libspectrum_snap_opus_track( snap ) != 0x12 ) {
+    fprintf( stderr, "%s: test_119: expected opus_track=0x12, got 0x%02x\n",
+             progname, libspectrum_snap_opus_track( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_sector( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_sector should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_sector( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_sector( snap, 0x34 );
+  if( libspectrum_snap_opus_sector( snap ) != 0x34 ) {
+    fprintf( stderr, "%s: test_119: expected opus_sector=0x34, got 0x%02x\n",
+             progname, libspectrum_snap_opus_sector( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_data( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_data should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_data( snap, 0x56 );
+  if( libspectrum_snap_opus_data( snap ) != 0x56 ) {
+    fprintf( stderr, "%s: test_119: expected opus_data=0x56, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_status( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_status should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_status( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_status( snap, 0x78 );
+  if( libspectrum_snap_opus_status( snap ) != 0x78 ) {
+    fprintf( stderr, "%s: test_119: expected opus_status=0x78, got 0x%02x\n",
+             progname, libspectrum_snap_opus_status( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_data_reg_a( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_data_reg_a should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data_reg_a( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_data_reg_a( snap, 0x9a );
+  if( libspectrum_snap_opus_data_reg_a( snap ) != 0x9a ) {
+    fprintf( stderr, "%s: test_119: expected opus_data_reg_a=0x9a, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data_reg_a( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_data_dir_a( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_data_dir_a should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data_dir_a( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_data_dir_a( snap, 0xbc );
+  if( libspectrum_snap_opus_data_dir_a( snap ) != 0xbc ) {
+    fprintf( stderr, "%s: test_119: expected opus_data_dir_a=0xbc, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data_dir_a( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_control_a( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_control_a should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_control_a( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_control_a( snap, 0xde );
+  if( libspectrum_snap_opus_control_a( snap ) != 0xde ) {
+    fprintf( stderr, "%s: test_119: expected opus_control_a=0xde, got 0x%02x\n",
+             progname, libspectrum_snap_opus_control_a( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_data_reg_b( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_data_reg_b should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data_reg_b( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_data_reg_b( snap, 0xf0 );
+  if( libspectrum_snap_opus_data_reg_b( snap ) != 0xf0 ) {
+    fprintf( stderr, "%s: test_119: expected opus_data_reg_b=0xf0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data_reg_b( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_data_dir_b( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_data_dir_b should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data_dir_b( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_data_dir_b( snap, 0x0f );
+  if( libspectrum_snap_opus_data_dir_b( snap ) != 0x0f ) {
+    fprintf( stderr, "%s: test_119: expected opus_data_dir_b=0x0f, got 0x%02x\n",
+             progname, libspectrum_snap_opus_data_dir_b( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_control_b( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default opus_control_b should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_opus_control_b( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_opus_control_b( snap, 0xaa );
+  if( libspectrum_snap_opus_control_b( snap ) != 0xaa ) {
+    fprintf( stderr, "%s: test_119: expected opus_control_b=0xaa, got 0x%02x\n",
+             progname, libspectrum_snap_opus_control_b( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_120( void )
+{
+  /* libspectrum_snap: Opus Discovery ROM and RAM single-pointer getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *rom, *ram;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_120: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_opus_rom( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_120: default opus_rom[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  rom = libspectrum_new( libspectrum_byte, 0x4000 );
+  rom[0]      = 0x11;
+  rom[0x3fff] = 0x22;
+
+  libspectrum_snap_set_opus_rom( snap, 0, rom );
+  if( libspectrum_snap_opus_rom( snap, 0 ) != rom ) {
+    fprintf( stderr, "%s: test_120: opus_rom[0] pointer mismatch after set\n", progname );
+    libspectrum_free( rom );
+    goto done;
+  }
+  if( libspectrum_snap_opus_rom( snap, 0 )[0]      != 0x11 ||
+      libspectrum_snap_opus_rom( snap, 0 )[0x3fff] != 0x22 ) {
+    fprintf( stderr, "%s: test_120: opus_rom[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_opus_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_120: default opus_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  ram = libspectrum_new( libspectrum_byte, 0x800 );
+  ram[0]     = 0x33;
+  ram[0x7ff] = 0x44;
+
+  libspectrum_snap_set_opus_ram( snap, 0, ram );
+  if( libspectrum_snap_opus_ram( snap, 0 ) != ram ) {
+    fprintf( stderr, "%s: test_120: opus_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( ram );
+    goto done;
+  }
+  if( libspectrum_snap_opus_ram( snap, 0 )[0]     != 0x33 ||
+      libspectrum_snap_opus_ram( snap, 0 )[0x7ff] != 0x44 ) {
+    fprintf( stderr, "%s: test_120: opus_ram[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_121( void )
+{
+  /* libspectrum_snap: Spectranet boolean int flags getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_121: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_spectranet_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_active should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_active( snap, 1 );
+  if( libspectrum_snap_spectranet_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_active=1, got %d\n",
+             progname, libspectrum_snap_spectranet_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_paged should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_paged( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_paged( snap, 1 );
+  if( libspectrum_snap_spectranet_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_paged=1, got %d\n",
+             progname, libspectrum_snap_spectranet_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_paged_via_io( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_paged_via_io should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_paged_via_io( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_paged_via_io( snap, 1 );
+  if( libspectrum_snap_spectranet_paged_via_io( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_paged_via_io=1, got %d\n",
+             progname, libspectrum_snap_spectranet_paged_via_io( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_nmi_flipflop( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_nmi_flipflop should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_nmi_flipflop( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_nmi_flipflop( snap, 1 );
+  if( libspectrum_snap_spectranet_nmi_flipflop( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_nmi_flipflop=1, got %d\n",
+             progname, libspectrum_snap_spectranet_nmi_flipflop( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_programmable_trap_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_programmable_trap_active should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_programmable_trap_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_programmable_trap_active( snap, 1 );
+  if( libspectrum_snap_spectranet_programmable_trap_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_programmable_trap_active=1, got %d\n",
+             progname, libspectrum_snap_spectranet_programmable_trap_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_programmable_trap_msb( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_programmable_trap_msb should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_programmable_trap_msb( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_programmable_trap_msb( snap, 1 );
+  if( libspectrum_snap_spectranet_programmable_trap_msb( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_programmable_trap_msb=1, got %d\n",
+             progname, libspectrum_snap_spectranet_programmable_trap_msb( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_all_traps_disabled( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_all_traps_disabled should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_all_traps_disabled( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_all_traps_disabled( snap, 1 );
+  if( libspectrum_snap_spectranet_all_traps_disabled( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_all_traps_disabled=1, got %d\n",
+             progname, libspectrum_snap_spectranet_all_traps_disabled( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_rst8_trap_disabled( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_rst8_trap_disabled should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_rst8_trap_disabled( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_rst8_trap_disabled( snap, 1 );
+  if( libspectrum_snap_spectranet_rst8_trap_disabled( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_rst8_trap_disabled=1, got %d\n",
+             progname, libspectrum_snap_spectranet_rst8_trap_disabled( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_deny_downstream_a15( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default spectranet_deny_downstream_a15 should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_deny_downstream_a15( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_deny_downstream_a15( snap, 1 );
+  if( libspectrum_snap_spectranet_deny_downstream_a15( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_121: expected spectranet_deny_downstream_a15=1, got %d\n",
+             progname, libspectrum_snap_spectranet_deny_downstream_a15( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_122( void )
+{
+  /* libspectrum_snap: Spectranet page_a/b, programmable_trap (word), and memory pointer fields */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *w5100, *flash, *ram;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_122: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_spectranet_page_a( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_122: default spectranet_page_a should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_page_a( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_page_a( snap, 3 );
+  if( libspectrum_snap_spectranet_page_a( snap ) != 3 ) {
+    fprintf( stderr, "%s: test_122: expected spectranet_page_a=3, got %d\n",
+             progname, libspectrum_snap_spectranet_page_a( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_page_b( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_122: default spectranet_page_b should be 0, got %d\n",
+             progname, libspectrum_snap_spectranet_page_b( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_page_b( snap, 7 );
+  if( libspectrum_snap_spectranet_page_b( snap ) != 7 ) {
+    fprintf( stderr, "%s: test_122: expected spectranet_page_b=7, got %d\n",
+             progname, libspectrum_snap_spectranet_page_b( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_programmable_trap( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_122: default spectranet_programmable_trap should be 0, got 0x%04x\n",
+             progname, libspectrum_snap_spectranet_programmable_trap( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_spectranet_programmable_trap( snap, 0x1234 );
+  if( libspectrum_snap_spectranet_programmable_trap( snap ) != 0x1234 ) {
+    fprintf( stderr, "%s: test_122: expected spectranet_programmable_trap=0x1234, got 0x%04x\n",
+             progname, libspectrum_snap_spectranet_programmable_trap( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_w5100( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_122: default spectranet_w5100[0] should be NULL\n", progname );
+    goto done;
+  }
+  w5100 = libspectrum_new( libspectrum_byte, 0x400 );
+  w5100[0] = 0xab;
+  libspectrum_snap_set_spectranet_w5100( snap, 0, w5100 );
+  if( libspectrum_snap_spectranet_w5100( snap, 0 ) != w5100 ) {
+    fprintf( stderr, "%s: test_122: spectranet_w5100[0] pointer mismatch after set\n", progname );
+    libspectrum_free( w5100 );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_flash( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_122: default spectranet_flash[0] should be NULL\n", progname );
+    goto done;
+  }
+  flash = libspectrum_new( libspectrum_byte, 0x20000 );
+  flash[0] = 0xcd;
+  libspectrum_snap_set_spectranet_flash( snap, 0, flash );
+  if( libspectrum_snap_spectranet_flash( snap, 0 ) != flash ) {
+    fprintf( stderr, "%s: test_122: spectranet_flash[0] pointer mismatch after set\n", progname );
+    libspectrum_free( flash );
+    goto done;
+  }
+
+  if( libspectrum_snap_spectranet_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_122: default spectranet_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+  ram = libspectrum_new( libspectrum_byte, 0x20000 );
+  ram[0] = 0xef;
+  libspectrum_snap_set_spectranet_ram( snap, 0, ram );
+  if( libspectrum_snap_spectranet_ram( snap, 0 ) != ram ) {
+    fprintf( stderr, "%s: test_122: spectranet_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( ram );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_123( void )
+{
+  /* libspectrum_snap: DISCiPLE int flags getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_123: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_disciple_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_123: default disciple_active should be 0, got %d\n",
+             progname, libspectrum_snap_disciple_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_active( snap, 1 );
+  if( libspectrum_snap_disciple_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_123: expected disciple_active=1, got %d\n",
+             progname, libspectrum_snap_disciple_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_paged( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_123: default disciple_paged should be 0, got %d\n",
+             progname, libspectrum_snap_disciple_paged( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_paged( snap, 1 );
+  if( libspectrum_snap_disciple_paged( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_123: expected disciple_paged=1, got %d\n",
+             progname, libspectrum_snap_disciple_paged( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_inhibit_button( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_123: default disciple_inhibit_button should be 0, got %d\n",
+             progname, libspectrum_snap_disciple_inhibit_button( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_inhibit_button( snap, 1 );
+  if( libspectrum_snap_disciple_inhibit_button( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_123: expected disciple_inhibit_button=1, got %d\n",
+             progname, libspectrum_snap_disciple_inhibit_button( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_drive_count( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_123: default disciple_drive_count should be 0, got %d\n",
+             progname, libspectrum_snap_disciple_drive_count( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_drive_count( snap, 2 );
+  if( libspectrum_snap_disciple_drive_count( snap ) != 2 ) {
+    fprintf( stderr, "%s: test_123: expected disciple_drive_count=2, got %d\n",
+             progname, libspectrum_snap_disciple_drive_count( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_custom_rom( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_123: default disciple_custom_rom should be 0, got %d\n",
+             progname, libspectrum_snap_disciple_custom_rom( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_custom_rom( snap, 1 );
+  if( libspectrum_snap_disciple_custom_rom( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_123: expected disciple_custom_rom=1, got %d\n",
+             progname, libspectrum_snap_disciple_custom_rom( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_direction( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_123: default disciple_direction should be 0, got %d\n",
+             progname, libspectrum_snap_disciple_direction( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_direction( snap, 1 );
+  if( libspectrum_snap_disciple_direction( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_123: expected disciple_direction=1, got %d\n",
+             progname, libspectrum_snap_disciple_direction( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_124( void )
+{
+  /* libspectrum_snap: DISCiPLE FDC byte registers getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_124: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_disciple_control( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_124: default disciple_control should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_control( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_control( snap, 0x12 );
+  if( libspectrum_snap_disciple_control( snap ) != 0x12 ) {
+    fprintf( stderr, "%s: test_124: expected disciple_control=0x12, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_control( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_track( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_124: default disciple_track should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_track( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_track( snap, 0x34 );
+  if( libspectrum_snap_disciple_track( snap ) != 0x34 ) {
+    fprintf( stderr, "%s: test_124: expected disciple_track=0x34, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_track( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_sector( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_124: default disciple_sector should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_sector( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_sector( snap, 0x56 );
+  if( libspectrum_snap_disciple_sector( snap ) != 0x56 ) {
+    fprintf( stderr, "%s: test_124: expected disciple_sector=0x56, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_sector( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_data( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_124: default disciple_data should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_data( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_data( snap, 0x78 );
+  if( libspectrum_snap_disciple_data( snap ) != 0x78 ) {
+    fprintf( stderr, "%s: test_124: expected disciple_data=0x78, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_data( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_status( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_124: default disciple_status should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_status( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_disciple_status( snap, 0x9a );
+  if( libspectrum_snap_disciple_status( snap ) != 0x9a ) {
+    fprintf( stderr, "%s: test_124: expected disciple_status=0x9a, got 0x%02x\n",
+             progname, libspectrum_snap_disciple_status( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_125( void )
+{
+  /* libspectrum_snap: DISCiPLE ROM pointer, ROM length, and RAM pointer getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *rom, *ram;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_125: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_disciple_rom( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_125: default disciple_rom[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_rom_length( snap, 0 ) != 0 ) {
+    fprintf( stderr, "%s: test_125: default disciple_rom_length[0] should be 0, got %zu\n",
+             progname, libspectrum_snap_disciple_rom_length( snap, 0 ) );
+    goto done;
+  }
+
+  rom = libspectrum_new( libspectrum_byte, 0x8000 );
+  rom[0]      = 0x11;
+  rom[0x7fff] = 0x22;
+
+  libspectrum_snap_set_disciple_rom( snap, 0, rom );
+  libspectrum_snap_set_disciple_rom_length( snap, 0, 0x8000 );
+
+  if( libspectrum_snap_disciple_rom( snap, 0 ) != rom ) {
+    fprintf( stderr, "%s: test_125: disciple_rom[0] pointer mismatch after set\n", progname );
+    libspectrum_free( rom );
+    goto done;
+  }
+  if( libspectrum_snap_disciple_rom_length( snap, 0 ) != 0x8000 ) {
+    fprintf( stderr, "%s: test_125: expected disciple_rom_length[0]=0x8000, got %zu\n",
+             progname, libspectrum_snap_disciple_rom_length( snap, 0 ) );
+    goto done;
+  }
+  if( libspectrum_snap_disciple_rom( snap, 0 )[0]      != 0x11 ||
+      libspectrum_snap_disciple_rom( snap, 0 )[0x7fff] != 0x22 ) {
+    fprintf( stderr, "%s: test_125: disciple_rom[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_disciple_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_125: default disciple_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  ram = libspectrum_new( libspectrum_byte, 0x2000 );
+  ram[0]      = 0x33;
+  ram[0x1fff] = 0x44;
+
+  libspectrum_snap_set_disciple_ram( snap, 0, ram );
+  if( libspectrum_snap_disciple_ram( snap, 0 ) != ram ) {
+    fprintf( stderr, "%s: test_125: disciple_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( ram );
+    goto done;
+  }
+  if( libspectrum_snap_disciple_ram( snap, 0 )[0]      != 0x33 ||
+      libspectrum_snap_disciple_ram( snap, 0 )[0x1fff] != 0x44 ) {
+    fprintf( stderr, "%s: test_125: disciple_ram[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -3163,7 +3960,16 @@ static struct test_description tests[] = {
   { test_113, "Snap DivMMC pages count and divmmc_eprom pointer getter/setter", 0 },
   { test_114, "Snap Plus D active, paged, drive_count, custom_rom, and direction getter/setter", 0 },
   { test_115, "Snap Plus D FDC byte registers (control, track, sector, data, status) getter/setter", 0 },
-  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 }
+  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 },
+  { test_117, "Snap ZXATASP RAM page pointer array getter/setter", 0 },
+  { test_118, "Snap Opus Discovery active, paged, drive_count, custom_rom, and direction getter/setter", 0 },
+  { test_119, "Snap Opus Discovery FDC byte registers (track, sector, data, status, VIA ports) getter/setter", 0 },
+  { test_120, "Snap Opus Discovery ROM and RAM single-pointer getter/setter", 0 },
+  { test_121, "Snap Spectranet boolean int flags getter/setter", 0 },
+  { test_122, "Snap Spectranet page_a/b, programmable_trap word, and memory pointers getter/setter", 0 },
+  { test_123, "Snap DISCiPLE active, paged, inhibit_button, drive_count, custom_rom, and direction getter/setter", 0 },
+  { test_124, "Snap DISCiPLE FDC byte registers (control, track, sector, data, status) getter/setter", 0 },
+  { test_125, "Snap DISCiPLE ROM pointer, ROM length, and RAM pointer getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
