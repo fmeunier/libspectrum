@@ -3039,6 +3039,258 @@ done:
   return r;
 }
 
+static test_return_t
+test_117( void )
+{
+  /* libspectrum_snap: late_timings getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_117: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_late_timings( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_117: default late_timings should be 0, got %d\n",
+             progname, libspectrum_snap_late_timings( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_late_timings( snap, 1 );
+  if( libspectrum_snap_late_timings( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_117: expected late_timings=1, got %d\n",
+             progname, libspectrum_snap_late_timings( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_118( void )
+{
+  /* libspectrum_snap: zx_printer_active getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_118: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_zx_printer_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_118: default zx_printer_active should be 0, got %d\n",
+             progname, libspectrum_snap_zx_printer_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zx_printer_active( snap, 1 );
+  if( libspectrum_snap_zx_printer_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_118: expected zx_printer_active=1, got %d\n",
+             progname, libspectrum_snap_zx_printer_active( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_119( void )
+{
+  /* libspectrum_snap: covox_active and covox_dac getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_119: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_covox_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default covox_active should be 0, got %d\n",
+             progname, libspectrum_snap_covox_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_covox_active( snap, 1 );
+  if( libspectrum_snap_covox_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_119: expected covox_active=1, got %d\n",
+             progname, libspectrum_snap_covox_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_covox_dac( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_119: default covox_dac should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_covox_dac( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_covox_dac( snap, 0x80 );
+  if( libspectrum_snap_covox_dac( snap ) != 0x80 ) {
+    fprintf( stderr, "%s: test_119: expected covox_dac=0x80, got 0x%02x\n",
+             progname, libspectrum_snap_covox_dac( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_120( void )
+{
+  /* libspectrum_snap: multiface_red_button_disabled getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_120: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_multiface_red_button_disabled( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_120: default multiface_red_button_disabled should be 0, got %d\n",
+             progname, libspectrum_snap_multiface_red_button_disabled( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_multiface_red_button_disabled( snap, 1 );
+  if( libspectrum_snap_multiface_red_button_disabled( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_120: expected multiface_red_button_disabled=1, got %d\n",
+             progname, libspectrum_snap_multiface_red_button_disabled( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_121( void )
+{
+  /* libspectrum_snap: multiface_ram pointer and multiface_ram_length getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *ram;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_121: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_multiface_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: test_121: default multiface_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_multiface_ram_length( snap, 0 ) != 0 ) {
+    fprintf( stderr, "%s: test_121: default multiface_ram_length[0] should be 0, got %zu\n",
+             progname, libspectrum_snap_multiface_ram_length( snap, 0 ) );
+    goto done;
+  }
+
+  ram = libspectrum_new( libspectrum_byte, 0x2000 );
+  ram[0]      = 0xde;
+  ram[0x1fff] = 0xad;
+
+  libspectrum_snap_set_multiface_ram( snap, 0, ram );
+  libspectrum_snap_set_multiface_ram_length( snap, 0, 0x2000 );
+
+  if( libspectrum_snap_multiface_ram( snap, 0 ) != ram ) {
+    fprintf( stderr, "%s: test_121: multiface_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( ram );
+    goto done;
+  }
+  if( libspectrum_snap_multiface_ram_length( snap, 0 ) != 0x2000 ) {
+    fprintf( stderr, "%s: test_121: expected multiface_ram_length[0]=0x2000, got %zu\n",
+             progname, libspectrum_snap_multiface_ram_length( snap, 0 ) );
+    goto done;
+  }
+  if( libspectrum_snap_multiface_ram( snap, 0 )[0]      != 0xde ||
+      libspectrum_snap_multiface_ram( snap, 0 )[0x1fff] != 0xad ) {
+    fprintf( stderr, "%s: test_121: multiface_ram[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_122( void )
+{
+  /* libspectrum_snap: zxmmc_active getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_122: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_zxmmc_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_122: default zxmmc_active should be 0, got %d\n",
+             progname, libspectrum_snap_zxmmc_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxmmc_active( snap, 1 );
+  if( libspectrum_snap_zxmmc_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_122: expected zxmmc_active=1, got %d\n",
+             progname, libspectrum_snap_zxmmc_active( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+static test_return_t
+test_123( void )
+{
+  /* libspectrum_snap: ttx2000s_active getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: test_123: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_ttx2000s_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: test_123: default ttx2000s_active should be 0, got %d\n",
+             progname, libspectrum_snap_ttx2000s_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_ttx2000s_active( snap, 1 );
+  if( libspectrum_snap_ttx2000s_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: test_123: expected ttx2000s_active=1, got %d\n",
+             progname, libspectrum_snap_ttx2000s_active( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -3163,7 +3415,14 @@ static struct test_description tests[] = {
   { test_113, "Snap DivMMC pages count and divmmc_eprom pointer getter/setter", 0 },
   { test_114, "Snap Plus D active, paged, drive_count, custom_rom, and direction getter/setter", 0 },
   { test_115, "Snap Plus D FDC byte registers (control, track, sector, data, status) getter/setter", 0 },
-  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 }
+  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 },
+  { test_117, "Snap late_timings getter/setter", 0 },
+  { test_118, "Snap zx_printer_active getter/setter", 0 },
+  { test_119, "Snap covox_active and covox_dac getter/setter", 0 },
+  { test_120, "Snap multiface_red_button_disabled getter/setter", 0 },
+  { test_121, "Snap multiface_ram pointer and multiface_ram_length getter/setter", 0 },
+  { test_122, "Snap zxmmc_active getter/setter", 0 },
+  { test_123, "Snap ttx2000s_active getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
