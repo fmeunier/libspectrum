@@ -1,36 +1,36 @@
 {
-  "last_run": "2026-05-05T00:00:00Z",
-  "last_run_id": "25375357393",
+  "last_run": "2026-05-08T12:09:19Z",
+  "last_run_id": "25554697476",
   "comments_made": {},
   "prs_created": [
     {
-      "branch": "repo-assist/test-snap-plusd-20260503",
-      "pr_number": 32,
-      "description": "test: add snap Plus D accessor tests (114-116)",
-      "status": "closed - applied directly by maintainer as commit 4d49eef"
-    },
-    {
-      "branch": "repo-assist/test-snap-opus-spectranet-disciple-20260504",
-      "pr_number": 34,
-      "description": "test: add snap accessor tests for ZXATASP RAM, Opus Discovery, Spectranet, DISCiPLE (tests 114-122)",
+      "branch": "repo-assist/fix-pzx-read-memory-leaks-285ff130905848a3",
+      "pr_number": 36,
+      "description": "Fix memory leaks in pzx_read.c read_pzxt_block error paths",
       "status": "open"
     },
     {
-      "branch": "repo-assist/perf-buffer-initial-size-20260504",
-      "pr_number": 35,
-      "description": "buffer: reduce initial allocation from 65536 to 1024 bytes",
-      "status": "closed - applied directly by maintainer as commit bef3313"
-    },
-    {
-      "branch": "repo-assist/fix-pzx-read-memory-leaks",
-      "pr_number": "aw_pzxfix1",
-      "description": "Fix memory leaks in pzx_read.c read_pzxt_block error paths (ids/strings arrays, info_tag)",
+      "branch": "repo-assist/test-snap-opus-spectranet-disciple-20260506-dd5902d990cf4308",
+      "pr_number": 38,
+      "description": "test: snap accessor tests for ZXATASP RAM, Opus Discovery, Spectranet, DISCiPLE (tests 117-125)",
       "status": "open"
     },
     {
-      "branch": "repo-assist/perf-buffer-alloc-hint-20260505",
-      "pr_number": "aw_bufhint",
-      "description": "perf: add libspectrum_buffer_alloc_hint() to avoid reallocs in write_ram_page",
+      "branch": "repo-assist/test-snap-misc-peripherals-20260506-960311aa90b0e2b0",
+      "pr_number": 39,
+      "description": "test: snap accessor tests for USource, USpeeched, Didaktik80, ULAplus (tests 117-122)",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/test-snap-remaining-peripherals-20260507-48a9bf9e62607050",
+      "pr_number": 41,
+      "description": "test: snap accessor tests for late_timings, zx_printer, covox, multiface_red, multiface_ram, zxmmc, ttx2000s (tests 117-123)",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/test-tape-block-accessors-20260508",
+      "pr_number": "aw_tapeacc",
+      "description": "test: tape block accessor unit tests for TURBO, PURE_TONE, PURE_DATA, PAUSE blocks (tests 117-121)",
       "status": "open"
     }
   ],
@@ -65,7 +65,8 @@
     "PR aw_dckblk dck_block_alloc new0 refactor - applied as commit c63f07b",
     "PR #32 Plus D tests 114-116 - applied as commit 4d49eef",
     "PR #35 buffer initial size reduction - applied as commit bef3313",
-    "Monthly activity suggested actions all checked off by maintainer"
+    "Monthly activity suggested actions all checked off by maintainer",
+    "PR #37 buffer_alloc_hint - closed by maintainer (declined)"
   ],
-  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 116 on master. PR #34 (ZXATASP RAM, Opus, Spectranet, DISCiPLE tests 114-122) is open. aw_pzxfix1 (pzx_read.c memory leak fix) is open. aw_bufhint (libspectrum_buffer_alloc_hint performance) is open. All major snap accessor areas now covered: Z80 regs, AY, beta disk, ZXATASP flags, DivIDE, DivMMC, Plus D, Opus Discovery, Spectranet, DISCiPLE. Remaining: tape and rzx accessor coverage."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 116 on master. PR #34 replaced by #38 (renumbered). Open PRs: #36 (pzx_read leaks), #38 (ZXATASP/Opus/Spectranet/DISCiPLE tests 117-125), #39 (USource/USpeeched/Didaktik80/ULAplus tests 117-122), #41 (late_timings/zx_printer/covox/multiface/zxmmc/ttx2000s tests 117-123), aw_tapeacc (tape block accessor tests 117-121). Issue #40 has CI concurrency patch that maintainer must apply manually. PR #37 (buffer_alloc_hint) was closed/declined by maintainer. All major snap accessor areas covered. Tape block accessor API now has first unit tests."
 }
