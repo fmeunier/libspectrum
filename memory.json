@@ -1,6 +1,6 @@
 {
-  "last_run": "2026-05-09T00:00:00Z",
-  "last_run_id": "25600596895",
+  "last_run": "2026-05-10T12:02:00Z",
+  "last_run_id": "25628193460",
   "comments_made": {},
   "prs_created": [
     {
@@ -10,9 +10,9 @@
       "status": "open"
     },
     {
-      "branch": "repo-assist/test-consolidated-snap-tape-20260509",
-      "pr_number": "aw_consol",
-      "description": "test: consolidated snap/tape accessor tests (117-143) — supersedes #38, #39, #41, #42",
+      "branch": "repo-assist/test-consolidated-snap-tape-20260509-c31a8d944a328105",
+      "pr_number": 43,
+      "description": "test: consolidated snap/tape accessor tests (117-143)",
       "status": "open"
     }
   ],
@@ -51,5 +51,5 @@
     "Monthly activity suggested actions all checked off by maintainer",
     "PR #37 buffer_alloc_hint - closed by maintainer (declined)"
   ],
-  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 116 on master. PRs #38, #39, #41, #42 superseded by consolidated PR aw_consol (branch: repo-assist/test-consolidated-snap-tape-20260509) which covers tests 117-143 in proper sequence. Only two open PRs remain: #36 (pzx_read leaks) and aw_consol (consolidated tests 117-143). Issue #40 has CI concurrency patch that maintainer must apply manually. PR #37 (buffer_alloc_hint) was closed/declined by maintainer."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 116 on master. PR #43 (consolidated tests 117-143) and PR #36 (pzx memory leaks) are the two remaining open Repo Assist PRs with no conflicts. PRs #38, #39, #41, #42 are superseded by #43 and have been notified via comments. Issue #40 has CI concurrency patch that maintainer must apply manually. After test PRs applied, next area: RZX accessor unit tests."
 }
