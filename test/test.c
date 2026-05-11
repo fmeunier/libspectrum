@@ -3039,6 +3039,359 @@ done:
   return r;
 }
 
+/* ---- RZX unit tests (117-124) ---- */
+
+static test_return_t
+test_144( void )
+{
+  /* libspectrum_rzx_alloc / libspectrum_rzx_free */
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  if( !rzx ) {
+    fprintf( stderr, "%s: test_144: rzx_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+  libspectrum_rzx_free( rzx );
+  return TEST_PASS;
+}
+
+static test_return_t
+test_145( void )
+{
+  /* libspectrum_rzx_start_input / stop_input and tstates accessor */
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: test_145: rzx_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_start_input( rzx, 12345 );
+
+  if( libspectrum_rzx_tstates( rzx ) != 12345 ) {
+    fprintf( stderr, "%s: test_145: expected tstates=12345, got %zu\n",
+             progname, (size_t)libspectrum_rzx_tstates( rzx ) );
+    goto done;
+  }
+
+  libspectrum_rzx_stop_input( rzx );
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+static test_return_t
+test_146( void )
+{
+  /* libspectrum_rzx_store_frame and iterator_get_frames */
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_rzx_iterator it;
+  libspectrum_byte in_bytes[3] = { 0x01, 0x02, 0x03 };
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: test_146: rzx_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+
+  if( libspectrum_rzx_store_frame( rzx, 42, 3, in_bytes ) ) {
+    fprintf( stderr, "%s: test_146: store_frame returned error\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_store_frame( rzx, 17, 0, NULL ) ) {
+    fprintf( stderr, "%s: test_146: store_frame (zero IN) returned error\n", progname );
+    goto done;
+  }
+
+  libspectrum_rzx_stop_input( rzx );
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: test_146: iterator_begin returned NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_INPUT_BLOCK ) {
+    fprintf( stderr, "%s: test_146: expected INPUT_BLOCK type\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_frames( it ) != 2 ) {
+    fprintf( stderr, "%s: test_146: expected 2 frames, got %zu\n",
+             progname, libspectrum_rzx_iterator_get_frames( it ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+static test_return_t
+test_147( void )
+{
+  /* libspectrum_rzx_store_frame: repeat frame detection */
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_rzx_iterator it;
+  libspectrum_byte in_bytes[2] = { 0xaa, 0xbb };
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: test_147: rzx_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+
+  /* First frame: unique */
+  if( libspectrum_rzx_store_frame( rzx, 10, 2, in_bytes ) ) {
+    fprintf( stderr, "%s: test_147: store_frame 1 returned error\n", progname );
+    goto done;
+  }
+
+  /* Second frame: same count and bytes — should be stored as repeat */
+  if( libspectrum_rzx_store_frame( rzx, 10, 2, in_bytes ) ) {
+    fprintf( stderr, "%s: test_147: store_frame 2 returned error\n", progname );
+    goto done;
+  }
+
+  /* Third frame: different bytes — unique */
+  in_bytes[0] = 0x11;
+  if( libspectrum_rzx_store_frame( rzx, 10, 2, in_bytes ) ) {
+    fprintf( stderr, "%s: test_147: store_frame 3 returned error\n", progname );
+    goto done;
+  }
+
+  libspectrum_rzx_stop_input( rzx );
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: test_147: iterator_begin returned NULL\n", progname );
+    goto done;
+  }
+
+  /* All three frames should be stored (repeat is a storage optimisation,
+     frame count still includes repeated frames) */
+  if( libspectrum_rzx_iterator_get_frames( it ) != 3 ) {
+    fprintf( stderr, "%s: test_147: expected 3 frames, got %zu\n",
+             progname, libspectrum_rzx_iterator_get_frames( it ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+static test_return_t
+test_148( void )
+{
+  /* libspectrum_rzx_add_snap: snapshot block added to iterator */
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap;
+  libspectrum_rzx_iterator it;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: test_148: rzx_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  snap = libspectrum_snap_alloc();
+  if( !snap ) {
+    fprintf( stderr, "%s: test_148: snap_alloc returned NULL\n", progname );
+    libspectrum_rzx_free( rzx );
+    return TEST_INCOMPLETE;
+  }
+
+  /* add_snap implicitly calls stop_input so no input block needed */
+  if( libspectrum_rzx_add_snap( rzx, snap, 0 ) ) {
+    fprintf( stderr, "%s: test_148: add_snap returned error\n", progname );
+    libspectrum_snap_free( snap );
+    goto done;
+  }
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: test_148: iterator_begin returned NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_SNAPSHOT_BLOCK ) {
+    fprintf( stderr, "%s: test_148: expected SNAPSHOT_BLOCK type\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_snap( it ) != snap ) {
+    fprintf( stderr, "%s: test_148: snap pointer mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+static test_return_t
+test_149( void )
+{
+  /* RZX iterator: begin, next, last, and get_type with snap+input blocks */
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap;
+  libspectrum_rzx_iterator it, last;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: test_149: rzx_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  snap = libspectrum_snap_alloc();
+  if( !snap ) {
+    fprintf( stderr, "%s: test_149: snap_alloc returned NULL\n", progname );
+    libspectrum_rzx_free( rzx );
+    return TEST_INCOMPLETE;
+  }
+
+  /* Block order: snap, then input */
+  if( libspectrum_rzx_add_snap( rzx, snap, 1 ) ) {
+    fprintf( stderr, "%s: test_149: add_snap returned error\n", progname );
+    libspectrum_snap_free( snap );
+    goto done;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+  libspectrum_rzx_stop_input( rzx );
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: test_149: iterator_begin returned NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_SNAPSHOT_BLOCK ) {
+    fprintf( stderr, "%s: test_149: first block should be SNAPSHOT_BLOCK\n", progname );
+    goto done;
+  }
+
+  it = libspectrum_rzx_iterator_next( it );
+  if( !it ) {
+    fprintf( stderr, "%s: test_149: iterator_next returned NULL for second block\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_INPUT_BLOCK ) {
+    fprintf( stderr, "%s: test_149: second block should be INPUT_BLOCK\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_next( it ) != NULL ) {
+    fprintf( stderr, "%s: test_149: iterator_next past end should be NULL\n", progname );
+    goto done;
+  }
+
+  last = libspectrum_rzx_iterator_last( rzx );
+  if( !last ) {
+    fprintf( stderr, "%s: test_149: iterator_last returned NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( last ) != LIBSPECTRUM_RZX_INPUT_BLOCK ) {
+    fprintf( stderr, "%s: test_149: last block should be INPUT_BLOCK\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+static test_return_t
+test_150( void )
+{
+  /* libspectrum_rzx_get_keyid returns 0 when no signature block present */
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: test_150: rzx_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_rzx_get_keyid( rzx ) != 0 ) {
+    fprintf( stderr, "%s: test_150: expected keyid=0 with no signature, got %u\n",
+             progname, (unsigned)libspectrum_rzx_get_keyid( rzx ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+static test_return_t
+test_151( void )
+{
+  /* libspectrum_rzx_iterator_get_frames returns -1 for non-input blocks */
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap;
+  libspectrum_rzx_iterator it;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: test_151: rzx_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  snap = libspectrum_snap_alloc();
+  if( !snap ) {
+    fprintf( stderr, "%s: test_151: snap_alloc returned NULL\n", progname );
+    libspectrum_rzx_free( rzx );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_rzx_add_snap( rzx, snap, 0 ) ) {
+    fprintf( stderr, "%s: test_151: add_snap returned error\n", progname );
+    libspectrum_snap_free( snap );
+    goto done;
+  }
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: test_151: iterator_begin returned NULL\n", progname );
+    goto done;
+  }
+
+  /* iterator_get_frames on a snapshot block should return (size_t)-1 */
+  if( libspectrum_rzx_iterator_get_frames( it ) != (size_t)-1 ) {
+    fprintf( stderr, "%s: test_151: expected -1 for snapshot block, got %zu\n",
+             progname, libspectrum_rzx_iterator_get_frames( it ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -3163,7 +3516,15 @@ static struct test_description tests[] = {
   { test_113, "Snap DivMMC pages count and divmmc_eprom pointer getter/setter", 0 },
   { test_114, "Snap Plus D active, paged, drive_count, custom_rom, and direction getter/setter", 0 },
   { test_115, "Snap Plus D FDC byte registers (control, track, sector, data, status) getter/setter", 0 },
-  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 }
+  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 },
+  { test_144, "RZX alloc/free", 0 },
+  { test_145, "RZX start_input/stop_input and tstates accessor", 0 },
+  { test_146, "RZX store_frame and iterator_get_frames", 0 },
+  { test_147, "RZX store_frame repeat detection", 0 },
+  { test_148, "RZX add_snap and iterator_get_type", 0 },
+  { test_149, "RZX iterator begin/next/last with snap and input blocks", 0 },
+  { test_150, "RZX get_keyid returns 0 with no signature", 0 },
+  { test_151, "RZX iterator_get_frames returns -1 for non-input block", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
