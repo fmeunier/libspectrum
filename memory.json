@@ -1,6 +1,6 @@
 {
-  "last_run": "2026-05-10T12:02:00Z",
-  "last_run_id": "25628193460",
+  "last_run": "2026-05-11T12:48:00Z",
+  "last_run_id": "25670578520",
   "comments_made": {},
   "prs_created": [
     {
@@ -13,6 +13,18 @@
       "branch": "repo-assist/test-consolidated-snap-tape-20260509-c31a8d944a328105",
       "pr_number": 43,
       "description": "test: consolidated snap/tape accessor tests (117-143)",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/test-rzx-unit-tests-20260511",
+      "pr_number": "aw_rzxpr",
+      "description": "test: add RZX unit tests (144-151)",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/perf-buffer-write-20260511",
+      "pr_number": "aw_bufpr",
+      "description": "perf: optimise buffer write_byte/word/dword to write directly",
       "status": "open"
     }
   ],
@@ -51,5 +63,5 @@
     "Monthly activity suggested actions all checked off by maintainer",
     "PR #37 buffer_alloc_hint - closed by maintainer (declined)"
   ],
-  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 116 on master. PR #43 (consolidated tests 117-143) and PR #36 (pzx memory leaks) are the two remaining open Repo Assist PRs with no conflicts. PRs #38, #39, #41, #42 are superseded by #43 and have been notified via comments. Issue #40 has CI concurrency patch that maintainer must apply manually. After test PRs applied, next area: RZX accessor unit tests."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 116 on master. PR #43 (consolidated tests 117-143) and PR #36 (pzx memory leaks) are the oldest open Repo Assist PRs. RZX unit tests PR (aw_rzxpr, tests 144-151) and buffer write perf PR (aw_bufpr) created this run. PRs #38, #39, #41, #42 are superseded by #43. Issue #40 has CI concurrency patch that maintainer must apply manually. Bug found in rzx_read_frames error cleanup (lines 1073-1076, 1092-1095): loops check frames[i].repeat_last instead of frames[j].repeat_last - UAF/memleak on corrupt RZX input - fix in next bug-fix PR."
 }
