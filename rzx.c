@@ -1071,7 +1071,7 @@ rzx_read_frames( input_block_t *block, const libspectrum_byte **ptr,
       libspectrum_print_error( LIBSPECTRUM_ERROR_CORRUPT,
 			       "rzx_read_frames: not enough data in buffer" );
       for( j=0; j<i; j++ ) {
-	if( !block->frames[i].repeat_last ) libspectrum_free( block->frames[j].in_bytes );
+	if( !block->frames[j].repeat_last ) libspectrum_free( block->frames[j].in_bytes );
       }
       return LIBSPECTRUM_ERROR_CORRUPT;
     }
@@ -1090,7 +1090,7 @@ rzx_read_frames( input_block_t *block, const libspectrum_byte **ptr,
       libspectrum_print_error( LIBSPECTRUM_ERROR_CORRUPT,
 			       "rzx_read_frames: not enough data in buffer" );
       for( j=0; j<i; j++ ) {
-	if( !block->frames[i].repeat_last ) libspectrum_free( block->frames[j].in_bytes );
+	if( !block->frames[j].repeat_last ) libspectrum_free( block->frames[j].in_bytes );
       }
       return LIBSPECTRUM_ERROR_CORRUPT;
     }
