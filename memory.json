@@ -1,6 +1,6 @@
 {
-  "last_run": "2026-05-11T12:48:00Z",
-  "last_run_id": "25670578520",
+  "last_run": "2026-05-12T12:24:00Z",
+  "last_run_id": "25734146437",
   "comments_made": {},
   "prs_created": [
     {
@@ -16,15 +16,21 @@
       "status": "open"
     },
     {
-      "branch": "repo-assist/test-rzx-unit-tests-20260511",
-      "pr_number": "aw_rzxpr",
+      "branch": "repo-assist/test-rzx-unit-tests-20260511-2d95f2994126f0db",
+      "pr_number": 44,
       "description": "test: add RZX unit tests (144-151)",
       "status": "open"
     },
     {
-      "branch": "repo-assist/perf-buffer-write-20260511",
-      "pr_number": "aw_bufpr",
+      "branch": "repo-assist/perf-buffer-write-20260511-5ce79298bf5a0b3b",
+      "pr_number": 45,
       "description": "perf: optimise buffer write_byte/word/dword to write directly",
+      "status": "open"
+    },
+    {
+      "branch": "repo-assist/fix-rzx-read-frames-cleanup-20260512",
+      "pr_number": 46,
+      "description": "fix: correct frame index in rzx_read_frames error cleanup loops (UAF/heap-corruption + memleak on corrupt RZX input)",
       "status": "open"
     }
   ],
@@ -63,5 +69,5 @@
     "Monthly activity suggested actions all checked off by maintainer",
     "PR #37 buffer_alloc_hint - closed by maintainer (declined)"
   ],
-  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests now reach 116 on master. PR #43 (consolidated tests 117-143) and PR #36 (pzx memory leaks) are the oldest open Repo Assist PRs. RZX unit tests PR (aw_rzxpr, tests 144-151) and buffer write perf PR (aw_bufpr) created this run. PRs #38, #39, #41, #42 are superseded by #43. Issue #40 has CI concurrency patch that maintainer must apply manually. Bug found in rzx_read_frames error cleanup (lines 1073-1076, 1092-1095): loops check frames[i].repeat_last instead of frames[j].repeat_last - UAF/memleak on corrupt RZX input - fix in next bug-fix PR."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests at 116 on master. PR #43 (tests 117-143), PR #44 (RZX tests 144-151), PR #45 (buffer write perf), PR #46 (rzx_read_frames cleanup fix) are open. PRs #38, #39, #41, #42 superseded by #43. Issue #40 has CI concurrency patch. Bug in rzx_read_frames was fixed this run (PR #46): loops used frames[i].repeat_last instead of frames[j].repeat_last causing UAF/heap-corruption + memleak on corrupt RZX input."
 }
