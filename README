@@ -1,4 +1,4 @@
-libspectrum 1.6.0
+libspectrum 1.6.1
 =================
 
 libspectrum is a library which is designed to make the input and
@@ -70,4 +70,4 @@ Wii. At the time of writing, those haven't been ported yet.
 Then, type "make" and if everything went well, "make install".
 
 Philip Kendall <philip-fuse@shadowmagic.org.uk>
-9th March, 2026
+5th May, 2026
