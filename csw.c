@@ -90,6 +90,7 @@ libspectrum_csw_read( libspectrum_tape *tape,
     break;
 
   default:
+    libspectrum_free( block );
     libspectrum_print_error( LIBSPECTRUM_ERROR_MEMORY,
 			     "libspectrum_csw_read: unknown CSW version" );
     return LIBSPECTRUM_ERROR_SIGNATURE;
@@ -99,6 +100,7 @@ libspectrum_csw_read( libspectrum_tape *tape,
     csw_block->scale = 3500000 / csw_block->scale; /* approximate CPU speed */
 
   if( csw_block->scale < 0 || csw_block->scale >= 0x80000 ) {
+    libspectrum_free( block );
     libspectrum_print_error (LIBSPECTRUM_ERROR_MEMORY,
 			     "libspectrum_csw_read: bad sample rate" );
     return LIBSPECTRUM_ERROR_UNKNOWN;
@@ -115,8 +117,12 @@ libspectrum_csw_read( libspectrum_tape *tape,
     csw_block->length = 0;
     error = libspectrum_zlib_inflate( buffer, length, &csw_block->data,
                                       &csw_block->length );
-    if( error != LIBSPECTRUM_ERROR_NONE ) return error;
+    if( error != LIBSPECTRUM_ERROR_NONE ) {
+      libspectrum_free( block );
+      return error;
+    }
 #else
+    libspectrum_free( block );
     libspectrum_print_error( LIBSPECTRUM_ERROR_UNKNOWN,
                              "zlib not available to decompress gzipped file" );
     return LIBSPECTRUM_ERROR_UNKNOWN;
