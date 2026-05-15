@@ -1,6 +1,6 @@
 {
-  "last_run": "2026-05-14T12:18:00Z",
-  "last_run_id": "25859499596",
+  "last_run": "2026-05-15T12:26:00Z",
+  "last_run_id": "25917385036",
   "comments_made": {},
   "prs_created": [
     {
@@ -28,26 +28,26 @@
       "status": "open"
     },
     {
-      "branch": "repo-assist/fix-rzx-read-frames-cleanup-20260512",
+      "branch": "repo-assist/fix-rzx-read-frames-cleanup-20260512-07c491c2e5574dd2",
       "pr_number": 46,
       "description": "fix: correct frame index in rzx_read_frames error cleanup loops (UAF/heap-corruption + memleak on corrupt RZX input)",
       "status": "open"
     },
     {
-      "branch": "repo-assist/fix-tap-return-error-20260513",
+      "branch": "repo-assist/fix-tap-return-error-20260513-85ed63eb3baeaf95",
       "pr_number": 47,
       "description": "fix: return error instead of literal 1 in internal_tap_write skip_block paths + simplify write_rom/turbo/pure_data",
       "status": "open"
     },
     {
-      "branch": "repo-assist/fix-csw-read-leaks-20260514",
-      "pr_number": null,
+      "branch": "repo-assist/fix-csw-read-leaks-20260514-f20e6bc601d869ee",
+      "pr_number": 48,
       "description": "fix: free block on all error paths in libspectrum_csw_read (4 leaks: default case, bad sample rate, zlib failure, no-zlib path)",
       "status": "open"
     },
     {
-      "branch": "repo-assist/perf-zero-write-loops-20260514",
-      "pr_number": null,
+      "branch": "repo-assist/perf-zero-write-loops-20260514-0e1891f2b55b41c9",
+      "pr_number": 49,
       "description": "perf: replace zero-byte write loops with single bulk libspectrum_buffer_write (csw.c, z80.c, szx.c)",
       "status": "open"
     }
@@ -91,5 +91,5 @@
     "Close PR #41 (checked [x] in monthly activity)",
     "Close PR #42 (checked [x] in monthly activity)"
   ],
-  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests at 116 on master. PR #43 (tests 117-143), PR #44 (RZX tests 144-151), PR #45 (buffer write perf), PR #46 (rzx_read_frames cleanup fix), PR #47 (tap.c return-1 bugs) are open. New PRs this run: csw_read memory leaks (4 error paths) and zero-byte write loop perf (csw.c/z80.c/szx.c). Next candidate: wav.c or dsnap.c error handling cleanup, or more test coverage."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests at 116 on master. 8 open PRs: #36 (pzx memory leaks), #43 (tests 117-143), #44 (RZX tests 144-151), #45 (buffer write perf), #46 (rzx_read_frames cleanup fix), #47 (tap.c return-1 bugs), #48 (csw_read memory leaks), #49 (zero-byte write loop perf csw.c/z80.c/szx.c). All verified clean against master (no merge conflicts, no CI failures). Master is at f76a009 (1.6.1 release prep, docs-only change). Next candidate: tap.c ROM block accessor tests, or dsnap.c/szx.c read-path investigation."
 }
