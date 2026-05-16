@@ -3039,6 +3039,440 @@ done:
   return r;
 }
 
+/* -------------------------------------------------------------------------
+ * Tape block accessor tests (152–161)
+ * ---------------------------------------------------------------------- */
+
+static test_return_t
+test_152( void )
+{
+  /* libspectrum_tape_block ROM: data, data_length, pause, pause_tstates */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_ROM );
+  libspectrum_byte *data;
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_152: block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  /* Verify zero-initialised defaults */
+  if( libspectrum_tape_block_data_length( block ) != 0 ) {
+    fprintf( stderr, "%s: test_152: default data_length should be 0\n",
+             progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_data( block ) != NULL ) {
+    fprintf( stderr, "%s: test_152: default data should be NULL\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_pause( block ) != 0 ) {
+    fprintf( stderr, "%s: test_152: default pause should be 0\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_pause_tstates( block ) != 0 ) {
+    fprintf( stderr, "%s: test_152: default pause_tstates should be 0\n",
+             progname );
+    goto done;
+  }
+
+  data = libspectrum_new( libspectrum_byte, 4 );
+  data[0] = 0xaa; data[1] = 0xbb; data[2] = 0xcc; data[3] = 0xdd;
+
+  libspectrum_tape_block_set_data( block, data );
+  libspectrum_tape_block_set_data_length( block, 4 );
+  libspectrum_tape_block_set_pause( block, 1000 );
+  libspectrum_tape_block_set_pause_tstates( block, 3500000 );
+
+  if( libspectrum_tape_block_data( block ) != data ) {
+    fprintf( stderr, "%s: test_152: data pointer mismatch after set\n",
+             progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_data_length( block ) != 4 ) {
+    fprintf( stderr, "%s: test_152: data_length mismatch: got %lu\n",
+             progname,
+             (unsigned long)libspectrum_tape_block_data_length( block ) );
+    goto done;
+  }
+  if( libspectrum_tape_block_data( block )[0] != 0xaa ||
+      libspectrum_tape_block_data( block )[3] != 0xdd ) {
+    fprintf( stderr, "%s: test_152: data content mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_pause( block ) != 1000 ) {
+    fprintf( stderr, "%s: test_152: pause mismatch: got %lu\n",
+             progname,
+             (unsigned long)libspectrum_tape_block_pause( block ) );
+    goto done;
+  }
+  if( libspectrum_tape_block_pause_tstates( block ) != 3500000 ) {
+    fprintf( stderr, "%s: test_152: pause_tstates mismatch: got %lu\n",
+             progname,
+             (unsigned long)libspectrum_tape_block_pause_tstates( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+static test_return_t
+test_153( void )
+{
+  /* libspectrum_tape_block TURBO: pilot/sync/bit lengths, data, pause */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_TURBO );
+  libspectrum_byte *data;
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_153: block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  /* Defaults */
+  if( libspectrum_tape_block_pilot_length( block ) != 0 ) {
+    fprintf( stderr, "%s: test_153: default pilot_length should be 0\n",
+             progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_pilot_pulses( block ) != 0 ) {
+    fprintf( stderr, "%s: test_153: default pilot_pulses should be 0\n",
+             progname );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_pilot_length( block, 2168 );
+  libspectrum_tape_block_set_pilot_pulses( block, 8063 );
+  libspectrum_tape_block_set_sync1_length( block, 667 );
+  libspectrum_tape_block_set_sync2_length( block, 735 );
+  libspectrum_tape_block_set_bit0_length( block, 855 );
+  libspectrum_tape_block_set_bit1_length( block, 1710 );
+  libspectrum_tape_block_set_bits_in_last_byte( block, 8 );
+
+  if( libspectrum_tape_block_pilot_length( block ) != 2168 ) {
+    fprintf( stderr, "%s: test_153: pilot_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_pilot_pulses( block ) != 8063 ) {
+    fprintf( stderr, "%s: test_153: pilot_pulses mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_sync1_length( block ) != 667 ) {
+    fprintf( stderr, "%s: test_153: sync1_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_sync2_length( block ) != 735 ) {
+    fprintf( stderr, "%s: test_153: sync2_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_bit0_length( block ) != 855 ) {
+    fprintf( stderr, "%s: test_153: bit0_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_bit1_length( block ) != 1710 ) {
+    fprintf( stderr, "%s: test_153: bit1_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_bits_in_last_byte( block ) != 8 ) {
+    fprintf( stderr, "%s: test_153: bits_in_last_byte mismatch\n", progname );
+    goto done;
+  }
+
+  data = libspectrum_new( libspectrum_byte, 3 );
+  data[0] = 0x01; data[1] = 0x02; data[2] = 0x03;
+
+  libspectrum_tape_block_set_data( block, data );
+  libspectrum_tape_block_set_data_length( block, 3 );
+  libspectrum_tape_block_set_pause( block, 500 );
+
+  if( libspectrum_tape_block_data( block ) != data ) {
+    fprintf( stderr, "%s: test_153: data pointer mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_data_length( block ) != 3 ) {
+    fprintf( stderr, "%s: test_153: data_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_pause( block ) != 500 ) {
+    fprintf( stderr, "%s: test_153: pause mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+static test_return_t
+test_154( void )
+{
+  /* libspectrum_tape_block PURE_DATA: bit lengths, data, pause */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_DATA );
+  libspectrum_byte *data;
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_154: block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_tape_block_set_bit0_length( block, 855 );
+  libspectrum_tape_block_set_bit1_length( block, 1710 );
+  libspectrum_tape_block_set_bits_in_last_byte( block, 5 );
+
+  if( libspectrum_tape_block_bit0_length( block ) != 855 ) {
+    fprintf( stderr, "%s: test_154: bit0_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_bit1_length( block ) != 1710 ) {
+    fprintf( stderr, "%s: test_154: bit1_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_bits_in_last_byte( block ) != 5 ) {
+    fprintf( stderr, "%s: test_154: bits_in_last_byte mismatch\n", progname );
+    goto done;
+  }
+
+  data = libspectrum_new( libspectrum_byte, 2 );
+  data[0] = 0xfe; data[1] = 0x7f;
+
+  libspectrum_tape_block_set_data( block, data );
+  libspectrum_tape_block_set_data_length( block, 2 );
+  libspectrum_tape_block_set_pause( block, 200 );
+
+  if( libspectrum_tape_block_data( block ) != data ) {
+    fprintf( stderr, "%s: test_154: data pointer mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_data_length( block ) != 2 ) {
+    fprintf( stderr, "%s: test_154: data_length mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_data( block )[0] != 0xfe ||
+      libspectrum_tape_block_data( block )[1] != 0x7f ) {
+    fprintf( stderr, "%s: test_154: data content mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_pause( block ) != 200 ) {
+    fprintf( stderr, "%s: test_154: pause mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+static test_return_t
+test_155( void )
+{
+  /* libspectrum_tape_block PURE_TONE: pulse_length and count */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_TONE );
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_155: block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_pulse_length( block ) != 0 ) {
+    fprintf( stderr, "%s: test_155: default pulse_length should be 0\n",
+             progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_count( block ) != 0 ) {
+    fprintf( stderr, "%s: test_155: default count should be 0\n", progname );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_pulse_length( block, 2168 );
+  libspectrum_tape_block_set_count( block, 8063 );
+
+  if( libspectrum_tape_block_pulse_length( block ) != 2168 ) {
+    fprintf( stderr, "%s: test_155: pulse_length mismatch: got %lu\n",
+             progname,
+             (unsigned long)libspectrum_tape_block_pulse_length( block ) );
+    goto done;
+  }
+  if( libspectrum_tape_block_count( block ) != 8063 ) {
+    fprintf( stderr, "%s: test_155: count mismatch: got %lu\n",
+             progname,
+             (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+static test_return_t
+test_156( void )
+{
+  /* libspectrum_tape_block PAUSE: pause length and signal level */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_156: block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_pause( block ) != 0 ) {
+    fprintf( stderr, "%s: test_156: default pause should be 0\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_level( block ) != 0 ) {
+    fprintf( stderr, "%s: test_156: default level should be 0\n", progname );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_pause( block, 1000 );
+  libspectrum_tape_block_set_level( block, 1 );
+
+  if( libspectrum_tape_block_pause( block ) != 1000 ) {
+    fprintf( stderr, "%s: test_156: pause mismatch: got %lu\n",
+             progname,
+             (unsigned long)libspectrum_tape_block_pause( block ) );
+    goto done;
+  }
+  if( libspectrum_tape_block_level( block ) != 1 ) {
+    fprintf( stderr, "%s: test_156: level mismatch: got %d\n",
+             progname, libspectrum_tape_block_level( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+static test_return_t
+test_157( void )
+{
+  /* libspectrum_tape_block JUMP: offset getter/setter */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_JUMP );
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_157: block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_offset( block ) != 0 ) {
+    fprintf( stderr, "%s: test_157: default offset should be 0\n", progname );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_offset( block, -3 );
+
+  if( libspectrum_tape_block_offset( block ) != -3 ) {
+    fprintf( stderr, "%s: test_157: offset mismatch: got %d\n",
+             progname, libspectrum_tape_block_offset( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+static test_return_t
+test_158( void )
+{
+  /* libspectrum_tape_block LOOP_START: count getter/setter */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_LOOP_START );
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_158: block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_count( block ) != 0 ) {
+    fprintf( stderr, "%s: test_158: default count should be 0\n", progname );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_count( block, 10 );
+
+  if( libspectrum_tape_block_count( block ) != 10 ) {
+    fprintf( stderr, "%s: test_158: count mismatch: got %lu\n",
+             progname,
+             (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+static test_return_t
+test_159( void )
+{
+  /* libspectrum_tape_block GROUP_START: text (group name) getter/setter */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_GROUP_START );
+  char *name;
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: test_159: block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_text( block ) != NULL ) {
+    fprintf( stderr, "%s: test_159: default text should be NULL\n", progname );
+    goto done;
+  }
+
+  name = libspectrum_new( char, 8 );
+  memcpy( name, "Program", 8 ); /* includes NUL */
+
+  libspectrum_tape_block_set_text( block, name );
+
+  if( libspectrum_tape_block_text( block ) != name ) {
+    fprintf( stderr, "%s: test_159: text pointer mismatch after set\n",
+             progname );
+    libspectrum_free( name );
+    goto done;
+  }
+  if( strcmp( libspectrum_tape_block_text( block ), "Program" ) != 0 ) {
+    fprintf( stderr, "%s: test_159: text content mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
 struct test_description {
 
   test_fn test;
@@ -3163,7 +3597,15 @@ static struct test_description tests[] = {
   { test_113, "Snap DivMMC pages count and divmmc_eprom pointer getter/setter", 0 },
   { test_114, "Snap Plus D active, paged, drive_count, custom_rom, and direction getter/setter", 0 },
   { test_115, "Snap Plus D FDC byte registers (control, track, sector, data, status) getter/setter", 0 },
-  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 }
+  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 },
+  { test_152, "Tape ROM block data, data_length, pause, and pause_tstates getter/setter", 0 },
+  { test_153, "Tape TURBO block pilot, sync, bit-length, data, and pause getter/setter", 0 },
+  { test_154, "Tape PURE_DATA block bit lengths, data, and pause getter/setter", 0 },
+  { test_155, "Tape PURE_TONE block pulse_length and count getter/setter", 0 },
+  { test_156, "Tape PAUSE block pause length and signal level getter/setter", 0 },
+  { test_157, "Tape JUMP block offset getter/setter", 0 },
+  { test_158, "Tape LOOP_START block count getter/setter", 0 },
+  { test_159, "Tape GROUP_START block text (group name) getter/setter", 0 }
 };
 
 static size_t test_count = ARRAY_SIZE( tests );
