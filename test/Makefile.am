@@ -32,6 +32,7 @@ test_test_SOURCES = \
 	test/microdrive.c \
 	test/registry.c \
 	test/snap-read.c \
+	test/snap-z80.c \
 	test/snap.c \
 	test/szx.c \
 	test/tape.c \
