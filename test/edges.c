@@ -1,3 +1,4 @@
+#include "common.h"
 #include "test.h"
 
 test_return_t

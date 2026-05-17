@@ -23,9 +23,6 @@ typedef struct test_edge_sequence_t {
 #define STATIC_TEST_PATH(x) SRCDIR "/test/" x
 #define DYNAMIC_TEST_PATH(x) "test/" x
 
-int read_file( libspectrum_byte **buffer, size_t *length,
-	       const char *filename );
-
 test_return_t check_edges( const char *filename, test_edge_sequence_t *edges,
 			   int flags_mask );
 

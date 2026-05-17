@@ -24,6 +24,7 @@ check_PROGRAMS = test/test
 TESTS = $(check_PROGRAMS)
 
 test_test_SOURCES = \
+	test/common.c \
 	test/edges.c \
 	test/main.c \
 	test/registry.c \
@@ -43,6 +44,7 @@ noinst_DATA += test/complete-tzx.tzx \
 		test/wav-stereo-mixdown.wav
 
 noinst_HEADERS += \
+	test/common.h \
 	test/registry.h \
 	test/test.h
 

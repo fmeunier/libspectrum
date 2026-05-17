@@ -34,6 +34,7 @@
 #include <unistd.h>
 
 #include "internals.h"
+#include "common.h"
 #include "test.h"
 
 typedef struct szx_chunk_t {
