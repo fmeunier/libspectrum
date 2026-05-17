@@ -31,6 +31,7 @@ test_test_SOURCES = \
 	test/main.c \
 	test/microdrive.c \
 	test/registry.c \
+	test/snap-memory.c \
 	test/snap-read.c \
 	test/snap-z80.c \
 	test/snap.c \
