@@ -146,6 +146,9 @@ EXTRA_DIST = accessor.pl \
 	     tape_accessors.txt \
 	     tape_block.h \
 	     tape_set.pl \
+	     update-release.py \
+	     .agents/skills/README.md \
+	     .agents/skills/update-changelog/SKILL.md \
 	     libspectrum.h.in \
 	     snap_accessors.txt
 

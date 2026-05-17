@@ -36,6 +36,7 @@ instructions printed by `make install' or your system's normal shared
 library configuration procedure.
 
 For details on the functions available, see `doc/libspectrum.txt'.
+Maintainer release notes are in `doc/releasing.md'.
 
 libspectrum is made available under the GNU General Public License,
 which means that it is distributed in the hope that it will be useful,
