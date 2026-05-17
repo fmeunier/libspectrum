@@ -25,6 +25,8 @@ TESTS = $(check_PROGRAMS)
 
 test_test_SOURCES = \
 	test/edges.c \
+	test/main.c \
+	test/registry.c \
 	test/szx.c \
 	test/test.c \
 	test/test_edges.c
@@ -40,7 +42,9 @@ noinst_DATA += test/complete-tzx.tzx \
 		test/wav-mono-threshold.wav \
 		test/wav-stereo-mixdown.wav
 
-noinst_HEADERS += test/test.h
+noinst_HEADERS += \
+	test/registry.h \
+	test/test.h
 
 test/complete-tzx.tzx: test/complete-tzx.pl
 	$(AM_V_GEN)$(PERL) $< > $@.tmp && mv $@.tmp $@

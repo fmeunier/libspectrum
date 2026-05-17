@@ -11,11 +11,6 @@
 #include "internals.h"
 #include "test.h"
 
-const char *progname;
-static const char *LIBSPECTRUM_MIN_VERSION = "0.4.0";
-
-typedef test_return_t (*test_fn)( void );
-
 #ifndef O_BINARY
 #define O_BINARY 0
 #endif
@@ -245,7 +240,7 @@ check_wav_block( const char *filename, libspectrum_dword expected_bit_length,
 
 /* Test for bugs #47 and #78: tape object incorrectly freed after reading
    invalid tape */
-static test_return_t
+test_return_t
 test_1( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid.tzx" ), LIBSPECTRUM_ERROR_UNKNOWN );
@@ -253,7 +248,7 @@ test_1( void )
 
 /* Test for bugs #84: TZX turbo blocks with zero pilot pulses and #85: freeing
    a turbo block with no data produces segfault */
-static test_return_t
+test_return_t
 test_2( void )
 {
   libspectrum_byte *buffer = NULL;
@@ -301,7 +296,7 @@ test_2( void )
 }
 
 /* Test for bug #88: writing empty .tap file causes crash */
-static test_return_t
+test_return_t
 test_3( void )
 {
   libspectrum_tape *tape;
@@ -328,7 +323,7 @@ test_3( void )
 }
 
 /* Test for bug #102: invalid compressed file causes crash */
-static test_return_t
+test_return_t
 test_4( void )
 {
   #ifndef HAVE_ZLIB_H
@@ -340,7 +335,7 @@ test_4( void )
 }
 
 /* Further test for bug #102: invalid compressed file causes crash */
-static test_return_t
+test_return_t
 test_5( void )
 {
   #ifndef HAVE_ZLIB_H
@@ -351,7 +346,7 @@ test_5( void )
 }
 
 /* Test for bug #103: pointer wraparound causes segfault */
-static test_return_t
+test_return_t
 test_6( void )
 {
   const char *filename = STATIC_TEST_PATH( "invalid.szx" );
@@ -359,42 +354,42 @@ test_6( void )
 }
 
 /* Test for bug #105: lack of sanity check in GDB code */
-static test_return_t
+test_return_t
 test_7( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-gdb.tzx" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
 
 /* Test for bug #106: empty DRB causes segfault */
-static test_return_t
+test_return_t
 test_8( void )
 {
   return read_tape( STATIC_TEST_PATH( "empty-drb.tzx" ), LIBSPECTRUM_ERROR_NONE );
 }
 
 /* Test for bug #107: problems with invalid archive info block */
-static test_return_t
+test_return_t
 test_9( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-archiveinfo.tzx" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
 
 /* Test for bug #108: invalid hardware info blocks can leak memory */
-static test_return_t
+test_return_t
 test_10( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-hardwareinfo.tzx" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
 
 /* Test for bug #111: invalid Warajevo tape block offset causes segfault */
-static test_return_t
+test_return_t
 test_11( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-warajevo-blockoffset.tap" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
 
 /* Test for bug #112: invalid custom info block causes memory leak */
-static test_return_t
+test_return_t
 test_12( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-custominfo.tzx" ), LIBSPECTRUM_ERROR_CORRUPT );
@@ -402,7 +397,7 @@ test_12( void )
 
 /* Test for bug #113: loop end without a loop start block accesses uninitialised
    memory */
-static test_return_t
+test_return_t
 test_13( void )
 {
   libspectrum_byte *buffer = NULL;
@@ -436,35 +431,35 @@ test_13( void )
 }
 
 /* Test for bug #113: TZX loop blocks broken */
-static test_return_t
+test_return_t
 test_14( void )
 {
   return play_tape( STATIC_TEST_PATH( "loop.tzx" ) );
 }
 
 /* Test for bug #118: TZX loop blocks still broken */
-static test_return_t
+test_return_t
 test_16( void )
 {
   return play_tape( STATIC_TEST_PATH( "loop2.tzx" ) );
 }
 
 /* Test for bug #119: TZX jump blocks broken */
-static test_return_t
+test_return_t
 test_17( void )
 {
   return play_tape( STATIC_TEST_PATH( "jump.tzx" ) );
 }
 
 /* Test for bug #121: crashes writing and reading empty CSW files */
-static test_return_t
+test_return_t
 test_18( void )
 {
   return play_tape( STATIC_TEST_PATH( "empty.csw" ) );
 }
 
 /* Test for bug #125: .tap writing code does not handle all block types */
-static test_return_t
+test_return_t
 test_19( void )
 {
   libspectrum_byte *buffer = NULL;
@@ -493,7 +488,7 @@ test_19( void )
 
 /* Tests for bug #129: SP not sanity checked when reading .sna files;
    also tests bug #130: compressed snapshots cause segfault */
-static test_return_t
+test_return_t
 test_20( void )
 {
   #ifndef HAVE_ZLIB_H
@@ -504,7 +499,7 @@ test_20( void )
   return read_snap( filename, filename, LIBSPECTRUM_ERROR_CORRUPT );
 } 
   
-static test_return_t
+test_return_t
 test_21( void )
 {
   #ifndef HAVE_ZLIB_H
@@ -516,7 +511,7 @@ test_21( void )
 } 
 
 /* Tests for bug #152: .mdr code does not correctly handle write protect flag */
-static test_return_t
+test_return_t
 test_22( void )
 {
   libspectrum_byte *buffer = NULL;
@@ -549,7 +544,7 @@ test_22( void )
   return r;
 }
 
-static test_return_t
+test_return_t
 test_23( void )
 {
   libspectrum_byte *buffer = NULL;
@@ -586,7 +581,7 @@ test_23( void )
   return r;
 }
 
-static test_return_t
+test_return_t
 test_24( void )
 {
   const char *filename = DYNAMIC_TEST_PATH( "complete-tzx.tzx" );
@@ -655,7 +650,7 @@ test_24( void )
   return r;
 }
 
-static test_return_t
+test_return_t
 test_25( void )
 {
   const char *filename = STATIC_TEST_PATH( "empty.z80" );
@@ -719,7 +714,7 @@ test_25( void )
 }
 
 /* Tests for bug #198: last out to 0x1ffd is not serialised into .z80 files */
-static test_return_t
+test_return_t
 test_26( void )
 {
   const char *filename = STATIC_TEST_PATH( "plus3.z80" );
@@ -778,7 +773,7 @@ test_26( void )
 }
 
 /* Tests for bug #184: SZX files were written with A and F reversed */
-static test_return_t
+test_return_t
 test_27( void )
 {
   #ifndef HAVE_ZLIB_H
@@ -829,7 +824,7 @@ test_27( void )
 }
 
 /* Test for bug #379: converting .tap file to .csw causes crash */
-static test_return_t
+test_return_t
 test_30( void )
 {
   libspectrum_byte *buffer = NULL;
@@ -856,7 +851,7 @@ test_30( void )
   return TEST_PASS;
 }
 
-static test_return_t
+test_return_t
 test_71( void )
 {
 #ifndef HAVE_ZLIB_H
@@ -915,7 +910,7 @@ test_71( void )
   return r;
 }
 
-static test_return_t
+test_return_t
 test_72( void )
 {
   const char *filename = DYNAMIC_TEST_PATH( "complete-tzx.tzx" );
@@ -993,7 +988,7 @@ test_72( void )
   return r;
 }
 
-static test_return_t
+test_return_t
 test_75( void )
 {
 #ifndef HAVE_WAV_BACKEND
@@ -1004,7 +999,7 @@ test_75( void )
 #endif
 }
 
-static test_return_t
+test_return_t
 test_76( void )
 {
 #ifndef WAV_INTERNAL_MACOS
@@ -1017,7 +1012,7 @@ test_76( void )
 
 /* Buffer write tests */
 
-static test_return_t
+test_return_t
 test_77( void )
 {
   /* libspectrum_buffer_write_byte: single byte stored correctly */
@@ -1047,7 +1042,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_78( void )
 {
   /* libspectrum_buffer_write_word: value stored little-endian */
@@ -1077,7 +1072,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_79( void )
 {
   /* libspectrum_buffer_write_dword: value stored little-endian */
@@ -1110,7 +1105,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_80( void )
 {
   /* libspectrum_buffer_write_buffer: contents of src copied to dest */
@@ -1147,7 +1142,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_81( void )
 {
   /* libspectrum_buffer_is_empty / is_not_empty */
@@ -1184,7 +1179,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_82( void )
 {
   /* libspectrum_buffer_clear: size resets to zero */
@@ -1222,7 +1217,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_83( void )
 {
   /* libspectrum_buffer_set: N bytes are filled with given value */
@@ -1255,7 +1250,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_84( void )
 {
   /* libspectrum_buffer_append: contents of src are appended to raw buffer */
@@ -1293,7 +1288,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_85( void )
 {
   /* libspectrum_creator: alloc/free and program getter/setter */
@@ -1320,7 +1315,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_86( void )
 {
   /* libspectrum_creator: major and minor version getter/setter */
@@ -1354,7 +1349,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_87( void )
 {
   /* libspectrum_creator: competition_code and custom data getter/setter */
@@ -1402,7 +1397,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_88( void )
 {
   /* libspectrum_snap: main Z80 register getter/setter (a, f, bc, de, hl, alternates) */
@@ -1483,7 +1478,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_89( void )
 {
   /* libspectrum_snap: index and special register getter/setter (ix, iy, i, r, sp, pc) */
@@ -1540,7 +1535,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_90( void )
 {
   /* libspectrum_snap: Z80 status getter/setter (iff1, iff2, im, tstates, halted) */
@@ -1591,7 +1586,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_91( void )
 {
   /* libspectrum_microdrive: alloc/free and write_protect getter/setter */
@@ -1624,7 +1619,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_92( void )
 {
   /* libspectrum_microdrive: cartridge_len and data getter/setter */
@@ -1664,7 +1659,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_93( void )
 {
   /* libspectrum_microdrive: mdr_write/mdr_read roundtrip */
@@ -1724,7 +1719,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_94( void )
 {
   /* libspectrum_snap: machine type getter/setter */
@@ -1763,7 +1758,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_95( void )
 {
   /* libspectrum_snap: memptr getter/setter */
@@ -1796,7 +1791,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_96( void )
 {
   /* libspectrum_snap: ULA and 128K memory port getter/setter */
@@ -1836,7 +1831,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_97( void )
 {
   /* libspectrum_snap: custom_rom flag and custom_rom_pages getter/setter */
@@ -1888,7 +1883,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_98( void )
 {
   /* libspectrum_snap: RAM pages getter/setter */
@@ -1936,7 +1931,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_99( void )
 {
   /* libspectrum_snap: interface1 active, paged, and drive_count getter/setter */
@@ -1994,7 +1989,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_100( void )
 {
   /* libspectrum_snap: DivIDE interface flags getter/setter */
@@ -2065,7 +2060,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_101( void )
 {
   /* libspectrum_snap: SpecDrum active flag and DAC getter/setter */
@@ -2117,7 +2112,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_102( void )
 {
   /* libspectrum_snap: Fuller Box active flag getter/setter */
@@ -2156,7 +2151,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_103( void )
 {
   /* libspectrum_snap: Multiface interface flags getter/setter */
@@ -2253,7 +2248,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_104( void )
 {
   /* libspectrum_snap: ay_registers array getter/setter */
@@ -2294,7 +2289,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_105( void )
 {
   /* libspectrum_snap: beta disk interface getter/setter */
@@ -2361,7 +2356,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_106( void )
 {
   /* libspectrum_snap: ZXATASP active/upload/writeprotect getter/setter */
@@ -2416,7 +2411,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_107( void )
 {
   /* libspectrum_snap: ZXATASP port_a/b/c and control getter/setter */
@@ -2483,7 +2478,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_108( void )
 {
   /* libspectrum_snap: ZXATASP pages and current_page getter/setter */
@@ -2526,7 +2521,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_110( void )
 {
   /* libspectrum_snap: DivIDE pages count and divide_eprom single-pointer */
@@ -2579,7 +2574,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_111( void )
 {
   /* libspectrum_snap: DivIDE RAM page pointer array (SNAPSHOT_DIVIDE_PAGES pages) */
@@ -2629,7 +2624,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_112( void )
 {
   /* libspectrum_snap: DivMMC flags (active, eprom_writeprotect, paged, control) */
@@ -2696,7 +2691,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_113( void )
 {
   /* libspectrum_snap: DivMMC pages count and divmmc_eprom single-pointer */
@@ -2752,7 +2747,7 @@ done:
 /* Test that PZX archive info tags (title + author) are correctly parsed.
    Regression test for the pzx_read_string bug where *ptr was set to end,
    causing all tag-value pairs after the title to be silently ignored. */
-static test_return_t
+test_return_t
 test_109( void )
 {
   const char *filename = STATIC_TEST_PATH( "pzx-archive-info-tags.pzx" );
@@ -2819,7 +2814,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_114( void )
 {
   /* libspectrum_snap: Plus D active, paged, drive_count, custom_rom, direction */
@@ -2898,7 +2893,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_115( void )
 {
   /* libspectrum_snap: Plus D FDC byte registers (control, track, sector, data, status) */
@@ -2977,7 +2972,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_116( void )
 {
   /* libspectrum_snap: Plus D ROM and RAM single-pointer getter/setter */
@@ -3039,7 +3034,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_117( void )
 {
   /* libspectrum_snap: ZXATASP RAM page pointer array (SNAPSHOT_ZXATASP_PAGES pages) */
@@ -3089,7 +3084,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_118( void )
 {
   /* libspectrum_snap: Opus Discovery int flags getter/setter */
@@ -3168,7 +3163,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_119( void )
 {
   /* libspectrum_snap: Opus Discovery FDC byte registers getter/setter */
@@ -3307,7 +3302,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_120( void )
 {
   /* libspectrum_snap: Opus Discovery ROM and RAM single-pointer getter/setter */
@@ -3369,7 +3364,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_121( void )
 {
   /* libspectrum_snap: Spectranet boolean int flags getter/setter */
@@ -3496,7 +3491,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_122( void )
 {
   /* libspectrum_snap: Spectranet page_a/b, programmable_trap (word), and memory pointer fields */
@@ -3591,7 +3586,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_123( void )
 {
   /* libspectrum_snap: DISCiPLE int flags getter/setter */
@@ -3682,7 +3677,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_124( void )
 {
   /* libspectrum_snap: DISCiPLE FDC byte registers getter/setter */
@@ -3761,7 +3756,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_125( void )
 {
   /* libspectrum_snap: DISCiPLE ROM pointer, ROM length, and RAM pointer getter/setter */
@@ -3836,7 +3831,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_126( void )
 {
   /* libspectrum_snap: USource int flags getter/setter */
@@ -3891,7 +3886,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_127( void )
 {
   /* libspectrum_snap: USource ROM pointer and ROM length getter/setter */
@@ -3945,7 +3940,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_128( void )
 {
   /* libspectrum_snap: USpeeched active and paged getter/setter */
@@ -3988,7 +3983,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_129( void )
 {
   /* libspectrum_snap: Didaktik80 int flags and FDC byte registers getter/setter */
@@ -4127,7 +4122,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_130( void )
 {
   /* libspectrum_snap: Didaktik80 ROM pointer, ROM length, and RAM pointer getter/setter */
@@ -4202,7 +4197,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_131( void )
 {
   /* libspectrum_snap: ULAplus flags, current_register, palette array, and ff_register getter/setter */
@@ -4291,7 +4286,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_132( void )
 {
   /* libspectrum_snap: late_timings getter/setter */
@@ -4322,7 +4317,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_133( void )
 {
   /* libspectrum_snap: zx_printer_active getter/setter */
@@ -4353,7 +4348,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_134( void )
 {
   /* libspectrum_snap: covox_active and covox_dac getter/setter */
@@ -4396,7 +4391,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_135( void )
 {
   /* libspectrum_snap: multiface_red_button_disabled getter/setter */
@@ -4427,7 +4422,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_136( void )
 {
   /* libspectrum_snap: multiface_ram pointer and multiface_ram_length getter/setter */
@@ -4481,7 +4476,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_137( void )
 {
   /* libspectrum_snap: zxmmc_active getter/setter */
@@ -4512,7 +4507,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_138( void )
 {
   /* libspectrum_snap: ttx2000s_active getter/setter */
@@ -4543,7 +4538,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_139( void )
 {
   /* tape block: TURBO block pilot_length, sync1_length, sync2_length getter/setter */
@@ -4604,7 +4599,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_140( void )
 {
   /* tape block: TURBO block bit0_length, bit1_length, pilot_pulses, pause getter/setter */
@@ -4672,7 +4667,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_141( void )
 {
   /* tape block: PURE_TONE block pulse_length and count getter/setter */
@@ -4721,7 +4716,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_142( void )
 {
   /* tape block: PURE_DATA block bit0_length, bit1_length, bits_in_last_byte, pause getter/setter */
@@ -4794,7 +4789,7 @@ done:
   return r;
 }
 
-static test_return_t
+test_return_t
 test_143( void )
 {
   /* tape block: PAUSE block pause length and level getter/setter */
@@ -4841,260 +4836,4 @@ test_143( void )
 done:
   libspectrum_tape_block_free( block );
   return r;
-}
-
-
-struct test_description {
-
-  test_fn test;
-  const char *description;
-  int active;
-
-};
-
-static struct test_description tests[] = {
-  { test_1, "Tape with unknown block", 0 },
-  { test_2, "TZX turbo data with zero pilot pulses and zero data", 0 },
-  { test_3, "Writing empty .tap file", 0 },
-  { test_4, "Invalid compressed file 1", 0 },
-  { test_5, "Invalid compressed file 2", 0 },
-  { test_6, "Pointer wraparound in SZX file", 0 },
-  { test_7, "Invalid TZX GDB", 0 },
-  { test_8, "Empty TZX DRB", 0 },
-  { test_9, "Invalid TZX archive info block", 0 },
-  { test_10, "Invalid hardware info block causes memory leak", 0 },
-  { test_11, "Invalid Warajevo tape file", 0 },
-  { test_12, "Invalid TZX custom info block causes memory leak", 0 },
-  { test_13, "TZX loop end block with loop start block", 0 },
-  { test_14, "TZX loop blocks", 0 },
-  { test_15, "Complete TZX file", 0 },
-  { test_16, "TZX loop blocks 2", 0 },
-  { test_17, "TZX jump blocks", 0 },
-  { test_18, "CSW empty file", 0 },
-  { test_19, "Complete TZX to TAP conversion", 0 },
-  { test_20, "SNA file with SP < 0x4000", 0 },
-  { test_21, "SNA file with SP = 0xffff", 0 },
-  { test_22, "MDR write protection 1", 0 },
-  { test_23, "MDR write protection 2", 0 },
-  { test_24, "Complete TZX timings", 0 },
-  { test_25, "Writing SNA file", 0 },
-  { test_26, "Writing +3 .Z80 file", 0 },
-  { test_27, "Reading old SZX file", 0 },
-  { test_28, "Zero tail length PZX file", 0 },
-  { test_29, "No pilot pulse GDB TZX file", 0 },
-  { test_30, "CSW conversion", 0 },
-  { test_31, "Write SZX Z80R chunk", 0 },
-  { test_32, "Write SZX SPCR chunk", 0 },
-  { test_33, "Write SZX JOY chunk", 0 },
-  { test_34, "Write SZX KEYB chunk", 0 },
-  { test_35, "Write SZX ZXPR chunk", 0 },
-  { test_36, "Write SZX AY chunk", 0 },
-  { test_37, "Write SZX SCLD chunk", 0 },
-  { test_38, "Write SZX ZXAT chunk", 0 },
-  { test_39, "Write SZX ZXCF chunk", 0 },
-  { test_40, "Write SZX AMXM chunk", 0 },
-  { test_41, "Write SZX SIDE chunk", 0 },
-  { test_42, "Write SZX DRUM chunk", 0 },
-  { test_43, "Write SZX COVX chunk", 0 },
-  { test_44, "Read SZX Z80R chunk", 0 },
-  { test_45, "Read SZX SPCR chunk", 0 },
-  { test_46, "Read SZX JOY chunk", 0 },
-  { test_47, "Read SZX KEYB chunk", 0 },
-  { test_48, "Read SZX ZXPR chunk", 0 },
-  { test_49, "Read SZX AY chunk", 0 },
-  { test_50, "Read SZX SCLD chunk", 0 },
-  { test_51, "Read SZX ZXAT chunk", 0 },
-  { test_52, "Read SZX ZXCF chunk", 0 },
-  { test_53, "Read SZX AMXM chunk", 0 },
-  { test_54, "Read SZX SIDE chunk", 0 },
-  { test_55, "Read SZX DRUM chunk", 0 },
-  { test_56, "Read SZX COVX chunk", 0 },
-  { test_57, "Write SZX ZMMC chunk", 0 },
-  { test_58, "Read SZX ZMMC chunk", 0 },
-  { test_59, "Write SZX RAMP chunk", 0 },
-  { test_60, "Read SZX RAMP chunk", 0 },
-  { test_61, "Write SZX ATRP chunk", 0 },
-  { test_62, "Write SZX CFRP chunk", 0 },
-  { test_63, "Read SZX ATRP chunk", 0 },
-  { test_64, "Read SZX CFRP chunk", 0 },
-  { test_65, "Write uncompressed SZX RAMP chunk", 0 },
-  { test_66, "Write uncompressed SZX ATRP chunk", 0 },
-  { test_67, "Write uncompressed SZX CFRP chunk", 0 },
-  { test_68, "Read uncompressed SZX RAMP chunk", 0 },
-  { test_69, "Read uncompressed SZX ATRP chunk", 0 },
-  { test_70, "Read uncompressed SZX CFRP chunk", 0 },
-  { test_71, "Write RZX with incompressible snap", 0 },
-  { test_72, "Tape peek next block", 0 },
-  { test_73, "Read TZX RAW block edge handling", 0 },
-  { test_74, "Trailing pause block TZX file", 0 },
-  { test_75, "Read mono WAV threshold fixture", 0 },
-  { test_76, "Read stereo WAV mixdown fixture", 0 },
-  { test_77, "Buffer write_byte stores single byte", 0 },
-  { test_78, "Buffer write_word stores little-endian word", 0 },
-  { test_79, "Buffer write_dword stores little-endian dword", 0 },
-  { test_80, "Buffer write_buffer copies src contents to dest", 0 },
-  { test_81, "Buffer is_empty and is_not_empty", 0 },
-  { test_82, "Buffer clear resets data size to zero", 0 },
-  { test_83, "Buffer set fills N bytes with given value", 0 },
-  { test_84, "Buffer append copies src to raw byte buffer", 0 },
-  { test_85, "Creator alloc/free and program getter/setter", 0 },
-  { test_86, "Creator major and minor version getter/setter", 0 },
-  { test_87, "Creator competition_code and custom data getter/setter", 0 },
-  { test_88, "Snap main Z80 register getter/setter (a, f, bc, de, hl, alternates)", 0 },
-  { test_89, "Snap index and special register getter/setter (ix, iy, i, r, sp, pc)", 0 },
-  { test_90, "Snap Z80 status getter/setter (iff1, iff2, im, tstates, halted)", 0 },
-  { test_91, "Microdrive alloc/free and write_protect getter/setter", 0 },
-  { test_92, "Microdrive cartridge_len and data getter/setter", 0 },
-  { test_93, "Microdrive mdr_write/mdr_read roundtrip", 0 },
-  { test_94, "Snap machine type getter/setter and default value", 0 },
-  { test_95, "Snap memptr getter/setter", 0 },
-  { test_96, "Snap ULA, 128K memory port, and AY register port getter/setter", 0 },
-  { test_97, "Snap custom_rom flag and custom_rom_pages getter/setter", 0 },
-  { test_98, "Snap RAM pages getter/setter", 0 },
-  { test_99, "Snap interface1 active, paged, and drive_count getter/setter", 0 },
-  { test_100, "Snap DivIDE active, eprom_writeprotect, paged, and control getter/setter", 0 },
-  { test_101, "Snap SpecDrum active flag and signed DAC getter/setter", 0 },
-  { test_102, "Snap Fuller Box active flag getter/setter", 0 },
-  { test_103, "Snap Multiface active, paged, model, disabled, and software_lockout getter/setter", 0 },
-  { test_104, "Snap AY registers array getter/setter (all 16 registers)", 0 },
-  { test_105, "Snap beta disk active, paged, autoboot, and drive_count getter/setter", 0 },
-  { test_106, "Snap ZXATASP active, upload, and writeprotect getter/setter", 0 },
-  { test_107, "Snap ZXATASP port_a/b/c and control getter/setter", 0 },
-  { test_108, "Snap ZXATASP pages and current_page getter/setter", 0 },
-  { test_109, "PZX archive info tags (title and Author) correctly parsed", 0 },
-  { test_110, "Snap DivIDE pages count and divide_eprom pointer getter/setter", 0 },
-  { test_111, "Snap DivIDE RAM page pointer array getter/setter", 0 },
-  { test_112, "Snap DivMMC active, eprom_writeprotect, paged, and control getter/setter", 0 },
-  { test_113, "Snap DivMMC pages count and divmmc_eprom pointer getter/setter", 0 },
-  { test_114, "Snap Plus D active, paged, drive_count, custom_rom, and direction getter/setter", 0 },
-  { test_115, "Snap Plus D FDC byte registers (control, track, sector, data, status) getter/setter", 0 },
-  { test_116, "Snap Plus D ROM and RAM single-pointer getter/setter", 0 },
-  { test_117, "Snap ZXATASP RAM page pointer array getter/setter", 0 },
-  { test_118, "Snap Opus Discovery active, paged, drive_count, custom_rom, and direction getter/setter", 0 },
-  { test_119, "Snap Opus Discovery FDC byte registers (track, sector, data, status, VIA ports) getter/setter", 0 },
-  { test_120, "Snap Opus Discovery ROM and RAM single-pointer getter/setter", 0 },
-  { test_121, "Snap Spectranet boolean int flags getter/setter", 0 },
-  { test_122, "Snap Spectranet page_a/b, programmable_trap word, and memory pointers getter/setter", 0 },
-  { test_123, "Snap DISCiPLE active, paged, inhibit_button, drive_count, custom_rom, and direction getter/setter", 0 },
-  { test_124, "Snap DISCiPLE FDC byte registers (control, track, sector, data, status) getter/setter", 0 },
-  { test_125, "Snap DISCiPLE ROM pointer, ROM length, and RAM pointer getter/setter", 0 },
-  { test_126, "Snap USource active, paged, custom_rom int flags getter/setter", 0 },
-  { test_127, "Snap USource ROM pointer and ROM length getter/setter", 0 },
-  { test_128, "Snap USpeeched active and paged getter/setter", 0 },
-  { test_129, "Snap Didaktik80 int flags and FDC byte registers getter/setter", 0 },
-  { test_130, "Snap Didaktik80 ROM pointer, ROM length, and RAM pointer getter/setter", 0 },
-  { test_131, "Snap ULAplus active, palette_enabled, current_register, palette, and ff_register getter/setter", 0 },
-  { test_132, "Snap late_timings getter/setter", 0 },
-  { test_133, "Snap zx_printer_active getter/setter", 0 },
-  { test_134, "Snap covox_active and covox_dac getter/setter", 0 },
-  { test_135, "Snap multiface_red_button_disabled getter/setter", 0 },
-  { test_136, "Snap multiface_ram pointer and multiface_ram_length getter/setter", 0 },
-  { test_137, "Snap zxmmc_active getter/setter", 0 },
-  { test_138, "Snap ttx2000s_active getter/setter", 0 },
-  { test_139, "Tape TURBO block pilot_length, sync1_length, sync2_length getter/setter", 0 },
-  { test_140, "Tape TURBO block bit0_length, bit1_length, pilot_pulses, pause getter/setter", 0 },
-  { test_141, "Tape PURE_TONE block pulse_length and count getter/setter", 0 },
-  { test_142, "Tape PURE_DATA block bit0_length, bit1_length, bits_in_last_byte, pause getter/setter", 0 },
-  { test_143, "Tape PAUSE block pause length and level getter/setter", 0 }
-};
-
-static size_t test_count = ARRAY_SIZE( tests );
-
-static void
-parse_test_specs( char **specs, int count )
-{
-  int i, j;
-
-  for( i = 0; i < count; i++ ) {
-
-    const char *spec = specs[i];
-    const char *dash = strchr( spec, '-' );
-
-    if( dash ) {
-      int begin = atoi( spec ), end = atoi( dash + 1 );
-      if( begin < 1 ) begin = 1;
-      if( end == 0 || end > test_count ) end = test_count;
-      for( j = begin; j <= end; j++ ) tests[j-1].active = 1;
-    } else {
-      int test = atoi( spec );
-      if( test < 1 || test > test_count ) continue;
-      tests[ test - 1 ].active = 1;
-    }
-    
-  }
-}
-
-int
-main( int argc, char *argv[] )
-{
-  struct test_description *test;
-  size_t i;
-  int tests_done = 0, tests_skipped = 0;
-  int pass = 0, fail = 0, incomplete = 0;
-
-  progname = argv[0];
-
-  if( libspectrum_check_version( LIBSPECTRUM_MIN_VERSION ) ) {
-    if( libspectrum_init() ) return 2;
-  } else {
-    fprintf( stderr, "%s: libspectrum version %s found, but %s required",
-	     progname, libspectrum_version(), LIBSPECTRUM_MIN_VERSION );
-    return 2;
-  }
-
-  if( argc < 2 ) {
-    for( i = 0; i < test_count; i++ ) tests[i].active = 1;
-  } else {
-    parse_test_specs( &argv[1], argc - 1 );
-  }
-
-  for( i = 0, test = tests;
-       i < test_count;
-       i++, test++ ) {
-    printf( "Test %d: %s... ", (int)i + 1, test->description );
-    if( test->active ) {
-      tests_done++;
-      switch( test->test() ) {
-      case TEST_PASS:
-        /* Test executed completely and passed */
-	      printf( "passed\n" );
-	      pass++;
-	      break;
-      case TEST_FAIL:
-        /* Test executed completely but failed */
-	      printf( "FAILED\n" );
-	      fail++;
-	      break;
-      case TEST_INCOMPLETE:
-        /* Error occurred while executing test */
-	      printf( "NOT COMPLETE\n" );
-	      incomplete++;
-	      break;
-      case TEST_SKIPPED:
-        /* Not possible to run this test (missing dependencies) */
-	      printf( "skipped\n" );
-	      tests_skipped++;
-	      break;
-      }
-    } else {
-      tests_skipped++;
-      printf( "skipped\n" );
-    }
-      
-  }
-
-  /* Stop silly divisions occuring */
-  if( !tests_done ) tests_done = 1;
-
-  printf( "\n%3d tests run\n\n", (int)test_count );
-  printf( "%3d     passed (%6.2f%%)\n", pass, 100 * (float)pass/tests_done );
-  printf( "%3d     failed (%6.2f%%)\n", fail, 100 * (float)fail/tests_done );
-  printf( "%3d incomplete (%6.2f%%)\n", incomplete, 100 * (float)incomplete/tests_done );
-  printf( "%3d    skipped\n", tests_skipped );
-
-  if( fail == 0 && incomplete == 0 ) {
-    return 0;
-  } else {
-    return 1;
-  }
 }
