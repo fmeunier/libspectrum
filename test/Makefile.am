@@ -24,9 +24,12 @@ check_PROGRAMS = test/test
 TESTS = $(check_PROGRAMS)
 
 test_test_SOURCES = \
+	test/buffer.c \
 	test/common.c \
+	test/creator.c \
 	test/edges.c \
 	test/main.c \
+	test/microdrive.c \
 	test/registry.c \
 	test/szx.c \
 	test/test.c \
