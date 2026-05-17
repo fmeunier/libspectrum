@@ -31,6 +31,7 @@ test_test_SOURCES = \
 	test/main.c \
 	test/microdrive.c \
 	test/registry.c \
+	test/snap-read.c \
 	test/snap.c \
 	test/szx.c \
 	test/tape.c \
