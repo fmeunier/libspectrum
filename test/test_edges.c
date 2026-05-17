@@ -1,7 +1,7 @@
 #include "test.h"
 
 static test_edge_sequence_t
-complete_edges_list[] = 
+complete_edges_list[] =
 {
   /* Standard speed data block */
   { 2168, 3223, 0 },	/* Pilot */
@@ -122,7 +122,7 @@ test_15( void )
 }
 
 static test_edge_sequence_t
-zero_tail_edges_list[] = 
+zero_tail_edges_list[] =
 {
   /* Data block with 0 tail */
   {  855,   1,  96 },	/* Data short pulse 1 high */
@@ -146,7 +146,7 @@ test_28( void )
 }
 
 static test_edge_sequence_t
-no_pilot_gdb_list[] = 
+no_pilot_gdb_list[] =
 {
   /* Set signal level block */
   {    0,   1,  17 },	/* Set signal level low, end of block */
@@ -217,7 +217,7 @@ raw_edges_list[] =
 };
 
 /* Test for bugs #369: TZX raw block last edge handling, #444: Spurious
-   pulse at the beginning of a raw data block and #445 "Used bits in last 
+   pulse at the beginning of a raw data block and #445 "Used bits in last
    byte" takes the LSB in raw data blocks*/
 test_return_t
 test_73( void )

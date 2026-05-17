@@ -31,8 +31,9 @@ test_test_SOURCES = \
 	test/main.c \
 	test/microdrive.c \
 	test/registry.c \
+	test/snap.c \
 	test/szx.c \
-	test/test.c \
+	test/tape.c \
 	test/test_edges.c
 
 test_test_CFLAGS = -DSRCDIR='"$(srcdir)"'

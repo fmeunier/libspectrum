@@ -64,4 +64,4 @@ check_edges( const char *filename, test_edge_sequence_t *edges,
   return r;
 }
 
-  
+
