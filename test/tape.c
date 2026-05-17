@@ -418,6 +418,10 @@ test_76( void )
                           3500000 / 22050, 0x8d );
 #endif
 }
+
+/* Test that PZX archive info tags (title + author) are correctly parsed.
+   Regression test for the pzx_read_string bug where *ptr was set to end,
+   causing all tag-value pairs after the title to be silently ignored. */
 test_return_t
 test_109( void )
 {
