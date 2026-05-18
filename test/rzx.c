@@ -291,3 +291,376 @@ write_rzx_with_incompressible_snap( void )
 
   return r;
 }
+
+test_return_t
+rzx_alloc_and_free_lifecycle( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_alloc_and_free_lifecycle: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_free( rzx );
+  return TEST_PASS;
+}
+
+test_return_t
+rzx_start_input_stop_input_and_tstates_accessor( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_start_input_stop_input_and_tstates_accessor: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_start_input( rzx, 12345 );
+
+  if( libspectrum_rzx_tstates( rzx ) != 12345 ) {
+    fprintf( stderr, "%s: rzx_start_input_stop_input_and_tstates_accessor: expected tstates=12345, got %zu\n",
+             progname, (size_t)libspectrum_rzx_tstates( rzx ) );
+    goto done;
+  }
+
+  libspectrum_rzx_stop_input( rzx );
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_store_frame_and_iterator_get_frames_count( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_rzx_iterator it;
+  libspectrum_byte in_bytes[3] = { 0x01, 0x02, 0x03 };
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_store_frame_and_iterator_get_frames_count: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+
+  if( libspectrum_rzx_store_frame( rzx, 42, 3, in_bytes ) ) {
+    fprintf( stderr, "%s: rzx_store_frame_and_iterator_get_frames_count: store_frame returned error\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_store_frame( rzx, 17, 0, NULL ) ) {
+    fprintf( stderr, "%s: rzx_store_frame_and_iterator_get_frames_count: store_frame (zero IN) returned error\n",
+             progname );
+    goto done;
+  }
+
+  libspectrum_rzx_stop_input( rzx );
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_store_frame_and_iterator_get_frames_count: iterator_begin returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_INPUT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_store_frame_and_iterator_get_frames_count: expected INPUT_BLOCK type\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_frames( it ) != 2 ) {
+    fprintf( stderr, "%s: rzx_store_frame_and_iterator_get_frames_count: expected 2 frames, got %zu\n",
+             progname, libspectrum_rzx_iterator_get_frames( it ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_store_frame_repeat_frame_detection( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_rzx_iterator it;
+  libspectrum_byte in_bytes[2] = { 0xaa, 0xbb };
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_store_frame_repeat_frame_detection: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+
+  if( libspectrum_rzx_store_frame( rzx, 10, 2, in_bytes ) ) {
+    fprintf( stderr, "%s: rzx_store_frame_repeat_frame_detection: store_frame 1 returned error\n",
+             progname );
+    goto done;
+  }
+
+  /* Same count and bytes — should be stored as repeat */
+  if( libspectrum_rzx_store_frame( rzx, 10, 2, in_bytes ) ) {
+    fprintf( stderr, "%s: rzx_store_frame_repeat_frame_detection: store_frame 2 returned error\n",
+             progname );
+    goto done;
+  }
+
+  /* Different bytes — unique frame */
+  in_bytes[0] = 0x11;
+  if( libspectrum_rzx_store_frame( rzx, 10, 2, in_bytes ) ) {
+    fprintf( stderr, "%s: rzx_store_frame_repeat_frame_detection: store_frame 3 returned error\n",
+             progname );
+    goto done;
+  }
+
+  libspectrum_rzx_stop_input( rzx );
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_store_frame_repeat_frame_detection: iterator_begin returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  /* Repeat is a storage optimisation; frame count still includes all frames */
+  if( libspectrum_rzx_iterator_get_frames( it ) != 3 ) {
+    fprintf( stderr, "%s: rzx_store_frame_repeat_frame_detection: expected 3 frames, got %zu\n",
+             progname, libspectrum_rzx_iterator_get_frames( it ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_add_snap_inserts_snapshot_block( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap;
+  libspectrum_rzx_iterator it;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_add_snap_inserts_snapshot_block: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  snap = libspectrum_snap_alloc();
+  if( !snap ) {
+    fprintf( stderr, "%s: rzx_add_snap_inserts_snapshot_block: snap_alloc returned NULL\n",
+             progname );
+    libspectrum_rzx_free( rzx );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_rzx_add_snap( rzx, snap, 0 ) ) {
+    fprintf( stderr, "%s: rzx_add_snap_inserts_snapshot_block: add_snap returned error\n",
+             progname );
+    libspectrum_snap_free( snap );
+    goto done;
+  }
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_add_snap_inserts_snapshot_block: iterator_begin returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_SNAPSHOT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_add_snap_inserts_snapshot_block: expected SNAPSHOT_BLOCK type\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_snap( it ) != snap ) {
+    fprintf( stderr, "%s: rzx_add_snap_inserts_snapshot_block: snap pointer mismatch\n",
+             progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_iterator_begin_next_last_with_snap_and_input_blocks( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap;
+  libspectrum_rzx_iterator it, last;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  snap = libspectrum_snap_alloc();
+  if( !snap ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: snap_alloc returned NULL\n",
+             progname );
+    libspectrum_rzx_free( rzx );
+    return TEST_INCOMPLETE;
+  }
+
+  /* Block order: snap block, then input block */
+  if( libspectrum_rzx_add_snap( rzx, snap, 1 ) ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: add_snap returned error\n",
+             progname );
+    libspectrum_snap_free( snap );
+    goto done;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+  libspectrum_rzx_stop_input( rzx );
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: iterator_begin returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_SNAPSHOT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: first block should be SNAPSHOT_BLOCK\n",
+             progname );
+    goto done;
+  }
+
+  it = libspectrum_rzx_iterator_next( it );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: iterator_next returned NULL for second block\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_INPUT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: second block should be INPUT_BLOCK\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_next( it ) != NULL ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: iterator_next past end should be NULL\n",
+             progname );
+    goto done;
+  }
+
+  last = libspectrum_rzx_iterator_last( rzx );
+  if( !last ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: iterator_last returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( last ) != LIBSPECTRUM_RZX_INPUT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_iterator_begin_next_last_with_snap_and_input_blocks: last block should be INPUT_BLOCK\n",
+             progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_get_keyid_returns_zero_with_no_signature_block( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_get_keyid_returns_zero_with_no_signature_block: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_rzx_get_keyid( rzx ) != 0 ) {
+    fprintf( stderr, "%s: rzx_get_keyid_returns_zero_with_no_signature_block: expected keyid=0, got %u\n",
+             progname, (unsigned)libspectrum_rzx_get_keyid( rzx ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_iterator_get_frames_returns_size_t_max_for_non_input_block( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap;
+  libspectrum_rzx_iterator it;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_iterator_get_frames_returns_size_t_max_for_non_input_block: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  snap = libspectrum_snap_alloc();
+  if( !snap ) {
+    fprintf( stderr, "%s: rzx_iterator_get_frames_returns_size_t_max_for_non_input_block: snap_alloc returned NULL\n",
+             progname );
+    libspectrum_rzx_free( rzx );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_rzx_add_snap( rzx, snap, 0 ) ) {
+    fprintf( stderr, "%s: rzx_iterator_get_frames_returns_size_t_max_for_non_input_block: add_snap returned error\n",
+             progname );
+    libspectrum_snap_free( snap );
+    goto done;
+  }
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_iterator_get_frames_returns_size_t_max_for_non_input_block: iterator_begin returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_frames( it ) != (size_t)-1 ) {
+    fprintf( stderr, "%s: rzx_iterator_get_frames_returns_size_t_max_for_non_input_block: expected (size_t)-1 for snapshot block, got %zu\n",
+             progname, libspectrum_rzx_iterator_get_frames( it ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}

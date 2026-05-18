@@ -170,5 +170,13 @@ test_return_t tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter
 test_return_t tape_pure_tone_block_pulse_length_and_count_getter_setter( void );
 test_return_t tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter( void );
 test_return_t tape_pause_block_pause_length_and_level_getter_setter( void );
+test_return_t rzx_alloc_and_free_lifecycle( void );
+test_return_t rzx_start_input_stop_input_and_tstates_accessor( void );
+test_return_t rzx_store_frame_and_iterator_get_frames_count( void );
+test_return_t rzx_store_frame_repeat_frame_detection( void );
+test_return_t rzx_add_snap_inserts_snapshot_block( void );
+test_return_t rzx_iterator_begin_next_last_with_snap_and_input_blocks( void );
+test_return_t rzx_get_keyid_returns_zero_with_no_signature_block( void );
+test_return_t rzx_iterator_get_frames_returns_size_t_max_for_non_input_block( void );
 
 #endif

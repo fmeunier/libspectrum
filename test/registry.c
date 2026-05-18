@@ -159,6 +159,14 @@ test_description tests[] = {
   TEST_ENTRY( tape_pure_tone_block_pulse_length_and_count_getter_setter, "Tape PURE_TONE block pulse_length and count getter/setter" ),
   TEST_ENTRY( tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter, "Tape PURE_DATA block bit0_length, bit1_length, bits_in_last_byte, pause getter/setter" ),
   TEST_ENTRY( tape_pause_block_pause_length_and_level_getter_setter, "Tape PAUSE block pause length and level getter/setter" ),
+  TEST_ENTRY( rzx_alloc_and_free_lifecycle, "RZX alloc and free lifecycle" ),
+  TEST_ENTRY( rzx_start_input_stop_input_and_tstates_accessor, "RZX start_input, stop_input, and tstates accessor" ),
+  TEST_ENTRY( rzx_store_frame_and_iterator_get_frames_count, "RZX store_frame and iterator_get_frames count" ),
+  TEST_ENTRY( rzx_store_frame_repeat_frame_detection, "RZX store_frame repeat frame detection" ),
+  TEST_ENTRY( rzx_add_snap_inserts_snapshot_block, "RZX add_snap inserts snapshot block" ),
+  TEST_ENTRY( rzx_iterator_begin_next_last_with_snap_and_input_blocks, "RZX iterator begin/next/last with snap and input blocks" ),
+  TEST_ENTRY( rzx_get_keyid_returns_zero_with_no_signature_block, "RZX get_keyid returns zero with no signature block" ),
+  TEST_ENTRY( rzx_iterator_get_frames_returns_size_t_max_for_non_input_block, "RZX iterator_get_frames returns SIZE_MAX for non-input block" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
