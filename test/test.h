@@ -53,6 +53,7 @@ test_return_t complete_tzx_timings( void );
 test_return_t writing_sna_file( void );
 test_return_t writing_plus_3_z80_file( void );
 test_return_t reading_old_szx_file( void );
+test_return_t rzx_invalid_frame_data_error_does_not_free_repeat_frame_pointer( void );
 test_return_t zero_tail_length_pzx_file( void );
 test_return_t no_pilot_pulse_gdb_tzx_file( void );
 test_return_t csw_conversion( void );

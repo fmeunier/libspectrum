@@ -31,6 +31,7 @@ test_test_SOURCES = \
 	test/main.c \
 	test/microdrive.c \
 	test/registry.c \
+	test/rzx.c \
 	test/snap-memory.c \
 	test/snap-peripherals.c \
 	test/snap-read.c \
@@ -81,6 +82,7 @@ EXTRA_DIST += \
 	test/invalid-hardwareinfo.tzx \
 	test/invalid-warajevo-blockoffset.tap \
 	test/invalid.gz \
+	test/invalid-repeat-frame.rzx \
 	test/invalid.szx \
 	test/invalid.tzx \
 	test/jump.tzx \

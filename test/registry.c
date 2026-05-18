@@ -41,6 +41,8 @@ test_description tests[] = {
   TEST_ENTRY( writing_sna_file, "Writing SNA file" ),
   TEST_ENTRY( writing_plus_3_z80_file, "Writing +3 .Z80 file" ),
   TEST_ENTRY( reading_old_szx_file, "Reading old SZX file" ),
+  TEST_ENTRY( rzx_invalid_frame_data_error_does_not_free_repeat_frame_pointer,
+              "RZX frame data error does not free repeat-frame pointer" ),
   TEST_ENTRY( zero_tail_length_pzx_file, "Zero tail length PZX file" ),
   TEST_ENTRY( no_pilot_pulse_gdb_tzx_file, "No pilot pulse GDB TZX file" ),
   TEST_ENTRY( csw_conversion, "CSW conversion" ),
