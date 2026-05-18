@@ -1,6 +1,6 @@
 {
-  "last_run": "2026-05-17T12:00:00Z",
-  "last_run_id": "25990318305",
+  "last_run": "2026-05-18T12:52:00Z",
+  "last_run_id": "26034597079",
   "comments_made": {},
   "prs_created": [
     {
@@ -13,13 +13,14 @@
       "branch": "repo-assist/test-consolidated-snap-tape-20260509-c31a8d944a328105",
       "pr_number": 43,
       "description": "test: consolidated snap/tape accessor tests (117-143)",
-      "status": "open"
+      "status": "closed-applied",
+      "applied_commit": "69cfc2f"
     },
     {
       "branch": "repo-assist/test-rzx-unit-tests-20260511-2d95f2994126f0db",
       "pr_number": 44,
-      "description": "test: add RZX unit tests (144-151)",
-      "status": "open"
+      "description": "test: add RZX unit tests (old test.c structure) - superseded by new PR",
+      "status": "open-superseded"
     },
     {
       "branch": "repo-assist/perf-buffer-write-20260511-5ce79298bf5a0b3b",
@@ -30,47 +31,56 @@
     {
       "branch": "repo-assist/fix-rzx-read-frames-cleanup-20260512-07c491c2e5574dd2",
       "pr_number": 46,
-      "description": "fix: correct frame index in rzx_read_frames error cleanup loops (UAF/heap-corruption + memleak on corrupt RZX input)",
-      "status": "open"
+      "description": "fix: correct frame index in rzx_read_frames error cleanup loops",
+      "status": "closed-applied",
+      "applied_commit": "09a0f5e"
     },
     {
       "branch": "repo-assist/fix-tap-return-error-20260513-85ed63eb3baeaf95",
       "pr_number": 47,
-      "description": "fix: return error instead of literal 1 in internal_tap_write skip_block paths + simplify write_rom/turbo/pure_data",
+      "description": "fix: return error instead of literal 1 in internal_tap_write skip_block paths",
       "status": "open"
     },
     {
       "branch": "repo-assist/fix-csw-read-leaks-20260514-f20e6bc601d869ee",
       "pr_number": 48,
-      "description": "fix: free block on all error paths in libspectrum_csw_read (4 leaks: default case, bad sample rate, zlib failure, no-zlib path)",
-      "status": "open"
+      "description": "fix: free block on all error paths in libspectrum_csw_read",
+      "status": "closed-applied",
+      "applied_commit": "eb68d86"
     },
     {
       "branch": "repo-assist/perf-zero-write-loops-20260514-0e1891f2b55b41c9",
       "pr_number": 49,
-      "description": "perf: replace zero-byte write loops with single bulk libspectrum_buffer_write (csw.c, z80.c, szx.c)",
+      "description": "perf: replace zero-byte write loops with single bulk libspectrum_buffer_write",
       "status": "open"
     },
     {
       "branch": "repo-assist/improve-malloc-n-size-zero-guard-20260516",
       "pr_number": 50,
-      "description": "fix: guard size==0 in _n allocation helpers to avoid UB (libspectrum_malloc_n, malloc0_n, realloc_n)",
-      "status": "open"
+      "description": "fix: guard size==0 in _n allocation helpers - content applied directly to master",
+      "status": "open-applied"
     },
     {
       "branch": "repo-assist/test-tape-block-accessors-20260516",
       "pr_number": 51,
-      "description": "test: tape block accessor tests (152-159) - ROM, TURBO, PURE_DATA, PURE_TONE, PAUSE, JUMP, LOOP_START, GROUP_START; 124 tests all pass",
-      "status": "open"
+      "description": "test: tape block accessor tests - content applied directly to master",
+      "status": "open-applied"
     },
     {
       "branch": "repo-assist/improve-dsnap-write-header-20260517",
       "pr_number": 52,
-      "description": "dsnap: use libspectrum_buffer_set for header zero-fill; replace short padding/b + for-loop with size_t + libspectrum_buffer_set; fix snaphost->snapshot typo; 116 tests pass",
+      "description": "dsnap: use libspectrum_buffer_set for header zero-fill",
+      "status": "closed-applied",
+      "applied_commit": "ce28089"
+    },
+    {
+      "branch": "repo-assist/test-rzx-unit-tests-20260518",
+      "pr_number": "pending-this-run",
+      "description": "test: add RZX unit tests (alloc/free, start/stop_input, store_frame, iterator) - modular test/rzx.c structure; 8 tests; 152 pass",
       "status": "open"
     }
   ],
-  "superseded_prs": [38, 39, 41, 42],
+  "superseded_prs": [38, 39, 41, 42, 44],
   "monthly_activity_issue": {
     "number": 30,
     "month": "2026-05",
@@ -107,7 +117,14 @@
     "Close PR #38 (checked [x] in monthly activity)",
     "Close PR #39 (checked [x] in monthly activity)",
     "Close PR #41 (checked [x] in monthly activity)",
-    "Close PR #42 (checked [x] in monthly activity)"
+    "Close PR #42 (checked [x] in monthly activity)",
+    "PR #43 test 117-143 applied as commit 69cfc2f",
+    "PR #46 rzx frame fix applied as commit 09a0f5e",
+    "PR #48 csw leaks fix applied as commit eb68d86",
+    "PR #52 dsnap write header applied as commit ce28089",
+    "Issue #40 CI concurrency closed by maintainer 2026-05-18",
+    "PR #50 malloc guard content applied to master (PR still open on GitHub)",
+    "PR #51 tape block accessor tests content applied to master (PR still open on GitHub)"
   ],
-  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Tests at 116 on master (PRs #43, #44, #51 pending). 11 open PRs: #36, #43-#52. All verified clean against master. Master at e334bad (1.6.1 shared object version bump). Next candidates: more tape block accessor tests (pulses/generalised_data/archive_info block types), or dsnap.c/szx.c read-path error cleanup investigation."
+  "notes": "Maintainer applies changes via direct commits rather than merging PRs. Master at eb68d86. Tests at 152 total after this run (added 8 RZX unit tests in test/rzx.c). Open PRs: #36 (pzx leaks), #44 (superseded, suggest closing), #45 (buffer write perf), #47 (tap error return), #49 (zero write loops), #50 (malloc guard - content in master), #51 (tape accessors - content in master), new PR this run (RZX tests modular). Next candidates: tape block accessor tests for ROM/JUMP/LOOP_START/GROUP_START blocks (not yet in master), szx.c read-path error cleanup."
 }
