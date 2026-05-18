@@ -37,8 +37,8 @@ test_test_SOURCES = \
 	test/snap-storage.c \
 	test/snap-z80.c \
 	test/szx.c \
-	test/tape.c \
-	test/test_edges.c
+	test/tape-edges.c \
+	test/tape.c
 
 test_test_CFLAGS = -DSRCDIR='"$(srcdir)"'
 

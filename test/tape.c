@@ -8,7 +8,7 @@
 #include "test.h"
 
 test_return_t
-test_1( void )
+tape_with_unknown_block( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid.tzx" ), LIBSPECTRUM_ERROR_UNKNOWN );
 }
@@ -16,7 +16,7 @@ test_1( void )
 /* Test for bugs #84: TZX turbo blocks with zero pilot pulses and #85: freeing
    a turbo block with no data produces segfault */
 test_return_t
-test_2( void )
+tzx_turbo_data_with_zero_pilot_pulses_and_zero_data( void )
 {
   libspectrum_byte *buffer = NULL;
   size_t filesize = 0;
@@ -64,7 +64,7 @@ test_2( void )
 
 /* Test for bug #88: writing empty .tap file causes crash */
 test_return_t
-test_3( void )
+writing_empty_tap_file( void )
 {
   libspectrum_tape *tape;
   libspectrum_byte *buffer = (libspectrum_byte*)1;
@@ -91,42 +91,42 @@ test_3( void )
 
 /* Test for bug #105: lack of sanity check in GDB code */
 test_return_t
-test_7( void )
+invalid_tzx_gdb( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-gdb.tzx" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
 
 /* Test for bug #106: empty DRB causes segfault */
 test_return_t
-test_8( void )
+empty_tzx_drb( void )
 {
   return read_tape( STATIC_TEST_PATH( "empty-drb.tzx" ), LIBSPECTRUM_ERROR_NONE );
 }
 
 /* Test for bug #107: problems with invalid archive info block */
 test_return_t
-test_9( void )
+invalid_tzx_archive_info_block( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-archiveinfo.tzx" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
 
 /* Test for bug #108: invalid hardware info blocks can leak memory */
 test_return_t
-test_10( void )
+invalid_hardware_info_block_causes_memory_leak( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-hardwareinfo.tzx" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
 
 /* Test for bug #111: invalid Warajevo tape block offset causes segfault */
 test_return_t
-test_11( void )
+invalid_warajevo_tape_file( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-warajevo-blockoffset.tap" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
 
 /* Test for bug #112: invalid custom info block causes memory leak */
 test_return_t
-test_12( void )
+invalid_tzx_custom_info_block_causes_memory_leak( void )
 {
   return read_tape( STATIC_TEST_PATH( "invalid-custominfo.tzx" ), LIBSPECTRUM_ERROR_CORRUPT );
 }
@@ -134,7 +134,7 @@ test_12( void )
 /* Test for bug #113: loop end without a loop start block accesses uninitialised
    memory */
 test_return_t
-test_13( void )
+tzx_loop_end_block_with_loop_start_block( void )
 {
   libspectrum_byte *buffer = NULL;
   size_t filesize = 0;
@@ -168,35 +168,35 @@ test_13( void )
 
 /* Test for bug #113: TZX loop blocks broken */
 test_return_t
-test_14( void )
+tzx_loop_blocks( void )
 {
   return play_tape( STATIC_TEST_PATH( "loop.tzx" ) );
 }
 
 /* Test for bug #118: TZX loop blocks still broken */
 test_return_t
-test_16( void )
+tzx_loop_blocks_2( void )
 {
   return play_tape( STATIC_TEST_PATH( "loop2.tzx" ) );
 }
 
 /* Test for bug #119: TZX jump blocks broken */
 test_return_t
-test_17( void )
+tzx_jump_blocks( void )
 {
   return play_tape( STATIC_TEST_PATH( "jump.tzx" ) );
 }
 
 /* Test for bug #121: crashes writing and reading empty CSW files */
 test_return_t
-test_18( void )
+csw_empty_file( void )
 {
   return play_tape( STATIC_TEST_PATH( "empty.csw" ) );
 }
 
 /* Test for bug #125: .tap writing code does not handle all block types */
 test_return_t
-test_19( void )
+complete_tzx_to_tap_conversion( void )
 {
   libspectrum_byte *buffer = NULL;
   size_t length = 0;
@@ -223,7 +223,7 @@ test_19( void )
 }
 
 test_return_t
-test_24( void )
+complete_tzx_timings( void )
 {
   const char *filename = DYNAMIC_TEST_PATH( "complete-tzx.tzx" );
   libspectrum_byte *buffer = NULL;
@@ -293,7 +293,7 @@ test_24( void )
 
 /* Test for bug #379: converting .tap file to .csw causes crash */
 test_return_t
-test_30( void )
+csw_conversion( void )
 {
   libspectrum_byte *buffer = NULL;
   size_t length = 0;
@@ -320,7 +320,7 @@ test_30( void )
 }
 
 test_return_t
-test_72( void )
+tape_peek_next_block( void )
 {
   const char *filename = DYNAMIC_TEST_PATH( "complete-tzx.tzx" );
   libspectrum_byte *buffer = NULL;
@@ -398,7 +398,7 @@ test_72( void )
 }
 
 test_return_t
-test_75( void )
+read_mono_wav_threshold_fixture( void )
 {
 #ifndef HAVE_WAV_BACKEND
   return TEST_SKIPPED;
@@ -409,7 +409,7 @@ test_75( void )
 }
 
 test_return_t
-test_76( void )
+read_stereo_wav_mixdown_fixture( void )
 {
 #ifndef WAV_INTERNAL_MACOS
   return TEST_SKIPPED;
@@ -423,7 +423,7 @@ test_76( void )
    Regression test for the pzx_read_string bug where *ptr was set to end,
    causing all tag-value pairs after the title to be silently ignored. */
 test_return_t
-test_109( void )
+pzx_archive_info_tags_title_and_author_correctly_parsed( void )
 {
   const char *filename = STATIC_TEST_PATH( "pzx-archive-info-tags.pzx" );
   libspectrum_tape *tape = NULL;
@@ -442,41 +442,41 @@ test_109( void )
   }
 
   if( !block ) {
-    fprintf( stderr, "%s: test_104: no ARCHIVE_INFO block found\n", progname );
+    fprintf( stderr, "%s: snap_ay_registers_array_getter_setter_all_16_registers: no ARCHIVE_INFO block found\n", progname );
     goto done;
   }
 
   /* Expect: title (ID 0x00, "Test Game") and Author (ID 0x02, "Joe Bloggs") */
   if( libspectrum_tape_block_count( block ) != 2 ) {
-    fprintf( stderr, "%s: test_104: expected 2 archive info entries, got %zu\n",
+    fprintf( stderr, "%s: snap_ay_registers_array_getter_setter_all_16_registers: expected 2 archive info entries, got %zu\n",
              progname, libspectrum_tape_block_count( block ) );
     r = TEST_FAIL;
     goto done;
   }
 
   if( libspectrum_tape_block_ids( block, 0 ) != 0x00 ) {
-    fprintf( stderr, "%s: test_104: expected ID 0x00 for entry 0, got 0x%02x\n",
+    fprintf( stderr, "%s: snap_ay_registers_array_getter_setter_all_16_registers: expected ID 0x00 for entry 0, got 0x%02x\n",
              progname, libspectrum_tape_block_ids( block, 0 ) );
     r = TEST_FAIL;
     goto done;
   }
 
   if( strcmp( libspectrum_tape_block_texts( block, 0 ), "Test Game" ) != 0 ) {
-    fprintf( stderr, "%s: test_104: expected title 'Test Game', got '%s'\n",
+    fprintf( stderr, "%s: snap_ay_registers_array_getter_setter_all_16_registers: expected title 'Test Game', got '%s'\n",
              progname, libspectrum_tape_block_texts( block, 0 ) );
     r = TEST_FAIL;
     goto done;
   }
 
   if( libspectrum_tape_block_ids( block, 1 ) != 0x02 ) {
-    fprintf( stderr, "%s: test_104: expected ID 0x02 (Author) for entry 1, got 0x%02x\n",
+    fprintf( stderr, "%s: snap_ay_registers_array_getter_setter_all_16_registers: expected ID 0x02 (Author) for entry 1, got 0x%02x\n",
              progname, libspectrum_tape_block_ids( block, 1 ) );
     r = TEST_FAIL;
     goto done;
   }
 
   if( strcmp( libspectrum_tape_block_texts( block, 1 ), "Joe Bloggs" ) != 0 ) {
-    fprintf( stderr, "%s: test_104: expected author 'Joe Bloggs', got '%s'\n",
+    fprintf( stderr, "%s: snap_ay_registers_array_getter_setter_all_16_registers: expected author 'Joe Bloggs', got '%s'\n",
              progname, libspectrum_tape_block_texts( block, 1 ) );
     r = TEST_FAIL;
     goto done;
@@ -490,7 +490,7 @@ done:
 }
 
 test_return_t
-test_139( void )
+tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter( void )
 {
   /* tape block: TURBO block pilot_length, sync1_length, sync2_length getter/setter */
   libspectrum_tape_block *block =
@@ -498,47 +498,47 @@ test_139( void )
   test_return_t r = TEST_FAIL;
 
   if( !block ) {
-    fprintf( stderr, "%s: test_139: tape_block_alloc returned NULL\n", progname );
+    fprintf( stderr, "%s: tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter: tape_block_alloc returned NULL\n", progname );
     return TEST_INCOMPLETE;
   }
 
   if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_TURBO ) {
-    fprintf( stderr, "%s: test_139: expected TURBO block type\n", progname );
+    fprintf( stderr, "%s: tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter: expected TURBO block type\n", progname );
     goto done;
   }
 
   if( libspectrum_tape_block_pilot_length( block ) != 0 ) {
-    fprintf( stderr, "%s: test_139: default pilot_length should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter: default pilot_length should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pilot_length( block ) );
     goto done;
   }
   libspectrum_tape_block_set_pilot_length( block, 2168 );
   if( libspectrum_tape_block_pilot_length( block ) != 2168 ) {
-    fprintf( stderr, "%s: test_139: expected pilot_length=2168, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter: expected pilot_length=2168, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pilot_length( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_sync1_length( block ) != 0 ) {
-    fprintf( stderr, "%s: test_139: default sync1_length should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter: default sync1_length should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_sync1_length( block ) );
     goto done;
   }
   libspectrum_tape_block_set_sync1_length( block, 667 );
   if( libspectrum_tape_block_sync1_length( block ) != 667 ) {
-    fprintf( stderr, "%s: test_139: expected sync1_length=667, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter: expected sync1_length=667, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_sync1_length( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_sync2_length( block ) != 0 ) {
-    fprintf( stderr, "%s: test_139: default sync2_length should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter: default sync2_length should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_sync2_length( block ) );
     goto done;
   }
   libspectrum_tape_block_set_sync2_length( block, 735 );
   if( libspectrum_tape_block_sync2_length( block ) != 735 ) {
-    fprintf( stderr, "%s: test_139: expected sync2_length=735, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter: expected sync2_length=735, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_sync2_length( block ) );
     goto done;
   }
@@ -551,7 +551,7 @@ done:
 }
 
 test_return_t
-test_140( void )
+tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter( void )
 {
   /* tape block: TURBO block bit0_length, bit1_length, pilot_pulses, pause getter/setter */
   libspectrum_tape_block *block =
@@ -559,54 +559,54 @@ test_140( void )
   test_return_t r = TEST_FAIL;
 
   if( !block ) {
-    fprintf( stderr, "%s: test_140: tape_block_alloc returned NULL\n", progname );
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: tape_block_alloc returned NULL\n", progname );
     return TEST_INCOMPLETE;
   }
 
   if( libspectrum_tape_block_bit0_length( block ) != 0 ) {
-    fprintf( stderr, "%s: test_140: default bit0_length should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: default bit0_length should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bit0_length( block ) );
     goto done;
   }
   libspectrum_tape_block_set_bit0_length( block, 855 );
   if( libspectrum_tape_block_bit0_length( block ) != 855 ) {
-    fprintf( stderr, "%s: test_140: expected bit0_length=855, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: expected bit0_length=855, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bit0_length( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_bit1_length( block ) != 0 ) {
-    fprintf( stderr, "%s: test_140: default bit1_length should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: default bit1_length should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bit1_length( block ) );
     goto done;
   }
   libspectrum_tape_block_set_bit1_length( block, 1710 );
   if( libspectrum_tape_block_bit1_length( block ) != 1710 ) {
-    fprintf( stderr, "%s: test_140: expected bit1_length=1710, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: expected bit1_length=1710, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bit1_length( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_pilot_pulses( block ) != 0 ) {
-    fprintf( stderr, "%s: test_140: default pilot_pulses should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: default pilot_pulses should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pilot_pulses( block ) );
     goto done;
   }
   libspectrum_tape_block_set_pilot_pulses( block, 8063 );
   if( libspectrum_tape_block_pilot_pulses( block ) != 8063 ) {
-    fprintf( stderr, "%s: test_140: expected pilot_pulses=8063, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: expected pilot_pulses=8063, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pilot_pulses( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_pause( block ) != 0 ) {
-    fprintf( stderr, "%s: test_140: default pause should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: default pause should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pause( block ) );
     goto done;
   }
   libspectrum_tape_block_set_pause( block, 1000 );
   if( libspectrum_tape_block_pause( block ) != 1000 ) {
-    fprintf( stderr, "%s: test_140: expected pause=1000, got %lu\n",
+    fprintf( stderr, "%s: tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter: expected pause=1000, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pause( block ) );
     goto done;
   }
@@ -619,7 +619,7 @@ done:
 }
 
 test_return_t
-test_141( void )
+tape_pure_tone_block_pulse_length_and_count_getter_setter( void )
 {
   /* tape block: PURE_TONE block pulse_length and count getter/setter */
   libspectrum_tape_block *block =
@@ -627,35 +627,35 @@ test_141( void )
   test_return_t r = TEST_FAIL;
 
   if( !block ) {
-    fprintf( stderr, "%s: test_141: tape_block_alloc returned NULL\n", progname );
+    fprintf( stderr, "%s: tape_pure_tone_block_pulse_length_and_count_getter_setter: tape_block_alloc returned NULL\n", progname );
     return TEST_INCOMPLETE;
   }
 
   if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_PURE_TONE ) {
-    fprintf( stderr, "%s: test_141: expected PURE_TONE block type\n", progname );
+    fprintf( stderr, "%s: tape_pure_tone_block_pulse_length_and_count_getter_setter: expected PURE_TONE block type\n", progname );
     goto done;
   }
 
   if( libspectrum_tape_block_pulse_length( block ) != 0 ) {
-    fprintf( stderr, "%s: test_141: default pulse_length should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_tone_block_pulse_length_and_count_getter_setter: default pulse_length should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pulse_length( block ) );
     goto done;
   }
   libspectrum_tape_block_set_pulse_length( block, 2168 );
   if( libspectrum_tape_block_pulse_length( block ) != 2168 ) {
-    fprintf( stderr, "%s: test_141: expected pulse_length=2168, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_tone_block_pulse_length_and_count_getter_setter: expected pulse_length=2168, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pulse_length( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_count( block ) != 0 ) {
-    fprintf( stderr, "%s: test_141: default count should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_tone_block_pulse_length_and_count_getter_setter: default count should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_count( block ) );
     goto done;
   }
   libspectrum_tape_block_set_count( block, 3223 );
   if( libspectrum_tape_block_count( block ) != 3223 ) {
-    fprintf( stderr, "%s: test_141: expected count=3223, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_tone_block_pulse_length_and_count_getter_setter: expected count=3223, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_count( block ) );
     goto done;
   }
@@ -668,7 +668,7 @@ done:
 }
 
 test_return_t
-test_142( void )
+tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter( void )
 {
   /* tape block: PURE_DATA block bit0_length, bit1_length, bits_in_last_byte, pause getter/setter */
   libspectrum_tape_block *block =
@@ -676,59 +676,59 @@ test_142( void )
   test_return_t r = TEST_FAIL;
 
   if( !block ) {
-    fprintf( stderr, "%s: test_142: tape_block_alloc returned NULL\n", progname );
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: tape_block_alloc returned NULL\n", progname );
     return TEST_INCOMPLETE;
   }
 
   if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_PURE_DATA ) {
-    fprintf( stderr, "%s: test_142: expected PURE_DATA block type\n", progname );
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: expected PURE_DATA block type\n", progname );
     goto done;
   }
 
   if( libspectrum_tape_block_bit0_length( block ) != 0 ) {
-    fprintf( stderr, "%s: test_142: default bit0_length should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: default bit0_length should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bit0_length( block ) );
     goto done;
   }
   libspectrum_tape_block_set_bit0_length( block, 855 );
   if( libspectrum_tape_block_bit0_length( block ) != 855 ) {
-    fprintf( stderr, "%s: test_142: expected bit0_length=855, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: expected bit0_length=855, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bit0_length( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_bit1_length( block ) != 0 ) {
-    fprintf( stderr, "%s: test_142: default bit1_length should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: default bit1_length should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bit1_length( block ) );
     goto done;
   }
   libspectrum_tape_block_set_bit1_length( block, 1710 );
   if( libspectrum_tape_block_bit1_length( block ) != 1710 ) {
-    fprintf( stderr, "%s: test_142: expected bit1_length=1710, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: expected bit1_length=1710, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bit1_length( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_bits_in_last_byte( block ) != 0 ) {
-    fprintf( stderr, "%s: test_142: default bits_in_last_byte should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: default bits_in_last_byte should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bits_in_last_byte( block ) );
     goto done;
   }
   libspectrum_tape_block_set_bits_in_last_byte( block, 8 );
   if( libspectrum_tape_block_bits_in_last_byte( block ) != 8 ) {
-    fprintf( stderr, "%s: test_142: expected bits_in_last_byte=8, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: expected bits_in_last_byte=8, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_bits_in_last_byte( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_pause( block ) != 0 ) {
-    fprintf( stderr, "%s: test_142: default pause should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: default pause should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pause( block ) );
     goto done;
   }
   libspectrum_tape_block_set_pause( block, 500 );
   if( libspectrum_tape_block_pause( block ) != 500 ) {
-    fprintf( stderr, "%s: test_142: expected pause=500, got %lu\n",
+    fprintf( stderr, "%s: tape_pure_data_block_bit0_length_bit1_length_bits_in_last_byte_pause_getter_setter: expected pause=500, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pause( block ) );
     goto done;
   }
@@ -741,7 +741,7 @@ done:
 }
 
 test_return_t
-test_143( void )
+tape_pause_block_pause_length_and_level_getter_setter( void )
 {
   /* tape block: PAUSE block pause length and level getter/setter */
   libspectrum_tape_block *block =
@@ -749,35 +749,35 @@ test_143( void )
   test_return_t r = TEST_FAIL;
 
   if( !block ) {
-    fprintf( stderr, "%s: test_143: tape_block_alloc returned NULL\n", progname );
+    fprintf( stderr, "%s: tape_pause_block_pause_length_and_level_getter_setter: tape_block_alloc returned NULL\n", progname );
     return TEST_INCOMPLETE;
   }
 
   if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_PAUSE ) {
-    fprintf( stderr, "%s: test_143: expected PAUSE block type\n", progname );
+    fprintf( stderr, "%s: tape_pause_block_pause_length_and_level_getter_setter: expected PAUSE block type\n", progname );
     goto done;
   }
 
   if( libspectrum_tape_block_pause( block ) != 0 ) {
-    fprintf( stderr, "%s: test_143: default pause should be 0, got %lu\n",
+    fprintf( stderr, "%s: tape_pause_block_pause_length_and_level_getter_setter: default pause should be 0, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pause( block ) );
     goto done;
   }
   libspectrum_tape_block_set_pause( block, 2000 );
   if( libspectrum_tape_block_pause( block ) != 2000 ) {
-    fprintf( stderr, "%s: test_143: expected pause=2000, got %lu\n",
+    fprintf( stderr, "%s: tape_pause_block_pause_length_and_level_getter_setter: expected pause=2000, got %lu\n",
              progname, (unsigned long)libspectrum_tape_block_pause( block ) );
     goto done;
   }
 
   if( libspectrum_tape_block_level( block ) != 0 ) {
-    fprintf( stderr, "%s: test_143: default level should be 0, got %d\n",
+    fprintf( stderr, "%s: tape_pause_block_pause_length_and_level_getter_setter: default level should be 0, got %d\n",
              progname, libspectrum_tape_block_level( block ) );
     goto done;
   }
   libspectrum_tape_block_set_level( block, 1 );
   if( libspectrum_tape_block_level( block ) != 1 ) {
-    fprintf( stderr, "%s: test_143: expected level=1, got %d\n",
+    fprintf( stderr, "%s: tape_pause_block_pause_length_and_level_getter_setter: expected level=1, got %d\n",
              progname, libspectrum_tape_block_level( block ) );
     goto done;
   }

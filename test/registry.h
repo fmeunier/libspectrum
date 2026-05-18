@@ -10,6 +10,7 @@ typedef test_return_t (*test_fn)( void );
 typedef struct test_description {
 
   test_fn test;
+  const char *name;
   const char *description;
   int active;
 

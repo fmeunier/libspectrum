@@ -19,16 +19,23 @@ parse_test_specs( char **specs, int count )
 
     const char *spec = specs[i];
     const char *dash = strchr( spec, '-' );
+    char *endptr;
+    long test = strtol( spec, &endptr, 10 );
 
-    if( dash ) {
-      int begin = atoi( spec ), end = atoi( dash + 1 );
+    if( dash && dash != spec && endptr == dash ) {
+      long begin = test, end = strtol( dash + 1, &endptr, 10 );
+      if( *endptr ) continue;
       if( begin < 1 ) begin = 1;
-      if( end == 0 || end > test_count ) end = test_count;
+      if( end == 0 || end > (long)test_count ) end = test_count;
       for( j = begin; j <= end; j++ ) tests[j-1].active = 1;
-    } else {
-      int test = atoi( spec );
-      if( test < 1 || test > test_count ) continue;
+    } else if( *spec && !*endptr ) {
+      if( test < 1 || test > (long)test_count ) continue;
       tests[ test - 1 ].active = 1;
+    } else {
+      for( j = 0; j < (int)test_count; j++ ) {
+        if( strstr( tests[j].name, spec ) || strstr( tests[j].description, spec ) )
+          tests[j].active = 1;
+      }
     }
 
   }
@@ -61,7 +68,8 @@ main( int argc, char *argv[] )
   for( i = 0, test = tests;
        i < test_count;
        i++, test++ ) {
-    printf( "Test %d: %s... ", (int)i + 1, test->description );
+    printf( "Test %d (%s): %s... ", (int)i + 1, test->name,
+            test->description );
     if( test->active ) {
       tests_done++;
       switch( test->test() ) {

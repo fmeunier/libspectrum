@@ -113,7 +113,7 @@ complete_edges_list[] =
 };
 
 test_return_t
-test_15( void )
+complete_tzx_file( void )
 {
   return check_edges( DYNAMIC_TEST_PATH( "complete-tzx.tzx" ), complete_edges_list,
 		      LIBSPECTRUM_TAPE_FLAGS_STOP |
@@ -139,7 +139,7 @@ zero_tail_edges_list[] =
 };
 
 test_return_t
-test_28( void )
+zero_tail_length_pzx_file( void )
 {
   return check_edges( STATIC_TEST_PATH( "zero-tail.pzx" ),
                       zero_tail_edges_list, 0x1ff );
@@ -192,7 +192,7 @@ no_pilot_gdb_list[] =
 };
 
 test_return_t
-test_29( void )
+no_pilot_pulse_gdb_tzx_file( void )
 {
   return check_edges( STATIC_TEST_PATH( "no-pilot-gdb.tzx" ),
                       no_pilot_gdb_list, 0x1ff );
@@ -220,7 +220,7 @@ raw_edges_list[] =
    pulse at the beginning of a raw data block and #445 "Used bits in last
    byte" takes the LSB in raw data blocks*/
 test_return_t
-test_73( void )
+read_tzx_raw_block_edge_handling( void )
 {
   return check_edges( STATIC_TEST_PATH( "raw-data-block.tzx" ),
                       raw_edges_list, 0xffff );
@@ -254,7 +254,7 @@ trailing_pause_edges_list[] =
 };
 
 test_return_t
-test_74( void )
+trailing_pause_block_tzx_file( void )
 {
   return check_edges( STATIC_TEST_PATH( "trailing-pause-block.tzx" ),
                       trailing_pause_edges_list,

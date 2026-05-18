@@ -7,7 +7,7 @@
 
 /* Test for bug #102: invalid compressed file causes crash */
 test_return_t
-test_4( void )
+invalid_compressed_file_1( void )
 {
   #ifndef HAVE_ZLIB_H
     return TEST_SKIPPED; /* gzip not enabled in build */
@@ -19,7 +19,7 @@ test_4( void )
 
 /* Further test for bug #102: invalid compressed file causes crash */
 test_return_t
-test_5( void )
+invalid_compressed_file_2( void )
 {
   #ifndef HAVE_ZLIB_H
     return TEST_SKIPPED; /* gzip not enabled in build */
@@ -30,7 +30,7 @@ test_5( void )
 
 /* Test for bug #103: pointer wraparound causes segfault */
 test_return_t
-test_6( void )
+pointer_wraparound_in_szx_file( void )
 {
   const char *filename = STATIC_TEST_PATH( "invalid.szx" );
   return read_snap( filename, filename, LIBSPECTRUM_ERROR_CORRUPT );
@@ -39,7 +39,7 @@ test_6( void )
 /* Tests for bug #129: SP not sanity checked when reading .sna files;
    also tests bug #130: compressed snapshots cause segfault */
 test_return_t
-test_20( void )
+sna_file_with_sp_0x4000( void )
 {
   #ifndef HAVE_ZLIB_H
     return TEST_SKIPPED; /* gzip not enabled in build */
@@ -50,7 +50,7 @@ test_20( void )
 }
 
 test_return_t
-test_21( void )
+sna_file_with_sp_0xffff( void )
 {
   #ifndef HAVE_ZLIB_H
     return TEST_SKIPPED; /* gzip not enabled in build */
@@ -61,7 +61,7 @@ test_21( void )
 }
 
 test_return_t
-test_25( void )
+writing_sna_file( void )
 {
   const char *filename = STATIC_TEST_PATH( "empty.z80" );
   libspectrum_byte *buffer = NULL;
@@ -125,7 +125,7 @@ test_25( void )
 
 /* Tests for bug #198: last out to 0x1ffd is not serialised into .z80 files */
 test_return_t
-test_26( void )
+writing_plus_3_z80_file( void )
 {
   const char *filename = STATIC_TEST_PATH( "plus3.z80" );
   libspectrum_byte *buffer = NULL;
@@ -184,7 +184,7 @@ test_26( void )
 
 /* Tests for bug #184: SZX files were written with A and F reversed */
 test_return_t
-test_27( void )
+reading_old_szx_file( void )
 {
   #ifndef HAVE_ZLIB_H
     return TEST_SKIPPED; /* gzip not enabled in build */
@@ -234,7 +234,7 @@ test_27( void )
 }
 
 test_return_t
-test_71( void )
+write_rzx_with_incompressible_snap( void )
 {
 #ifndef HAVE_ZLIB_H
   return TEST_SKIPPED; /* gzip not enabled in build */
