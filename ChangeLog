@@ -1,3 +1,33 @@
+2026-05-19  Fredrick Meunier  <fredm@spamcop.net>
+
+        * libspectrum 1.6.2 released.
+
+        * Fix heap corruption and memory leaks when processing corrupt RZX
+          input: the two error-cleanup loops in rzx_read_frames used the
+          wrong frame index when guarding conditional frees, causing
+          use-after-free on one path and silent leaks on the other
+          (Fredrick Meunier).
+
+        * Fix memory leaks in libspectrum_csw_read: four error-return paths
+          (unknown CSW version, bad sample rate, zlib inflate failure, and
+          the no-zlib path) returned without freeing the allocated tape
+          block (Fredrick Meunier).
+
+        * Various minor bug fixes/improvements:
+          * Add RZX unit tests covering alloc/free, start/stop_input,
+            store_frame, and iterator traversal (Fredrick Meunier).
+          * Add snap and tape accessor tests for additional peripheral
+            fields (tests 117-143) (Fredrick Meunier).
+          * Modularise the test suite: split test.c into per-subsystem
+            source files with shared helpers in common.c, and rename
+            numeric test identifiers to descriptive names (Fredrick
+            Meunier).
+          * Use libspectrum_buffer_set for the reserved-bytes zero-fill in
+            dsnap.c write_header(), replacing a byte-at-a-time loop
+            (Fredrick Meunier).
+          * Add concurrency groups to GitHub Actions workflows to cancel
+            redundant in-progress runs on rapid pushes (Fredrick Meunier).
+
 2026-05-05  Fredrick Meunier  <fredm@spamcop.net>
 
         * libspectrum 1.6.1 released.
