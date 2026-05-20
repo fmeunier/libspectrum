@@ -556,6 +556,7 @@ read_b128_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
 				 __FILE__,
 				 (unsigned long)expected_length,
 				 (unsigned long)uncompressed_length );
+	libspectrum_free( rom_data );
 	return LIBSPECTRUM_ERROR_UNKNOWN;
       }
 
@@ -760,6 +761,7 @@ read_opus_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
 			       __FILE__, 
                                (unsigned long)expected_length,
                                (unsigned long)uncompressed_length );
+      libspectrum_free( ram_data );
       return LIBSPECTRUM_ERROR_UNKNOWN;
     }
 
@@ -770,7 +772,7 @@ read_opus_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
 
       error = libspectrum_zlib_inflate( *buffer, disc_rom_length, &rom_data,
                                         &uncompressed_length );
-      if( error ) return error;
+      if( error ) { libspectrum_free( ram_data ); return error; }
 
       expected_length = 0x2000;
 
@@ -782,6 +784,8 @@ read_opus_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
                                  __FILE__, 
                                  (unsigned long)expected_length,
                                  (unsigned long)uncompressed_length );
+        libspectrum_free( ram_data );
+        libspectrum_free( rom_data );
         return LIBSPECTRUM_ERROR_UNKNOWN;
       }
 
@@ -951,6 +955,7 @@ read_plsd_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
 			       __FILE__, 
                                (unsigned long)expected_length,
                                (unsigned long)uncompressed_length );
+      libspectrum_free( ram_data );
       return LIBSPECTRUM_ERROR_UNKNOWN;
     }
 
@@ -961,7 +966,10 @@ read_plsd_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
 
       error = libspectrum_zlib_inflate( *buffer, disc_rom_length, &rom_data,
                                         &uncompressed_length );
-      if( error ) return error;
+      if( error ) {
+        libspectrum_free( ram_data );
+        return error;
+      }
 
       if( uncompressed_length != expected_length ) {
         libspectrum_print_error( LIBSPECTRUM_ERROR_UNKNOWN,
@@ -971,6 +979,8 @@ read_plsd_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
                                  __FILE__, 
                                  (unsigned long)expected_length,
                                  (unsigned long)uncompressed_length );
+        libspectrum_free( ram_data );
+        libspectrum_free( rom_data );
         return LIBSPECTRUM_ERROR_UNKNOWN;
       }
 
@@ -1596,6 +1606,7 @@ read_if1_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
                                  __FILE__, 
                                  (unsigned long)expected_length,
                                  (unsigned long)uncompressed_length );
+        libspectrum_free( rom_data );
         return LIBSPECTRUM_ERROR_UNKNOWN;
       }
 
@@ -1727,6 +1738,7 @@ read_rom_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
                                __FILE__, 
                                (unsigned long)expected_length,
                                (unsigned long)uncompressed_length );
+      libspectrum_free( rom_data );
       return LIBSPECTRUM_ERROR_UNKNOWN;
     }
 
@@ -1970,6 +1982,7 @@ read_divxxx_chunk( libspectrum_snap *snap, const libspectrum_byte **buffer,
                                __FILE__,
                                (unsigned long)expected_length,
                                (unsigned long)uncompressed_length );
+      libspectrum_free( eprom_data );
       return LIBSPECTRUM_ERROR_UNKNOWN;
     }
 
@@ -2388,6 +2401,7 @@ read_mfce_chunk( libspectrum_snap *snap, libspectrum_word version GCC_UNUSED,
                                __FILE__,
                                (unsigned long)expected_ram_length,
                                (unsigned long)uncompressed_length );
+      libspectrum_free( ram_data );
       return LIBSPECTRUM_ERROR_UNKNOWN;
     }
 
