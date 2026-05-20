@@ -726,3 +726,107 @@ done:
   libspectrum_snap_free( snap );
   return r;
 }
+
+test_return_t
+snap_kempston_mouse_active_getter_setter( void )
+{
+  /* libspectrum_snap: kempston_mouse_active getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_kempston_mouse_active_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_kempston_mouse_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_kempston_mouse_active_getter_setter: default kempston_mouse_active should be 0, got %d\n",
+             progname, libspectrum_snap_kempston_mouse_active( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_kempston_mouse_active( snap, 1 );
+  if( libspectrum_snap_kempston_mouse_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: snap_kempston_mouse_active_getter_setter: expected kempston_mouse_active=1, got %d\n",
+             progname, libspectrum_snap_kempston_mouse_active( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+test_return_t
+snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter( void )
+{
+  /* libspectrum_snap: interface1 custom_rom flag, ROM pointer, and ROM length getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *rom;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_interface1_custom_rom( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter: default interface1_custom_rom should be 0, got %d\n",
+             progname, libspectrum_snap_interface1_custom_rom( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_interface1_custom_rom( snap, 1 );
+  if( libspectrum_snap_interface1_custom_rom( snap ) != 1 ) {
+    fprintf( stderr, "%s: snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter: expected interface1_custom_rom=1, got %d\n",
+             progname, libspectrum_snap_interface1_custom_rom( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_interface1_rom( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter: default interface1_rom[0] should be NULL\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_interface1_rom_length( snap, 0 ) != 0 ) {
+    fprintf( stderr, "%s: snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter: default interface1_rom_length[0] should be 0, got %zu\n",
+             progname, libspectrum_snap_interface1_rom_length( snap, 0 ) );
+    goto done;
+  }
+
+  rom = libspectrum_new( libspectrum_byte, 0x2000 );
+  rom[0]      = 0xbe;
+  rom[0x1fff] = 0xef;
+
+  libspectrum_snap_set_interface1_rom( snap, 0, rom );
+  libspectrum_snap_set_interface1_rom_length( snap, 0, 0x2000 );
+
+  if( libspectrum_snap_interface1_rom( snap, 0 ) != rom ) {
+    fprintf( stderr, "%s: snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter: interface1_rom[0] pointer mismatch after set\n",
+             progname );
+    libspectrum_free( rom );
+    goto done;
+  }
+
+  if( libspectrum_snap_interface1_rom_length( snap, 0 ) != 0x2000 ) {
+    fprintf( stderr, "%s: snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter: expected interface1_rom_length[0]=0x2000, got %zu\n",
+             progname, libspectrum_snap_interface1_rom_length( snap, 0 ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_interface1_rom( snap, 0 )[0]      != 0xbe ||
+      libspectrum_snap_interface1_rom( snap, 0 )[0x1fff] != 0xef ) {
+    fprintf( stderr, "%s: snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter: interface1_rom[0] data mismatch\n",
+             progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}

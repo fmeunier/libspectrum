@@ -165,6 +165,8 @@ test_return_t snap_multiface_red_button_disabled_getter_setter( void );
 test_return_t snap_multiface_ram_pointer_and_multiface_ram_length_getter_setter( void );
 test_return_t snap_zxmmc_active_getter_setter( void );
 test_return_t snap_ttx2000s_active_getter_setter( void );
+test_return_t snap_kempston_mouse_active_getter_setter( void );
+test_return_t snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter( void );
 test_return_t tape_turbo_block_pilot_length_sync1_length_sync2_length_getter_setter( void );
 test_return_t tape_turbo_block_bit0_length_bit1_length_pilot_pulses_pause_getter_setter( void );
 test_return_t tape_pure_tone_block_pulse_length_and_count_getter_setter( void );

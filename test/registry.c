@@ -167,6 +167,8 @@ test_description tests[] = {
   TEST_ENTRY( rzx_iterator_begin_next_last_with_snap_and_input_blocks, "RZX iterator begin/next/last with snap and input blocks" ),
   TEST_ENTRY( rzx_get_keyid_returns_zero_with_no_signature_block, "RZX get_keyid returns zero with no signature block" ),
   TEST_ENTRY( rzx_iterator_get_frames_returns_size_t_max_for_non_input_block, "RZX iterator_get_frames returns SIZE_MAX for non-input block" ),
+  TEST_ENTRY( snap_kempston_mouse_active_getter_setter, "Snap kempston_mouse_active getter/setter" ),
+  TEST_ENTRY( snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter, "Snap interface1 custom_rom flag, ROM pointer, and ROM length getter/setter" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
