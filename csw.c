@@ -300,7 +300,6 @@ libspectrum_csw_write( libspectrum_buffer *new_buffer, libspectrum_tape *tape )
 {
   libspectrum_error error = LIBSPECTRUM_ERROR_NONE;
   libspectrum_dword sample_rate;
-  size_t i;
 
   libspectrum_buffer* body_buffer = libspectrum_buffer_alloc();
   size_t body_uncompressed_length = 0;
@@ -339,8 +338,9 @@ libspectrum_csw_write( libspectrum_buffer *new_buffer, libspectrum_tape *tape )
 
   /* encoding application description */
   /* No creator for now */
-  for( i = 0; i < 16; i++ ) {
-    libspectrum_buffer_write_byte( new_buffer, 0 );
+  {
+    static const libspectrum_byte zeros[16] = { 0 };
+    libspectrum_buffer_write( new_buffer, zeros, sizeof( zeros ) );
   }
 
   /* header extension data is zero so on to the data */

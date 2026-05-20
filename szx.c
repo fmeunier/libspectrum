@@ -3569,7 +3569,6 @@ write_if1_chunk( libspectrum_buffer *buffer, libspectrum_buffer *data,
   libspectrum_word uncompressed_rom_length = 0;
   libspectrum_word flags = 0;
   int use_compression;
-  int i;
   libspectrum_byte drive_count = 8;
 
   if( libspectrum_snap_interface1_custom_rom( snap ) ) {
@@ -3613,10 +3612,13 @@ write_if1_chunk( libspectrum_buffer *buffer, libspectrum_buffer *data,
   libspectrum_buffer_write_byte( data, drive_count );
 
   /* Skip 'reserved' data */
-  for( i = 0; i < 3; i++ ) libspectrum_buffer_write_byte( data, 0 );
+  {
+    static const libspectrum_byte zeros[32] = { 0 };
+    libspectrum_buffer_write( data, zeros, 3 );
 
-  /* Skip 'reserved' data */
-  for( i = 0; i < 8; i++ ) libspectrum_buffer_write_dword( data, 0 );
+    /* Skip 'reserved' data */
+    libspectrum_buffer_write( data, zeros, sizeof( zeros ) );
+  }
 
   libspectrum_buffer_write_word( data, uncompressed_rom_length );
 
