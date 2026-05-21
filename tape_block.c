@@ -524,8 +524,28 @@ libspectrum_tape_block_zero( libspectrum_tape_block *block )
 
 /* Give the length of a tape block */
 
-#define BITS_SET_ARRAY_SIZE 256
-static int bits_set[ BITS_SET_ARRAY_SIZE ];
+/* Precomputed popcount table: bits_set[b] is the number of 1-bits in byte b.
+   Replacing the runtime-init loop means libspectrum_init() has no
+   bookkeeping to do for this table, and the array can be const so the
+   compiler knows none of its elements change after program start. */
+static const int bits_set[ 256 ] = {
+  0, 1, 1, 2, 1, 2, 2, 3, 1, 2, 2, 3, 2, 3, 3, 4,
+  1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+  1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+  2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+  1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+  2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+  2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+  3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+  1, 2, 2, 3, 2, 3, 3, 4, 2, 3, 3, 4, 3, 4, 4, 5,
+  2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+  2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+  3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+  2, 3, 3, 4, 3, 4, 4, 5, 3, 4, 4, 5, 4, 5, 5, 6,
+  3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+  3, 4, 4, 5, 4, 5, 5, 6, 4, 5, 5, 6, 5, 6, 6, 7,
+  4, 5, 5, 6, 5, 6, 6, 7, 5, 6, 6, 7, 6, 7, 7, 8
+};
 
 const int LIBSPECTRUM_BITS_IN_BYTE = 8;
 
@@ -548,13 +568,7 @@ libspectrum_bits_set_n_bits( libspectrum_byte byte, libspectrum_byte bits )
 void
 libspectrum_init_bits_set( void )
 {
-  int i;
-
-  /* Not big or clever, but easy to understand */
-  for( i = 0; i < BITS_SET_ARRAY_SIZE; i++ ) {
-    bits_set[ i ] = libspectrum_bits_set_n_bits( (libspectrum_byte)i,
-                                                 LIBSPECTRUM_BITS_IN_BYTE );
-  }
+  /* Table is now a compile-time constant; nothing to do at runtime. */
 }
 
 static libspectrum_dword
