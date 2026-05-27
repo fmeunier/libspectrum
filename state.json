@@ -1,78 +1,10 @@
 {
-  "last_run": "2026-05-07T12:21:00Z",
-  "last_run_id": "25495328998",
+  "last_run": "2026-05-27T12:21Z",
+  "last_run_id": "26510639554",
+  "monthly_activity_issue": 30,
   "comments_made": {},
-  "prs_created": [
-    {
-      "branch": "repo-assist/fix-pzx-read-memory-leaks-285ff130905848a3",
-      "pr_number": 36,
-      "description": "Fix memory leaks in pzx_read.c read_pzxt_block error paths",
-      "status": "open"
-    },
-    {
-      "branch": "repo-assist/perf-buffer-alloc-hint-20260505-57567862f24229ee",
-      "pr_number": 37,
-      "description": "perf: add libspectrum_buffer_alloc_hint() to avoid reallocs in write_ram_page",
-      "status": "open"
-    },
-    {
-      "branch": "repo-assist/test-snap-opus-spectranet-disciple-20260506-dd5902d990cf4308",
-      "pr_number": 38,
-      "description": "test: snap accessor tests for ZXATASP RAM, Opus Discovery, Spectranet, DISCiPLE (tests 117-125)",
-      "status": "open"
-    },
-    {
-      "branch": "repo-assist/test-snap-misc-peripherals-20260506-960311aa90b0e2b0",
-      "pr_number": 39,
-      "description": "test: snap accessor tests for USource, USpeeched, Didaktik80, ULAplus (tests 117-122)",
-      "status": "open"
-    },
-    {
-      "branch": "repo-assist/ci-concurrency-20260507",
-      "pr_number": "pending-40",
-      "description": "ci: add concurrency groups to all 4 platform workflow files",
-      "status": "open"
-    },
-    {
-      "branch": "repo-assist/test-snap-remaining-peripherals-20260507",
-      "pr_number": "pending-41",
-      "description": "test: snap accessor tests for late_timings, zx_printer, covox, multiface_red, multiface_ram, zxmmc, ttx2000s (tests 117-123)",
-      "status": "open"
-    }
-  ],
-  "monthly_activity_issue": {
-    "number": 30,
-    "month": "2026-05",
-    "title": "[Repo Assist] Monthly Activity 2026-05",
-    "status": "open"
-  },
-  "backlog_cursor": null,
-  "checked_off_by_maintainer": [
-    "Apply patch for CI typo fix + macOS autoreconf cleanup (applied as commit 24bfa0d)",
-    "Apply patch for new buffer tests (test_83, test_84) - applied as commit 0cee5e9",
-    "Apply patch to upgrade SourceForge URLs from http to https - applied as commit 03276e4",
-    "Apply patch for pkg.m4 update (applied as commit b35d447)",
-    "Apply patch for creator const-correctness (applied as commit f9c310a)",
-    "Apply patch for buffer realloc optimization + AC_C_CONST removal",
-    "Creator tests PR (tests 85-87) merged as commit 094ae28",
-    "PR #15 snap Z80 register tests (88-90) merged",
-    "PR #16 creator_alloc zero-init fix merged",
-    "PR #18 microdrive API tests (91-93) and snap peripheral tests (94-96) merged as commit bcd05f3",
-    "PR #19 (libspectrum_new0 in buffer/rzx/dck alloc) merged",
-    "PR aw_pr20 (snap custom_rom, RAM pages, interface1 tests 97-99) merged as commit aba0042",
-    "PR #21 microdrive new0 - closed/merged",
-    "PR #23 snap DivIDE/SpecDrum/Fuller/Multiface tests 100-103 - closed/merged",
-    "PR #24 tape_block new0 - closed/merged",
-    "PR #25 ide_alloc new0 - closed/merged",
-    "PR #27/#28 pzx_read_string fix - applied as commit c9cf395",
-    "PR #29 snap AY/beta/ZXATASP tests 104-108 - applied as commit 24d175e (test 109 = PZX test)",
-    "PR #22 superseded tests - closed",
-    "PR #31 DivIDE/DivMMC tests 110-113 - applied as commit d6dfd02",
-    "PR aw_dckblk dck_block_alloc new0 refactor - applied as commit c63f07b",
-    "PR #32 Plus D tests 114-116 - applied as commit 4d49eef",
-    "PR #35 buffer initial size reduction - applied as commit bef3313",
-    "Monthly activity suggested actions all checked off by maintainer",
-    "PR #34 closed (superseded by PR #38)"
-  ],
-  "notes": "Master has 116 tests. Open PRs: #36 (pzx memory leaks), #37 (buffer_alloc_hint perf), #38 (ZXATASP/Opus/Spectranet/DISCiPLE tests 117-125), #39 (USource/USpeeched/Didaktik80/ULAplus tests 117-122), pending-40 (CI concurrency groups), pending-41 (late_timings/zx_printer/covox/multiface_red/multiface_ram/zxmmc/ttx2000s tests 117-123). PRs #38, #39, and pending-41 all start at 117 but cover different peripherals - maintainer should apply in sequence adjusting numbers. After all test PRs applied, snap accessor coverage will be complete. Next area: tape block accessor unit tests (setter/getter roundtrip for turbo/rom/pure blocks)."
+  "open_repo_assist_prs": [36, 45, 47, 54, 57, "new-rom-test"],
+  "checked_off_by_maintainer": [49, 55, 56],
+  "issue_cursor": 30,
+  "notes": "All open issues are agentic-workflows admin notices (#26, #58, #59, #60, #61). No real user issues. PR #57 (bits_set static table) still open. New PR created this run for ROM block tape accessor tests."
 }
