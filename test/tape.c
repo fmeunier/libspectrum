@@ -788,3 +788,69 @@ done:
   libspectrum_tape_block_free( block );
   return r;
 }
+
+test_return_t
+tape_rom_block_data_data_length_and_pause_getter_setter( void )
+{
+  /* tape block: ROM block data, data_length, and pause getter/setter */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_ROM );
+  test_return_t r = TEST_FAIL;
+  libspectrum_byte *data;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_rom_block_data_data_length_and_pause_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_ROM ) {
+    fprintf( stderr, "%s: tape_rom_block_data_data_length_and_pause_getter_setter: expected ROM block type\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data( block ) != NULL ) {
+    fprintf( stderr, "%s: tape_rom_block_data_data_length_and_pause_getter_setter: default data should be NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data_length( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_rom_block_data_data_length_and_pause_getter_setter: default data_length should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_data_length( block ) );
+    goto done;
+  }
+
+  data = libspectrum_malloc( 3 );
+  data[0] = 0x00; data[1] = 0x01; data[2] = 0x02;
+  libspectrum_tape_block_set_data_length( block, 3 );
+  libspectrum_tape_block_set_data( block, data );
+
+  if( libspectrum_tape_block_data_length( block ) != 3 ) {
+    fprintf( stderr, "%s: tape_rom_block_data_data_length_and_pause_getter_setter: expected data_length=3, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_data_length( block ) );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data( block ) != data ) {
+    fprintf( stderr, "%s: tape_rom_block_data_data_length_and_pause_getter_setter: data pointer mismatch\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_pause( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_rom_block_data_data_length_and_pause_getter_setter: default pause should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_pause( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_pause( block, 1000 );
+  if( libspectrum_tape_block_pause( block ) != 1000 ) {
+    fprintf( stderr, "%s: tape_rom_block_data_data_length_and_pause_getter_setter: expected pause=1000, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_pause( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
