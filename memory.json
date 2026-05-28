@@ -2,10 +2,10 @@
   "last_run": "2026-05-28",
   "monthly_activity_issue": 30,
   "comments_made": {},
-  "open_prs": [36, 45, 47, 54, 57, 62, 63],
-  "pending_pr_branch": "repo-assist/fix-pzx-puls-leak-and-static-types-20260528",
-  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 55, 56],
-  "notes": "PRs #36,45,47,54,57,62,63 still open. New PR on branch repo-assist/fix-pzx-puls-leak-and-static-types-20260528 created this run (pzx_read empty PULS leak + static types[]). Future work: PULSES block accessor tests (count/pulse_lengths round-trip). Memory note: closed_prs list is stale - #36 is actually still open.",
+  "open_prs": [36, 45, 47, 54, 57, 62, 64],
+  "pending_pr_branch": null,
+  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 55, 56, 63],
+  "notes": "PRs #36,45,47,54,57,62,64 still open. Task6: no merge conflicts on any open PR. Task4: Created PR for macOS brew download cache (branch repo-assist/ci-macos-brew-cache-20260528). Future work: PULSES block accessor tests (count/pulse_lengths round-trip).",
   "backlog_cursor": 0,
   "fix_attempts": {
     "pzx-read-leaks": {"pr": 36, "status": "open"},
@@ -14,7 +14,7 @@
     "changelog-draft": {"pr": 54, "status": "open"},
     "bits-set-static": {"pr": 57, "status": "open"},
     "rom-tape-block-tests": {"pr": 62, "status": "open"},
-    "safeoutput-install-fix": {"pr": 63, "status": "open"},
-    "pzx-puls-leak-static-types": {"branch": "repo-assist/fix-pzx-puls-leak-and-static-types-20260528", "status": "submitted-2026-05-28"}
+    "pzx-puls-leak-static-types": {"pr": 64, "status": "open"},
+    "ci-macos-brew-cache": {"branch": "repo-assist/ci-macos-brew-cache-20260528", "status": "submitted-2026-05-28"}
   }
 }
