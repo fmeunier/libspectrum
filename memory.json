@@ -1,11 +1,11 @@
 {
-  "last_run": "2026-05-29",
+  "last_run": "2026-05-30",
   "monthly_activity_issue": 30,
   "comments_made": {},
-  "open_prs": [36, 45, 47, 54, 57, 62, 64],
-  "pending_pr_branch": "repo-assist/test-pulses-block-accessors-20260529",
+  "open_prs": [36, 45, 47, 54, 57, 62, 64, 67],
+  "pending_pr_branch": "repo-assist/ci-macos-brew-cache-20260530",
   "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 55, 56, 63],
-  "notes": "PRs #36,45,47,54,57,62,64 still open. New PR branch: repo-assist/test-pulses-block-accessors-20260529 (PULSES block accessor tests). CI macOS brew cache PR on branch repo-assist/ci-macos-brew-cache-20260528 still pending (no PR number yet).",
+  "notes": "PRs #36,45,47,54,57,62,64,67 open. New CI brew cache PR on branch repo-assist/ci-macos-brew-cache-20260530 submitted 2026-05-30. Issue #66 tracks the brew cache work - should be closed when PR merges.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "pzx-read-leaks": {"pr": 36, "status": "open"},
@@ -15,7 +15,7 @@
     "bits-set-static": {"pr": 57, "status": "open"},
     "rom-tape-block-tests": {"pr": 62, "status": "open"},
     "pzx-puls-leak-static-types": {"pr": 64, "status": "open"},
-    "ci-macos-brew-cache": {"branch": "repo-assist/ci-macos-brew-cache-20260528", "status": "submitted-2026-05-28"},
-    "pulses-block-accessor-tests": {"branch": "repo-assist/test-pulses-block-accessors-20260529", "status": "submitted-2026-05-29"}
+    "pulses-block-accessor-tests": {"pr": 67, "status": "open"},
+    "ci-macos-brew-cache": {"branch": "repo-assist/ci-macos-brew-cache-20260530", "status": "submitted-2026-05-30"}
   }
 }
