@@ -379,6 +379,8 @@ read_puls_block( libspectrum_tape *tape, const libspectrum_byte **buffer,
   if( count == 0 ) {
     libspectrum_print_error( LIBSPECTRUM_ERROR_CORRUPT,
                            "read_puls_block: no pulses found in pulse block" );
+    libspectrum_free( pulse_repeats_buffer );
+    libspectrum_free( lengths_buffer );
     return LIBSPECTRUM_ERROR_CORRUPT;
   }
 
