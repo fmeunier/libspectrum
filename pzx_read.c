@@ -156,9 +156,12 @@ read_pzxt_block( libspectrum_tape *tape, const libspectrum_byte **buffer,
     ids[0] = 0x00;
 
     /* Read in the title string itself */
+    strings[0] = NULL;
     error = pzx_read_string( buffer, block_end, &strings[0] );
     if( error ) {
       libspectrum_free( strings[0] );
+      libspectrum_free( strings );
+      libspectrum_free( ids );
       return error;
     }
   }
@@ -167,7 +170,7 @@ read_pzxt_block( libspectrum_tape *tape, const libspectrum_byte **buffer,
     error = pzx_read_string( buffer, block_end, &info_tag );
     if( error ) {
       size_t j;
-      for( j = 0; j < i; j++ ) libspectrum_free( strings[j] );
+      for( j = 0; j < count; j++ ) libspectrum_free( strings[j] );
       libspectrum_free( strings ); libspectrum_free( ids );
       return error;
     }
@@ -179,7 +182,8 @@ read_pzxt_block( libspectrum_tape *tape, const libspectrum_byte **buffer,
     error = pzx_read_string( buffer, block_end, &string );
     if( error ) {
       size_t j;
-      for( j = 0; j < i; j++ ) libspectrum_free( strings[j] );
+      libspectrum_free( info_tag );
+      for( j = 0; j < count; j++ ) libspectrum_free( strings[j] );
       libspectrum_free( strings ); libspectrum_free( ids );
       return error;
     }
