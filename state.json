@@ -1,10 +1,22 @@
 {
-  "last_run": "2026-05-27T12:21Z",
-  "last_run_id": "26510639554",
-  "monthly_activity_issue": 30,
+  "last_run": "2026-06-01",
+  "monthly_activity_issue": "new-june",
   "comments_made": {},
-  "open_repo_assist_prs": [36, 45, 47, 54, 57, "new-rom-test"],
-  "checked_off_by_maintainer": [49, 55, 56],
-  "issue_cursor": 30,
-  "notes": "All open issues are agentic-workflows admin notices (#26, #58, #59, #60, #61). No real user issues. PR #57 (bits_set static table) still open. New PR created this run for ROM block tape accessor tests."
+  "open_prs": [45, 47, 67, 69],
+  "pending_pr_branch": null,
+  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 55, 56, 63],
+  "notes": "May monthly issue #30 closed. June monthly issue created this run. PR #54 (ChangeLog 1.6.2) superseded by new PR created this run (repo-assist/changelog-1.6.2-update-20260601). New ChangeLog PR covers all commits: rzx fix, pzxt leak, puls leak, szx inflate, snap tests, ROM tape tests, buffer writes.",
+  "backlog_cursor": 0,
+  "fix_attempts": {
+    "buffer-write-perf": {"pr": 45, "status": "open"},
+    "tap-error-return": {"pr": 47, "status": "open"},
+    "changelog-draft": {"pr": 54, "status": "superseded"},
+    "changelog-draft-v2": {"branch": "repo-assist/changelog-1.6.2-update-20260601", "status": "submitted-2026-06-01"},
+    "rom-tape-block-tests": {"pr": 62, "status": "merged"},
+    "pzx-puls-leak-static-types": {"pr": 64, "status": "merged"},
+    "pulses-block-accessor-tests": {"pr": 67, "status": "open"},
+    "pulse-sequence-accessor-tests": {"pr": 69, "status": "open"}
+  },
+  "user_checked_off": [],
+  "brew_cache_proxy_issues": [66, 68]
 }
