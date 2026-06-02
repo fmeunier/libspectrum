@@ -1,22 +1,19 @@
 {
-  "last_run": "2026-05-31",
-  "monthly_activity_issue": 30,
+  "last_run": "2026-06-02",
+  "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 54, 57, 62, 64, 67],
-  "pending_pr_branch": null,
-  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 55, 56, 63],
-  "notes": "PR #36 closed by maintainer on 2026-05-31 without merging. Issues #66 and #68 are proxy issues for brew cache workflow change (can't push workflow files). New PULSE_SEQUENCE accessor test PR being submitted this run.",
+  "open_prs": [45, 47, 67, 69, 70],
+  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64],
+  "notes": "Issue #30 (May activity) closed 2026-06-02. Issues #66 and #68 (brew cache proxy) closed by maintainer - brew cache commit 709b2ac merged to master 2026-06-01. PR #54 superseded by PR #70.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
     "tap-error-return": {"pr": 47, "status": "open"},
-    "changelog-draft": {"pr": 54, "status": "open"},
-    "bits-set-static": {"pr": 57, "status": "open"},
-    "rom-tape-block-tests": {"pr": 62, "status": "open"},
-    "pzx-puls-leak-static-types": {"pr": 64, "status": "open"},
+    "changelog-draft": {"pr": 54, "status": "superseded-by-70"},
+    "changelog-1.6.2-update": {"pr": 70, "status": "open"},
     "pulses-block-accessor-tests": {"pr": 67, "status": "open"},
-    "pulse-sequence-accessor-tests": {"branch": "repo-assist/test-pulse-sequence-accessors-20260531", "status": "submitted-2026-05-31"}
+    "pulse-sequence-accessor-tests": {"pr": 69, "status": "open"}
   },
-  "user_checked_off": [],
-  "brew_cache_proxy_issues": [66, 68]
+  "user_checked_off": ["issue-66", "issue-68"],
+  "brew_cache_proxy_issues": []
 }
