@@ -461,6 +461,7 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
     case LIBSPECTRUM_TAPE_BLOCK_ARCHIVE_INFO:
     case LIBSPECTRUM_TAPE_BLOCK_HARDWARE:
     case LIBSPECTRUM_TAPE_BLOCK_CUSTOM:
+    case LIBSPECTRUM_TAPE_BLOCK_CONCAT:
       *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE; end_of_block = 1;
       break;
 
@@ -1448,6 +1449,10 @@ libspectrum_tape_block_description( char *buffer, size_t length,
 
   case LIBSPECTRUM_TAPE_BLOCK_DATA_BLOCK:
     strncpy( buffer, "Data Block", length );
+    break;
+
+  case LIBSPECTRUM_TAPE_BLOCK_CONCAT:
+    strncpy( buffer, "Glue Block", length );
     break;
 
   default:
