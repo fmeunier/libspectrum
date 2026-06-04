@@ -1,10 +1,10 @@
 {
-  "last_run": "2026-06-03",
+  "last_run": "2026-06-04",
   "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 67, 69, 70, "csw-alloc-consistency"],
+  "open_prs": [45, 47, 67, 69, 70, 72],
   "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64],
-  "notes": "Issue #30 (May activity) closed 2026-06-02. Issues #66 and #68 (brew cache proxy) closed by maintainer - brew cache commit 709b2ac merged to master 2026-06-01. PR #54 superseded by PR #70. Task 3: no fixable bug issues in open issues - all open issues are agentic-workflow infrastructure. Task 5 2026-06-03: Created PR for csw.c refactor - use libspectrum_tape_block_alloc for consistency.",
+  "notes": "Issue #30 (May activity) closed 2026-06-02. Issues #66 and #68 (brew cache proxy) closed by maintainer - brew cache commit 709b2ac merged to master 2026-06-01. PR #54 superseded by PR #70. Task 5 2026-06-03: Created PR #72 for csw.c refactor - use libspectrum_tape_block_alloc for consistency. Task 5 2026-06-04: Created PR for CONCAT block fix in tape.c (tape_block_description + get_next_edge). Task 2: All open issues are agentic-workflow infrastructure, no real project issues.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
@@ -13,7 +13,8 @@
     "changelog-1.6.2-update": {"pr": 70, "status": "open"},
     "pulses-block-accessor-tests": {"pr": 67, "status": "open"},
     "pulse-sequence-accessor-tests": {"pr": 69, "status": "open"},
-    "csw-block-alloc-consistency": {"pr": "pending", "status": "open"}
+    "csw-block-alloc-consistency": {"pr": 72, "status": "open"},
+    "concat-block-coverage": {"pr": "pending", "status": "open"}
   },
   "user_checked_off": ["issue-66", "issue-68"],
   "brew_cache_proxy_issues": []
