@@ -238,7 +238,7 @@ typedef struct libspectrum_tape_pause_block {
 
   libspectrum_dword length;
   libspectrum_dword length_tstates;
-  int level; /* 0/1 for low and high, anything else for not specified */
+  int level; /* 0/1 for low and high, -1 for not specified */
 
 } libspectrum_tape_pause_block;
 
