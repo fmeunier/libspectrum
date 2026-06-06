@@ -50,11 +50,7 @@ libspectrum_csw_read( libspectrum_tape *tape,
     return LIBSPECTRUM_ERROR_SIGNATURE;
   }
 
-  /* Claim memory for the block */
-  block = libspectrum_new( libspectrum_tape_block, 1 );
-
-  /* Set the block type */
-  block->type = LIBSPECTRUM_TAPE_BLOCK_RLE_PULSE;
+  block = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_RLE_PULSE );
   csw_block = &block->types.rle_pulse;
 
   buffer += signature_length;
