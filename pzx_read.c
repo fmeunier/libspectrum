@@ -653,33 +653,24 @@ static libspectrum_error
 pzx_read_string( const libspectrum_byte **ptr, const libspectrum_byte *end,
 		 char **dest )
 {
-  size_t length = 0;
+  const libspectrum_byte *nul;
+  size_t length;
   char *ptr2;
-  size_t buffer_size = 64;
-  char *buffer = libspectrum_new( char, buffer_size );
 
-  while( **ptr != '\0' && *ptr < end ) {
-    if( length == buffer_size ) {
-      buffer_size *= 2;
-      buffer = libspectrum_renew( char, buffer, buffer_size );
-    }
-    *(buffer + length++) = **ptr; (*ptr)++;
-  }
+  /* Locate the NUL terminator within the available data; if absent, treat
+     end-of-block as the string boundary */
+  nul = memchr( *ptr, '\0', end - *ptr );
+  length = nul ? (size_t)(nul - *ptr) : (size_t)(end - *ptr);
 
-  /* Advance past the null terminator */
-  if( *ptr < end && **ptr == '\0' ) (*ptr)++;
-
-  *dest = libspectrum_new( char, (length + 1) );
-
-  strncpy( *dest, buffer, length );
-
-  /* Null terminate the string */
+  *dest = libspectrum_new( char, length + 1 );
+  memcpy( *dest, *ptr, length );
   (*dest)[length] = '\0';
 
-  /* Translate line endings */
-  for( ptr2 = (*dest); *ptr2; ptr2++ ) if( *ptr2 == '\r' ) *ptr2 = '\n';
+  /* Advance past the string and its NUL terminator */
+  *ptr = nul ? nul + 1 : end;
 
-  libspectrum_free( buffer );
+  /* Translate line endings */
+  for( ptr2 = *dest; *ptr2; ptr2++ ) if( *ptr2 == '\r' ) *ptr2 = '\n';
 
   return LIBSPECTRUM_ERROR_NONE;
 }
