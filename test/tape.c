@@ -854,3 +854,67 @@ done:
   libspectrum_tape_block_free( block );
   return r;
 }
+
+test_return_t
+tape_pulses_block_count_and_pulse_lengths_getter_setter( void )
+{
+  /* tape block: PULSES block count and pulse_lengths getter/setter (round-trip) */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PULSES );
+  libspectrum_dword *lengths = NULL;
+  test_return_t r = TEST_FAIL;
+  size_t i;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_pulses_block_count_and_pulse_lengths_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_PULSES ) {
+    fprintf( stderr, "%s: tape_pulses_block_count_and_pulse_lengths_getter_setter: expected PULSES block type\n", progname );
+    goto done;
+  }
+
+  /* Default count should be 0 */
+  if( libspectrum_tape_block_count( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_pulses_block_count_and_pulse_lengths_getter_setter: default count should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  /* Set up 4 pulse lengths and round-trip through the accessors */
+  lengths = libspectrum_new( libspectrum_dword, 4 );
+  lengths[0] = 667;
+  lengths[1] = 735;
+  lengths[2] = 855;
+  lengths[3] = 1710;
+
+  libspectrum_tape_block_set_count( block, 4 );
+  libspectrum_tape_block_set_pulse_lengths( block, lengths );
+  lengths = NULL; /* block owns the array now */
+
+  if( libspectrum_tape_block_count( block ) != 4 ) {
+    fprintf( stderr, "%s: tape_pulses_block_count_and_pulse_lengths_getter_setter: expected count=4, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  {
+    libspectrum_dword expected[] = { 667, 735, 855, 1710 };
+    for( i = 0; i < 4; i++ ) {
+      if( libspectrum_tape_block_pulse_lengths( block, i ) != expected[i] ) {
+        fprintf( stderr, "%s: tape_pulses_block_count_and_pulse_lengths_getter_setter: pulse_lengths[%lu] expected %lu, got %lu\n",
+                 progname, (unsigned long)i, (unsigned long)expected[i],
+                 (unsigned long)libspectrum_tape_block_pulse_lengths( block, i ) );
+        goto done;
+      }
+    }
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_free( lengths );
+  libspectrum_tape_block_free( block );
+  return r;
+}
