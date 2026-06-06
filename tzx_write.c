@@ -932,12 +932,23 @@ tzx_write_bytes( libspectrum_buffer* buffer, size_t length, size_t length_bytes,
 static void
 tzx_write_string( libspectrum_buffer *buffer, char *string )
 {
-  size_t i, length = strlen( (char*)string );
+  size_t length = strlen( (char*)string ) & 0xff;
+  const char *p = string;
+  const char *end = string + length;
+  const char *segment = p;
 
-  length &= 0xff;
   libspectrum_buffer_write_byte( buffer, length );
 
-  /* Fix up line endings as we go */
-  for( i=0; i<length; i++ )
-    libspectrum_buffer_write_byte( buffer, string[i] == '\x0a' ? '\x0d' : string[i] );
+  /* Write bulk segments between line-ending translations (\n -> \r).
+     TZX strings rarely contain newlines, so the common case is one
+     single libspectrum_buffer_write call for the whole string. */
+  while( p < end ) {
+    if( *p == '\x0a' ) {
+      libspectrum_buffer_write( buffer, segment, p - segment );
+      libspectrum_buffer_write_byte( buffer, '\x0d' );
+      segment = p + 1;
+    }
+    p++;
+  }
+  libspectrum_buffer_write( buffer, segment, p - segment );
 }
