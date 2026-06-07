@@ -1,11 +1,11 @@
 {
-  "last_run": "2026-06-06",
+  "last_run": "2026-06-07",
   "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 70, 75, 76, 77],
-  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 72, 73, 74],
+  "open_prs": [45, 47, 70, 75, 79],
+  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 72, 73, 74, 76, 77],
   "superseded_prs": [54, 67, 69],
-  "notes": "Task 5 2026-06-06: PR #76 created - simplify pzx_read_string with memchr. Task 8 2026-06-06: PR #77 created - bulk-write string data in tzx_write_string. PR #70 ChangeLog updated to include CONCAT fix (c9874d2), csw refactor (7117085), PULSES test (9b027b6), Homebrew cache (709b2ac). PRs #72, #73, #74 were closed (not merged) but commits applied directly to master by maintainer.",
+  "notes": "Task 10 2026-06-07: PR #79 created - RAW_DATA block accessor round-trip test (bit_length, bits_in_last_byte, data, data_length, pause); 155 tests. Task 10 2026-06-06: PRs for pzx_read_string/memchr and tzx_write_string bulk-write were applied to master directly (commits 8181653, d98c2f3). PR #70 ChangeLog update still open and now significantly outdated.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
@@ -16,9 +16,9 @@
     "pulse-sequence-accessor-tests": {"pr": 75, "status": "open"},
     "csw-block-alloc-consistency": {"pr": 72, "status": "closed-applied-to-master"},
     "concat-block-coverage": {"pr": 73, "status": "closed-applied-to-master"},
-    "pzx-read-string-refactor": {"pr": 76, "status": "open"},
-    "tzx-write-string-perf": {"pr": 77, "status": "open"}
+    "pzx-read-string-refactor": {"status": "closed-applied-to-master-8181653"},
+    "tzx-write-string-perf": {"status": "closed-applied-to-master-d98c2f3"},
+    "raw-data-accessor-tests": {"pr": 79, "status": "open"}
   },
-  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review"],
-  "brew_cache_proxy_issues": []
+  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review"]
 }
