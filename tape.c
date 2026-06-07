@@ -64,7 +64,8 @@ block_free( gpointer data, gpointer user_data );
 static libspectrum_error
 rom_edge( libspectrum_tape_rom_block *block,
           libspectrum_tape_rom_block_state *state,
-          libspectrum_dword *tstates, int *end_of_block, int *flags );
+          libspectrum_dword *tstates, end_of_block_t *end_of_block,
+          int *flags );
 static libspectrum_error
 rom_next_bit( libspectrum_tape_rom_block *block,
               libspectrum_tape_rom_block_state *state );
@@ -73,7 +74,7 @@ static libspectrum_error
 turbo_edge( libspectrum_tape_turbo_block *block,
             libspectrum_tape_turbo_block_state *state,
             libspectrum_dword *tstates,
-	    int *end_of_block, int *flags );
+	    end_of_block_t *end_of_block, int *flags );
 static libspectrum_error
 turbo_next_bit( libspectrum_tape_turbo_block *block,
                 libspectrum_tape_turbo_block_state *state );
@@ -81,22 +82,23 @@ turbo_next_bit( libspectrum_tape_turbo_block *block,
 static libspectrum_error
 tone_edge( libspectrum_tape_pure_tone_block *block,
            libspectrum_tape_pure_tone_block_state *state,
-           libspectrum_dword *tstates, int *end_of_block );
+           libspectrum_dword *tstates, end_of_block_t *end_of_block );
 
 static libspectrum_error
 pulses_edge( libspectrum_tape_pulses_block *block,
              libspectrum_tape_pulses_block_state *state,
-             libspectrum_dword *tstates, int *end_of_block );
+             libspectrum_dword *tstates, end_of_block_t *end_of_block );
 
 static libspectrum_error
 pure_data_edge( libspectrum_tape_pure_data_block *block,
                 libspectrum_tape_pure_data_block_state *state,
-		libspectrum_dword *tstates, int *end_of_block, int *flags );
+		libspectrum_dword *tstates, end_of_block_t *end_of_block,
+		int *flags );
 
 static libspectrum_error
 raw_data_edge( libspectrum_tape_raw_data_block *block,
                libspectrum_tape_raw_data_block_state *state,
-	       libspectrum_dword *tstates, int *end_of_block,
+	       libspectrum_dword *tstates, end_of_block_t *end_of_block,
                int *flags );
 
 static libspectrum_error
@@ -105,12 +107,12 @@ jump_blocks( libspectrum_tape *tape, int offset );
 static libspectrum_error
 rle_pulse_edge( libspectrum_tape_rle_pulse_block *block,
                 libspectrum_tape_rle_pulse_block_state *state,
-		libspectrum_dword *tstates, int *end_of_block );
+		libspectrum_dword *tstates, end_of_block_t *end_of_block );
 
 static libspectrum_error
 pulse_sequence_edge( libspectrum_tape_pulse_sequence_block *block,
                      libspectrum_tape_pulse_sequence_block_state *state,
-                     libspectrum_dword *tstates, int *end_of_block,
+                     libspectrum_dword *tstates, end_of_block_t *end_of_block,
                      int *flags );
 
 libspectrum_error
@@ -120,7 +122,8 @@ libspectrum_tape_data_block_next_bit( libspectrum_tape_data_block *block,
 static libspectrum_error
 data_block_edge( libspectrum_tape_data_block *block,
                  libspectrum_tape_data_block_state *state,
-                 libspectrum_dword *tstates, int *end_of_block, int *flags );
+                 libspectrum_dword *tstates, end_of_block_t *end_of_block,
+                 int *flags );
 
 /*** Function definitions ****/
 
@@ -347,7 +350,7 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
     libspectrum_tape_iterator_current( it->current_block );
 
   /* Has this edge ended the block? */
-  int end_of_block = 0;
+  end_of_block_t end_of_block = END_OF_BLOCK_NONE;
 
   /* After getting a new block, do we want to advance to the next one? */
   int no_advance = 0;
@@ -397,7 +400,8 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
       break;
 
     case LIBSPECTRUM_TAPE_BLOCK_PAUSE:
-      *tstates = block->types.pause.length_tstates; end_of_block = 1;
+      *tstates = block->types.pause.length_tstates;
+      end_of_block = END_OF_BLOCK_NORMAL;
       /* If the pause isn't a "don't care" level then set the appropriate pulse
          level */
       if( block->types.pause.level != -1 &&
@@ -412,7 +416,8 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
     case LIBSPECTRUM_TAPE_BLOCK_JUMP:
       error = jump_blocks( tape, block->types.jump.offset );
       if( error ) return error;
-      *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE; end_of_block = 1;
+      *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE;
+      end_of_block = END_OF_BLOCK_NORMAL;
       no_advance = 1;
       break;
 
@@ -421,7 +426,8 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
         it->loop_block = it->current_block->next;
         it->loop_count = block->types.loop_start.count;
       }
-      *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE; end_of_block = 1;
+      *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE;
+      end_of_block = END_OF_BLOCK_NORMAL;
       break;
 
     case LIBSPECTRUM_TAPE_BLOCK_LOOP_END:
@@ -433,18 +439,19 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
           it->loop_block = NULL;
         }
       }
-      *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE; end_of_block = 1;
+      *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE;
+      end_of_block = END_OF_BLOCK_NORMAL;
       break;
 
     case LIBSPECTRUM_TAPE_BLOCK_STOP48:
       *tstates = 0;
       *flags |= LIBSPECTRUM_TAPE_FLAGS_STOP48;
       *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE;
-      end_of_block = 1;
+      end_of_block = END_OF_BLOCK_NORMAL;
       break;
 
     case LIBSPECTRUM_TAPE_BLOCK_SET_SIGNAL_LEVEL:
-      *tstates = 0; end_of_block = 1;
+      *tstates = 0; end_of_block = END_OF_BLOCK_NORMAL;
       /* Inverted as the following block will flip the level before recording
          the edge */
       *flags |= block->types.set_signal_level.level ?
@@ -462,7 +469,8 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
     case LIBSPECTRUM_TAPE_BLOCK_HARDWARE:
     case LIBSPECTRUM_TAPE_BLOCK_CUSTOM:
     case LIBSPECTRUM_TAPE_BLOCK_CONCAT:
-      *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE; end_of_block = 1;
+      *tstates = 0; *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE;
+      end_of_block = END_OF_BLOCK_NORMAL;
       break;
 
     case LIBSPECTRUM_TAPE_BLOCK_RLE_PULSE:
@@ -496,7 +504,7 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
     }
   } else {
     *tstates = 0;
-    end_of_block = 1;
+    end_of_block = END_OF_BLOCK_NORMAL;
   }
 
   /* If that ended the block, move onto the next block */
@@ -549,9 +557,9 @@ libspectrum_tape_get_next_edge( libspectrum_dword *tstates, int *flags,
    have some pause duration included in them. */
 static void
 do_tail_pause( libspectrum_dword *tstates,
-               int *end_of_block, int *flags )
+               end_of_block_t *end_of_block, int *flags )
 {
-  *end_of_block = 1;
+  *end_of_block = END_OF_BLOCK_NORMAL;
   if( *tstates == 0 ) {
     /* The tail pause is optional - if there is no tail, there is no edge */
     *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE;
@@ -562,7 +570,7 @@ static libspectrum_error
 rom_edge( libspectrum_tape_rom_block *block,
           libspectrum_tape_rom_block_state *state,
           libspectrum_dword *tstates,
-	  int *end_of_block, int *flags )
+	  end_of_block_t *end_of_block, int *flags )
 {
   int error;
 
@@ -659,7 +667,8 @@ rom_next_bit( libspectrum_tape_rom_block *block,
 static libspectrum_error
 turbo_edge( libspectrum_tape_turbo_block *block,
             libspectrum_tape_turbo_block_state *state,
-            libspectrum_dword *tstates, int *end_of_block, int *flags )
+            libspectrum_dword *tstates, end_of_block_t *end_of_block,
+            int *flags )
 {
   int error;
 
@@ -762,12 +771,12 @@ turbo_next_bit( libspectrum_tape_turbo_block *block,
 static libspectrum_error
 tone_edge( libspectrum_tape_pure_tone_block *block,
            libspectrum_tape_pure_tone_block_state *state,
-           libspectrum_dword *tstates, int *end_of_block )
+           libspectrum_dword *tstates, end_of_block_t *end_of_block )
 {
   /* The next edge occurs in one pilot edge timing */
   *tstates = block->length;
   /* If that was the last edge, the block is finished */
-  if( --(state->edge_count) == 0 ) (*end_of_block) = 1;
+  if( --(state->edge_count) == 0 ) (*end_of_block) = END_OF_BLOCK_NORMAL;
 
   return LIBSPECTRUM_ERROR_NONE;
 }
@@ -775,12 +784,13 @@ tone_edge( libspectrum_tape_pure_tone_block *block,
 static libspectrum_error
 pulses_edge( libspectrum_tape_pulses_block *block,
              libspectrum_tape_pulses_block_state *state,
-             libspectrum_dword *tstates, int *end_of_block )
+             libspectrum_dword *tstates, end_of_block_t *end_of_block )
 {
   /* Get the length of this edge */
   *tstates = block->lengths[ state->edge_count ];
   /* Was that the last edge? */
-  if( ++(state->edge_count) == block->count ) (*end_of_block) = 1;
+  if( ++(state->edge_count) == block->count )
+    (*end_of_block) = END_OF_BLOCK_NORMAL;
 
   return LIBSPECTRUM_ERROR_NONE;
 }
@@ -788,7 +798,8 @@ pulses_edge( libspectrum_tape_pulses_block *block,
 static libspectrum_error
 pure_data_edge( libspectrum_tape_pure_data_block *block,
                 libspectrum_tape_pure_data_block_state *state,
-		libspectrum_dword *tstates, int *end_of_block, int *flags )
+		libspectrum_dword *tstates, end_of_block_t *end_of_block,
+		int *flags )
 {
   int error;
 
@@ -871,7 +882,7 @@ libspectrum_tape_pure_data_next_bit( libspectrum_tape_pure_data_block *block,
 static libspectrum_error
 raw_data_edge( libspectrum_tape_raw_data_block *block,
                libspectrum_tape_raw_data_block_state *state,
-	       libspectrum_dword *tstates, int *end_of_block,
+	       libspectrum_dword *tstates, end_of_block_t *end_of_block,
                int *flags )
 {
   switch (state->state) {
@@ -990,7 +1001,7 @@ set_tstates_and_flags( libspectrum_tape_generalised_data_symbol *symbol,
 libspectrum_error
 generalised_data_edge( libspectrum_tape_generalised_data_block *block,
                        libspectrum_tape_generalised_data_block_state *state,
-		       libspectrum_dword *tstates, int *end_of_block,
+		       libspectrum_dword *tstates, end_of_block_t *end_of_block,
 		       int *flags )
 {
   libspectrum_tape_generalised_data_symbol_table *table;
@@ -1080,7 +1091,7 @@ jump_blocks( libspectrum_tape *tape, int offset )
 static libspectrum_error
 rle_pulse_edge( libspectrum_tape_rle_pulse_block *block,
                 libspectrum_tape_rle_pulse_block_state *state,
-		libspectrum_dword *tstates, int *end_of_block )
+		libspectrum_dword *tstates, end_of_block_t *end_of_block )
 {
   if( block->data[state->index] ) {
 
@@ -1102,7 +1113,7 @@ rle_pulse_edge( libspectrum_tape_rle_pulse_block *block,
 
   }
 
-  if( state->index == block->length ) *end_of_block = 1;
+  if( state->index == block->length ) *end_of_block = END_OF_BLOCK_NORMAL;
 
   return LIBSPECTRUM_ERROR_NONE;
 }
@@ -1110,7 +1121,8 @@ rle_pulse_edge( libspectrum_tape_rle_pulse_block *block,
 static libspectrum_error
 pulse_sequence_edge( libspectrum_tape_pulse_sequence_block *block,
                      libspectrum_tape_pulse_sequence_block_state *state,
-                     libspectrum_dword *tstates, int *end_of_block, int *flags )
+                     libspectrum_dword *tstates, end_of_block_t *end_of_block,
+                     int *flags )
 {
   int new_level = state->level;
   /* Get the length of this edge */
@@ -1126,7 +1138,7 @@ pulse_sequence_edge( libspectrum_tape_pulse_sequence_block *block,
       /* Was that the last block available? */
       if( state->index >= block->count ) {
         /* Next block */
-        (*end_of_block) = 1;
+        (*end_of_block) = END_OF_BLOCK_NORMAL;
       } else {
         /* Next pulse block */
         state->pulse_count = 0;
@@ -1194,7 +1206,8 @@ libspectrum_tape_data_block_next_bit( libspectrum_tape_data_block *block,
 static libspectrum_error
 data_block_edge( libspectrum_tape_data_block *block,
                  libspectrum_tape_data_block_state *state,
-		 libspectrum_dword *tstates, int *end_of_block, int *flags )
+		 libspectrum_dword *tstates, end_of_block_t *end_of_block,
+		 int *flags )
 {
   int error;
 

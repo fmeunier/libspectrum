@@ -494,6 +494,11 @@ struct libspectrum_tape_block_state {
 
 };
 
+typedef enum end_of_block_t {
+  END_OF_BLOCK_NONE,      /* End of block not reached yet */
+  END_OF_BLOCK_NORMAL,    /* End of block */
+} end_of_block_t;
+
 /* Functions needed by both tape.c and tape_block.c */
 libspectrum_error
 libspectrum_tape_pure_data_next_bit( libspectrum_tape_pure_data_block *block,
@@ -507,8 +512,8 @@ get_generalised_data_symbol( libspectrum_tape_generalised_data_block *block,
 libspectrum_error
 generalised_data_edge( libspectrum_tape_generalised_data_block *block,
                        libspectrum_tape_generalised_data_block_state *state,
-		       libspectrum_dword *tstates, int *end_of_block,
-		       int *flags );
+		       libspectrum_dword *tstates,
+		       end_of_block_t *end_of_block, int *flags );
 libspectrum_error
 libspectrum_tape_data_block_next_bit( libspectrum_tape_data_block *block,
                                     libspectrum_tape_data_block_state *state );

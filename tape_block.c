@@ -696,7 +696,7 @@ generalised_data_block_length(
   /* Assume no special flags by default */
   int flags = 0;
   /* Has this edge ended the block? */
-  int end_of_block = 0;
+  end_of_block_t end_of_block = END_OF_BLOCK_NONE;
   libspectrum_error error = generalised_data_init( generalised_data, &state );
 
   if( error ) return -1;
