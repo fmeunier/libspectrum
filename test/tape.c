@@ -918,3 +918,105 @@ done:
   libspectrum_tape_block_free( block );
   return r;
 }
+
+test_return_t
+tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter( void )
+{
+  /* tape block: RAW_DATA block accessor getter/setter round-trip test */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_RAW_DATA );
+  test_return_t r = TEST_FAIL;
+  libspectrum_byte *data;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_RAW_DATA ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: expected RAW_DATA block type\n", progname );
+    goto done;
+  }
+
+  /* bit_length default should be 0 */
+  if( libspectrum_tape_block_bit_length( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: default bit_length should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_bit_length( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_bit_length( block, 3500 );
+  if( libspectrum_tape_block_bit_length( block ) != 3500 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: expected bit_length=3500, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_bit_length( block ) );
+    goto done;
+  }
+
+  /* bits_in_last_byte default should be 0 */
+  if( libspectrum_tape_block_bits_in_last_byte( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: default bits_in_last_byte should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_bits_in_last_byte( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_bits_in_last_byte( block, 8 );
+  if( libspectrum_tape_block_bits_in_last_byte( block ) != 8 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: expected bits_in_last_byte=8, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_bits_in_last_byte( block ) );
+    goto done;
+  }
+
+  /* data default should be NULL; data_length default should be 0 */
+  if( libspectrum_tape_block_data( block ) != NULL ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: default data should be NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data_length( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: default data_length should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_data_length( block ) );
+    goto done;
+  }
+
+  data = libspectrum_malloc( 2 );
+  data[0] = 0xaa; data[1] = 0x55;
+  libspectrum_tape_block_set_data_length( block, 2 );
+  libspectrum_tape_block_set_data( block, data );
+
+  if( libspectrum_tape_block_data_length( block ) != 2 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: expected data_length=2, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_data_length( block ) );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data( block ) != data ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: data pointer mismatch\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data( block )[0] != 0xaa ||
+      libspectrum_tape_block_data( block )[1] != 0x55 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: data content mismatch\n", progname );
+    goto done;
+  }
+
+  /* pause default should be 0 */
+  if( libspectrum_tape_block_pause( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: default pause should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_pause( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_pause( block, 1000 );
+  if( libspectrum_tape_block_pause( block ) != 1000 ) {
+    fprintf( stderr, "%s: tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter: expected pause=1000, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_pause( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
