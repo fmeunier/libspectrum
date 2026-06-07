@@ -478,6 +478,9 @@ struct libspectrum_tape_block_state {
   GSList* loop_block;
   size_t loop_count;
 
+  /* If true then this block should start with the pulse level set to low */
+  int force_low_level;
+
   union {
     libspectrum_tape_rom_block_state rom;
     libspectrum_tape_turbo_block_state turbo;
@@ -497,6 +500,9 @@ struct libspectrum_tape_block_state {
 typedef enum end_of_block_t {
   END_OF_BLOCK_NONE,      /* End of block not reached yet */
   END_OF_BLOCK_NORMAL,    /* End of block */
+  END_OF_BLOCK_NEXT_LOW   /* End of block; the next one starts with the
+                             pulse level set to low. This can happen
+                             if the current block ends with a pause. */
 } end_of_block_t;
 
 /* Functions needed by both tape.c and tape_block.c */

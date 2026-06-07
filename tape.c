@@ -401,7 +401,7 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
 
     case LIBSPECTRUM_TAPE_BLOCK_PAUSE:
       *tstates = block->types.pause.length_tstates;
-      end_of_block = END_OF_BLOCK_NORMAL;
+      end_of_block = END_OF_BLOCK_NEXT_LOW;
       /* If the pause isn't a "don't care" level then set the appropriate pulse
          level */
       if( block->types.pause.level != -1 &&
@@ -507,6 +507,22 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
     end_of_block = END_OF_BLOCK_NORMAL;
   }
 
+  if( it->force_low_level ) {
+    /* Start block with level set to low unless we've been told otherwise */
+    if( !(*flags & (LIBSPECTRUM_TAPE_FLAGS_LEVEL_HIGH |
+                    LIBSPECTRUM_TAPE_FLAGS_LEVEL_LOW |
+                    LIBSPECTRUM_TAPE_FLAGS_NO_EDGE ))) {
+      *flags |= LIBSPECTRUM_TAPE_FLAGS_LEVEL_LOW;
+    }
+
+    /* If this was an empty block (e.g COMMENT or ARCHIVE_INFO) then
+     * it is the next one that should start with the level set to low */
+    if( (*flags & LIBSPECTRUM_TAPE_FLAGS_NO_EDGE) && *tstates == 0 &&
+        end_of_block == END_OF_BLOCK_NORMAL ) {
+      end_of_block = END_OF_BLOCK_NEXT_LOW;
+    }
+  }
+
   /* If that ended the block, move onto the next block */
   if( end_of_block ) {
 
@@ -526,6 +542,7 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
            pulse so clear the NO_EDGE flag if it has been set */
         *flags &= ~LIBSPECTRUM_TAPE_FLAGS_NO_EDGE;
         libspectrum_tape_iterator_init( &(it->current_block), tape );
+        end_of_block = END_OF_BLOCK_NEXT_LOW;
       }
     }
 
@@ -536,6 +553,10 @@ libspectrum_tape_get_next_edge_internal( libspectrum_dword *tstates,
     if( error ) return error;
 
   }
+
+  /* Force the pulse level for the next block
+     according to the end_of_block value */
+  it->force_low_level = ( end_of_block == END_OF_BLOCK_NEXT_LOW );
 
   return LIBSPECTRUM_ERROR_NONE;
 }
@@ -559,10 +580,12 @@ static void
 do_tail_pause( libspectrum_dword *tstates,
                end_of_block_t *end_of_block, int *flags )
 {
-  *end_of_block = END_OF_BLOCK_NORMAL;
   if( *tstates == 0 ) {
     /* The tail pause is optional - if there is no tail, there is no edge */
     *flags |= LIBSPECTRUM_TAPE_FLAGS_NO_EDGE;
+    *end_of_block = END_OF_BLOCK_NORMAL;
+  } else {
+    *end_of_block = END_OF_BLOCK_NEXT_LOW;
   }
 }
 

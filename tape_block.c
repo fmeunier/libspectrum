@@ -215,6 +215,9 @@ libspectrum_tape_block_init( libspectrum_tape_block *block,
 {
   if( !block ) return LIBSPECTRUM_ERROR_NONE;
 
+  /* New blocks start with the pulse level set to low by default */
+  state->force_low_level = 1;
+
   switch( libspectrum_tape_block_type( block ) ) {
 
   case LIBSPECTRUM_TAPE_BLOCK_ROM:
