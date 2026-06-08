@@ -1,24 +1,25 @@
 {
-  "last_run": "2026-06-07",
+  "last_run": "2026-06-08",
   "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 70, 75, 79],
-  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 72, 73, 74, 76, 77],
-  "superseded_prs": [54, 67, 69],
-  "notes": "Task 10 2026-06-07: PR #79 created - RAW_DATA block accessor round-trip test (bit_length, bits_in_last_byte, data, data_length, pause); 155 tests. Task 10 2026-06-06: PRs for pzx_read_string/memchr and tzx_write_string bulk-write were applied to master directly (commits 8181653, d98c2f3). PR #70 ChangeLog update still open and now significantly outdated.",
+  "open_prs": [45, 47, 70, 75, "new-pulse-seq-rebased-5893a47"],
+  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 72, 73, 74, 76, 77, 79],
+  "superseded_prs": [54, 67, 69, 75],
+  "notes": "Task 6 2026-06-08: PR #75 had 7-commit gap from master (PULSES test 9b027b6, RAW_DATA test 5893a47 added to same test files). Rebased onto master as branch repo-assist/test-pulse-sequence-accessors-rebased-5893a47; 156 tests pass. New PR TBD (created via safeoutputs). PR #79 was closed by maintainer on 2026-06-07 after applying content to master as commit 5893a47. PR #70 ChangeLog is significantly outdated (missing ~7 commits since June 1); protected files issue #78 blocked update attempt.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
     "tap-error-return": {"pr": 47, "status": "open"},
     "changelog-draft": {"pr": 54, "status": "superseded-by-70"},
-    "changelog-1.6.2-update": {"pr": 70, "status": "open"},
+    "changelog-1.6.2-update": {"pr": 70, "status": "open-outdated"},
     "pulses-block-accessor-tests": {"pr": 74, "status": "closed-applied-to-master"},
-    "pulse-sequence-accessor-tests": {"pr": 75, "status": "open"},
+    "pulse-sequence-accessor-tests": {"pr": 75, "status": "superseded-by-rebased-5893a47"},
+    "pulse-sequence-accessor-tests-rebased-5893a47": {"branch": "repo-assist/test-pulse-sequence-accessors-rebased-5893a47", "status": "submitted-2026-06-08"},
     "csw-block-alloc-consistency": {"pr": 72, "status": "closed-applied-to-master"},
     "concat-block-coverage": {"pr": 73, "status": "closed-applied-to-master"},
-    "pzx-read-string-refactor": {"status": "closed-applied-to-master-8181653"},
-    "tzx-write-string-perf": {"status": "closed-applied-to-master-d98c2f3"},
-    "raw-data-accessor-tests": {"pr": 79, "status": "open"}
+    "pzx-read-string-refactor": {"pr": 76, "status": "closed-applied-to-master-8181653"},
+    "tzx-write-string-perf": {"pr": 77, "status": "closed-applied-to-master-d98c2f3"},
+    "raw-data-accessor-tests": {"pr": 79, "status": "closed-applied-to-master-5893a47"}
   },
-  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review"]
+  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review"]
 }
