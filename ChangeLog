@@ -1,3 +1,48 @@
+2026-06-07  Fredrick Meunier  <fredm@spamcop.net>
+
+        * libspectrum 1.6.2 released.
+
+        * Fix multiple memory leaks in error paths: rzx_read_frames used
+          the wrong frame index in error-cleanup loops, causing
+          use-after-free on one path and silent leaks on the other; free
+          block on all error returns from libspectrum_csw_read; free
+          partially-allocated archive-info tags on error in
+          read_pzxt_block; free the allocated PULSE_SEQUENCE block when
+          the PULS payload is empty in pzx_read.c; free inflate output on
+          size-mismatch error paths in szx.c (Fredrick Meunier).
+
+        * Fix CONCAT tape block not being handled by
+          tape_block_description() and get_next_edge(), which previously
+          reached the default error path for CONCAT blocks (Fredrick
+          Meunier).
+
+        * Replace single-byte-at-a-time write loops in buffer.c write
+          helpers, dsnap.c write_header(), and tzx_write_string() with
+          single bulk libspectrum_buffer_write calls, reducing per-byte
+          overhead on the serialisation hot path (Fredrick Meunier).
+
+        * Simplify pzx_read_string() to use memchr() to locate the NUL
+          terminator instead of scanning byte-by-byte (Fredrick Meunier).
+
+        * Various minor bug fixes/improvements:
+          * Add unit tests for RZX alloc/free, start/stop_input,
+            store_frame, and iterator traversal; ROM tape block
+            data/data_length/pause; PULSES block count and
+            pulse_lengths; RAW_DATA block bit_length, bits_in_last_byte,
+            data, data_length, and pause; and additional snap/tape
+            accessor functions (Fredrick Meunier).
+          * Modularise the test suite: split test.c into per-subsystem
+            source files with shared helpers in common.c, and rename
+            numeric test identifiers to descriptive names (Fredrick
+            Meunier).
+          * Use libspectrum_tape_block_alloc() in csw.c for consistency
+            with other tape block allocation sites (Fredrick Meunier).
+          * Use libspectrum_buffer_set() for header zero-fill in dsnap.c
+            (Fredrick Meunier).
+          * Make types[] in pzx_read.c static const (Fredrick Meunier).
+          * Add release process documentation and distribute maintainer
+            helpers (Fredrick Meunier).
+
 2026-05-05  Fredrick Meunier  <fredm@spamcop.net>
 
         * libspectrum 1.6.1 released.
