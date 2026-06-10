@@ -161,6 +161,7 @@ test_description tests[] = {
   TEST_ENTRY( tape_pause_block_pause_length_and_level_getter_setter, "Tape PAUSE block pause length and level getter/setter" ),
   TEST_ENTRY( tape_pulses_block_count_and_pulse_lengths_getter_setter, "Tape PULSES block count and pulse_lengths getter/setter" ),
   TEST_ENTRY( tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter, "Tape RAW_DATA block bit_length, bits_in_last_byte, data, data_length, and pause getter/setter" ),
+  TEST_ENTRY( tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter, "Tape DATA_BLOCK count, tail_length, level, data, and bit0/bit1 pulses getter/setter" ),
   TEST_ENTRY( rzx_alloc_and_free_lifecycle, "RZX alloc and free lifecycle" ),
   TEST_ENTRY( rzx_start_input_stop_input_and_tstates_accessor, "RZX start_input, stop_input, and tstates accessor" ),
   TEST_ENTRY( rzx_store_frame_and_iterator_get_frames_count, "RZX store_frame and iterator_get_frames count" ),
