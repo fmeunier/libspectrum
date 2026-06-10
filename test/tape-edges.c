@@ -230,7 +230,8 @@ static test_edge_sequence_t
 trailing_pause_edges_list[] =
 {
   /* Standard speed data block */
-  { 2168, 3223,  0 },	/* Pilot */
+  { 2168,    1, 16 },	/* First pilot edge; TZX playback starts low */
+  { 2168, 3222,  0 },	/* Remaining pilot edges */
   {  667,    1,  0 },	/* Sync 1 */
   {  735,    1,  0 },	/* Sync 2 */
 

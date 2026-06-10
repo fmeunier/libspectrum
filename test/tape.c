@@ -43,9 +43,10 @@ tzx_turbo_data_with_zero_pilot_pulses_and_zero_data( void )
     return TEST_INCOMPLETE;
   }
 
-  if( flags ) {
-    fprintf( stderr, "%s: reading first edge of `%s' gave unexpected flags 0x%04x; expected 0x0000\n",
-	     progname, filename, flags );
+  if( flags != LIBSPECTRUM_TAPE_FLAGS_LEVEL_LOW ) {
+    fprintf( stderr,
+             "%s: reading first edge of `%s' gave unexpected flags 0x%04x; expected 0x%04x\n",
+	     progname, filename, flags, LIBSPECTRUM_TAPE_FLAGS_LEVEL_LOW );
     libspectrum_tape_free( tape );
     return TEST_FAIL;
   }
