@@ -1021,3 +1021,83 @@ done:
   libspectrum_tape_block_free( block );
   return r;
 }
+
+test_return_t
+tape_pulse_sequence_block_count_pulse_lengths_and_pulse_repeats_getter_setter( void )
+{
+  /* tape block: PULSE_SEQUENCE block count, pulse_lengths, and pulse_repeats
+     getter/setter (round-trip) */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PULSE_SEQUENCE );
+  libspectrum_dword *lengths = NULL;
+  size_t *repeats = NULL;
+  test_return_t r = TEST_FAIL;
+  size_t i;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_pulse_sequence_block_count_pulse_lengths_and_pulse_repeats_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_PULSE_SEQUENCE ) {
+    fprintf( stderr, "%s: tape_pulse_sequence_block_count_pulse_lengths_and_pulse_repeats_getter_setter: expected PULSE_SEQUENCE block type\n", progname );
+    goto done;
+  }
+
+  /* Default count should be 0 */
+  if( libspectrum_tape_block_count( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_pulse_sequence_block_count_pulse_lengths_and_pulse_repeats_getter_setter: default count should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  /* Set up 3 pulses (lengths and repeat counts) and round-trip */
+  lengths = libspectrum_new( libspectrum_dword, 3 );
+  lengths[0] = 2168;
+  lengths[1] = 667;
+  lengths[2] = 735;
+
+  repeats = libspectrum_new( size_t, 3 );
+  repeats[0] = 8063;
+  repeats[1] = 1;
+  repeats[2] = 1;
+
+  libspectrum_tape_block_set_count( block, 3 );
+  libspectrum_tape_block_set_pulse_lengths( block, lengths );
+  libspectrum_tape_block_set_pulse_repeats( block, repeats );
+  lengths = NULL; /* block owns the array now */
+  repeats = NULL; /* block owns the array now */
+
+  if( libspectrum_tape_block_count( block ) != 3 ) {
+    fprintf( stderr, "%s: tape_pulse_sequence_block_count_pulse_lengths_and_pulse_repeats_getter_setter: expected count=3, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  {
+    libspectrum_dword expected_lengths[] = { 2168, 667, 735 };
+    size_t expected_repeats[] = { 8063, 1, 1 };
+    for( i = 0; i < 3; i++ ) {
+      if( libspectrum_tape_block_pulse_lengths( block, i ) != expected_lengths[i] ) {
+        fprintf( stderr, "%s: tape_pulse_sequence_block_count_pulse_lengths_and_pulse_repeats_getter_setter: pulse_lengths[%lu] expected %lu, got %lu\n",
+                 progname, (unsigned long)i, (unsigned long)expected_lengths[i],
+                 (unsigned long)libspectrum_tape_block_pulse_lengths( block, i ) );
+        goto done;
+      }
+      if( libspectrum_tape_block_pulse_repeats( block, i ) != expected_repeats[i] ) {
+        fprintf( stderr, "%s: tape_pulse_sequence_block_count_pulse_lengths_and_pulse_repeats_getter_setter: pulse_repeats[%lu] expected %lu, got %lu\n",
+                 progname, (unsigned long)i, (unsigned long)expected_repeats[i],
+                 (unsigned long)libspectrum_tape_block_pulse_repeats( block, i ) );
+        goto done;
+      }
+    }
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_free( lengths );
+  libspectrum_free( repeats );
+  libspectrum_tape_block_free( block );
+  return r;
+}
