@@ -1101,3 +1101,188 @@ done:
   libspectrum_tape_block_free( block );
   return r;
 }
+
+test_return_t
+tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter( void )
+{
+  /* tape block: DATA_BLOCK accessor getter/setter round-trip test */
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_DATA_BLOCK );
+  libspectrum_word *bit0_pulses = NULL, *bit1_pulses = NULL;
+  libspectrum_byte *data = NULL;
+  test_return_t r = TEST_FAIL;
+  size_t i;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_DATA_BLOCK ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: expected DATA_BLOCK block type\n", progname );
+    goto done;
+  }
+
+  /* Default count should be 0 */
+  if( libspectrum_tape_block_count( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: default count should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_count( block, 16 );
+  if( libspectrum_tape_block_count( block ) != 16 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: expected count=16, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  /* Default tail_length should be 0 */
+  if( libspectrum_tape_block_tail_length( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: default tail_length should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_tail_length( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_tail_length( block, 945 );
+  if( libspectrum_tape_block_tail_length( block ) != 945 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: expected tail_length=945, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_tail_length( block ) );
+    goto done;
+  }
+
+  /* Default level should be 0 */
+  if( libspectrum_tape_block_level( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: default level should be 0, got %d\n",
+             progname, libspectrum_tape_block_level( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_level( block, 1 );
+  if( libspectrum_tape_block_level( block ) != 1 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: expected level=1, got %d\n",
+             progname, libspectrum_tape_block_level( block ) );
+    goto done;
+  }
+
+  /* Default bits_in_last_byte should be 0; data and data_length should
+     default to NULL/0 */
+  if( libspectrum_tape_block_bits_in_last_byte( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: default bits_in_last_byte should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_bits_in_last_byte( block ) );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data( block ) != NULL ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: default data should be NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data_length( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: default data_length should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_data_length( block ) );
+    goto done;
+  }
+
+  data = libspectrum_malloc( 2 );
+  data[0] = 0x5a; data[1] = 0xa5;
+  libspectrum_tape_block_set_bits_in_last_byte( block, 8 );
+  libspectrum_tape_block_set_data_length( block, 2 );
+  libspectrum_tape_block_set_data( block, data );
+  data = NULL; /* block owns the array now */
+
+  if( libspectrum_tape_block_bits_in_last_byte( block ) != 8 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: expected bits_in_last_byte=8, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_bits_in_last_byte( block ) );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data_length( block ) != 2 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: expected data_length=2, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_data_length( block ) );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data( block ) == NULL ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: data should not be NULL after set\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_data( block )[0] != 0x5a ||
+      libspectrum_tape_block_data( block )[1] != 0xa5 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: data content mismatch\n", progname );
+    goto done;
+  }
+
+  /* Default bit pulse counts should be 0 */
+  if( libspectrum_tape_block_bit0_pulse_count( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: default bit0_pulse_count should be 0, got %u\n",
+             progname, (unsigned)libspectrum_tape_block_bit0_pulse_count( block ) );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_bit1_pulse_count( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: default bit1_pulse_count should be 0, got %u\n",
+             progname, (unsigned)libspectrum_tape_block_bit1_pulse_count( block ) );
+    goto done;
+  }
+
+  /* Set bit0 pulses: 2 pulses of 855 T-states each */
+  bit0_pulses = libspectrum_new( libspectrum_word, 2 );
+  bit0_pulses[0] = 855; bit0_pulses[1] = 855;
+  libspectrum_tape_block_set_bit0_pulse_count( block, 2 );
+  libspectrum_tape_block_set_bit0_pulses( block, bit0_pulses );
+  bit0_pulses = NULL; /* block owns the array now */
+
+  if( libspectrum_tape_block_bit0_pulse_count( block ) != 2 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: expected bit0_pulse_count=2, got %u\n",
+             progname, (unsigned)libspectrum_tape_block_bit0_pulse_count( block ) );
+    goto done;
+  }
+
+  {
+    libspectrum_word expected_bit0[] = { 855, 855 };
+    for( i = 0; i < 2; i++ ) {
+      if( libspectrum_tape_block_bit0_pulses( block, i ) != expected_bit0[i] ) {
+        fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: bit0_pulses[%lu] expected %u, got %u\n",
+                 progname, (unsigned long)i, (unsigned)expected_bit0[i],
+                 (unsigned)libspectrum_tape_block_bit0_pulses( block, i ) );
+        goto done;
+      }
+    }
+  }
+
+  /* Set bit1 pulses: 2 pulses of 1710 T-states each */
+  bit1_pulses = libspectrum_new( libspectrum_word, 2 );
+  bit1_pulses[0] = 1710; bit1_pulses[1] = 1710;
+  libspectrum_tape_block_set_bit1_pulse_count( block, 2 );
+  libspectrum_tape_block_set_bit1_pulses( block, bit1_pulses );
+  bit1_pulses = NULL; /* block owns the array now */
+
+  if( libspectrum_tape_block_bit1_pulse_count( block ) != 2 ) {
+    fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: expected bit1_pulse_count=2, got %u\n",
+             progname, (unsigned)libspectrum_tape_block_bit1_pulse_count( block ) );
+    goto done;
+  }
+
+  {
+    libspectrum_word expected_bit1[] = { 1710, 1710 };
+    for( i = 0; i < 2; i++ ) {
+      if( libspectrum_tape_block_bit1_pulses( block, i ) != expected_bit1[i] ) {
+        fprintf( stderr, "%s: tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter: bit1_pulses[%lu] expected %u, got %u\n",
+                 progname, (unsigned long)i, (unsigned)expected_bit1[i],
+                 (unsigned)libspectrum_tape_block_bit1_pulses( block, i ) );
+        goto done;
+      }
+    }
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_free( data );
+  libspectrum_free( bit0_pulses );
+  libspectrum_free( bit1_pulses );
+  libspectrum_tape_block_free( block );
+  return r;
+}

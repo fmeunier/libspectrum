@@ -176,6 +176,7 @@ test_return_t tape_rom_block_data_data_length_and_pause_getter_setter( void );
 test_return_t tape_pulses_block_count_and_pulse_lengths_getter_setter( void );
 test_return_t tape_pulse_sequence_block_count_pulse_lengths_and_pulse_repeats_getter_setter( void );
 test_return_t tape_raw_data_block_bit_length_bits_in_last_byte_data_data_length_and_pause_getter_setter( void );
+test_return_t tape_data_block_count_tail_length_level_data_and_bit_pulses_getter_setter( void );
 test_return_t rzx_alloc_and_free_lifecycle( void );
 test_return_t rzx_start_input_stop_input_and_tstates_accessor( void );
 test_return_t rzx_store_frame_and_iterator_get_frames_count( void );
