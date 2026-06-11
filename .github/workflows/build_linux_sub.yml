@@ -103,6 +103,7 @@ jobs:
             libbz2-dev \
             libgcrypt-dev \
             libglib2.0-dev
+          sudo chown -R $USER ~/apt-cache
 
       - name: (5) Save apt package cache
         id: apt-cache-save
