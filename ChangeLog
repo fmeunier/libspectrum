@@ -16,6 +16,12 @@
           reached the default error path for CONCAT blocks (Fredrick
           Meunier).
 
+        * Fix TZX pulse-level handling: start all blocks with the pulse
+          level set to low by default, and force the level back to low
+          after a Pause block, matching the TZX v1.20 specification.
+          Polarity-sensitive loaders (e.g. MASK, Basil, Lone Wolf 3) now
+          load reliably (fixes bugs #352, #357, #431; Fredrick Meunier).
+
         * Replace single-byte-at-a-time write loops in buffer.c write
           helpers, dsnap.c write_header(), and tzx_write_string() with
           single bulk libspectrum_buffer_write calls, reducing per-byte
@@ -29,12 +35,17 @@
             store_frame, and iterator traversal; ROM tape block
             data/data_length/pause; PULSES block count and
             pulse_lengths; RAW_DATA block bit_length, bits_in_last_byte,
-            data, data_length, and pause; and additional snap/tape
-            accessor functions (Fredrick Meunier).
+            data, data_length, and pause; PULSE_SEQUENCE block count,
+            pulse_lengths, and pulse_repeats; DATA_BLOCK count,
+            tail_length, level, data, and bit0/bit1 pulses; and
+            additional snap/tape accessor functions (Fredrick Meunier).
           * Modularise the test suite: split test.c into per-subsystem
             source files with shared helpers in common.c, and rename
             numeric test identifiers to descriptive names (Fredrick
             Meunier).
+          * Change end_of_block from a boolean to an enum to allow
+            distinguishing a pause-terminated block from a
+            non-pause-terminated one (Fredrick Meunier).
           * Use libspectrum_tape_block_alloc() in csw.c for consistency
             with other tape block allocation sites (Fredrick Meunier).
           * Use libspectrum_buffer_set() for header zero-fill in dsnap.c
