@@ -1,26 +1,29 @@
 {
-  "last_run": "2026-06-09",
+  "last_run": "2026-06-11",
   "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 70, 75, 81, "changelog-1.6.2-update-20260609-v2"],
-  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 72, 73, 74, 76, 77, 79],
-  "superseded_prs": [54, 67, 69, 70, 75],
-  "notes": "Task 5 2026-06-09: Created new ChangeLog 1.6.2 update branch repo-assist/changelog-1.6.2-update-20260609-v2 superseding PR #70 (which had merge conflicts and was 8 commits behind master). Covers all 19 library commits since 1.6.1. PR number TBD next run. PR #81 is PULSE_SEQUENCE accessor test (rebased); PR #75 should be closed in favor of #81. Task 2: No real project issues open.",
+  "open_prs": [45, 47, 82, 84, 85],
+  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81],
+  "superseded_prs": [54, 67, 69, 70, 75, 84],
+  "notes": "Task 6 2026-06-11: Rebased PR #84 (DATA_BLOCK test, had merge conflict with PULSE_SEQUENCE commit 4e2c39f) onto master - created new PR #85 from repo-assist/test-data-block-accessors-20260611; 157 tests pass. Updated PR #82 ChangeLog with TZX pulse-level fix (bugs #352/#357/#431), end_of_block enum, PULSE_SEQUENCE and DATA_BLOCK test entries. PR #81 (PULSE_SEQUENCE) was closed/applied to master as 4e2c39f. Task 2: No real project issues open.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
     "tap-error-return": {"pr": 47, "status": "open"},
     "changelog-draft": {"pr": 54, "status": "superseded-by-70"},
-    "changelog-1.6.2-update": {"pr": 70, "status": "open-superseded-by-v2-branch"},
-    "changelog-1.6.2-update-v2": {"branch": "repo-assist/changelog-1.6.2-update-20260609-v2", "status": "submitted-2026-06-09"},
-    "pulses-block-accessor-tests": {"pr": 74, "status": "closed-applied-to-master"},
+    "changelog-1.6.2-update": {"pr": 70, "status": "closed-superseded-by-82"},
+    "changelog-1.6.2-update-v2": {"pr": 82, "status": "open-updated-2026-06-11"},
+    "pulses-block-accessor-tests": {"pr": 74, "status": "closed-applied-to-master-9b027b6"},
     "pulse-sequence-accessor-tests": {"pr": 75, "status": "superseded-by-81"},
-    "pulse-sequence-accessor-tests-rebased-5893a47": {"pr": 81, "status": "open"},
+    "pulse-sequence-accessor-tests-rebased": {"pr": 81, "status": "closed-applied-to-master-4e2c39f"},
     "csw-block-alloc-consistency": {"pr": 72, "status": "closed-applied-to-master"},
     "concat-block-coverage": {"pr": 73, "status": "closed-applied-to-master"},
     "pzx-read-string-refactor": {"pr": 76, "status": "closed-applied-to-master-8181653"},
     "tzx-write-string-perf": {"pr": 77, "status": "closed-applied-to-master-d98c2f3"},
-    "raw-data-accessor-tests": {"pr": 79, "status": "closed-applied-to-master-5893a47"}
+    "raw-data-accessor-tests": {"pr": 79, "status": "closed-applied-to-master-5893a47"},
+    "data-block-accessor-tests-v1": {"pr": 84, "status": "open-dirty-superseded-by-85"},
+    "data-block-accessor-tests-v2": {"pr": 85, "status": "open-created-2026-06-11"},
+    "apt-linux-cache-ci": {"issue": 83, "status": "blocked-protected-files"}
   },
-  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review"]
+  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review", "pr-70-close", "pr-75-close", "pr-81-review"]
 }
