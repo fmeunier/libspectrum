@@ -1286,3 +1286,113 @@ done:
   libspectrum_tape_block_free( block );
   return r;
 }
+
+/* Test that tzx_write_pulse_sequence correctly splits PULSES blocks when
+   more than 255 single-repeat pulses are present.
+   The TZX ID 0x13 (Pulse sequence) block stores its count in a single byte
+   so counts > 255 must be split across multiple blocks. */
+test_return_t
+tzx_pulse_sequence_over_255_splits_into_multiple_pulses_blocks( void )
+{
+  libspectrum_tape *tape;
+  libspectrum_tape_block *block;
+  libspectrum_dword *lengths;
+  size_t *repeats;
+  libspectrum_byte *output;
+  size_t length;
+  const size_t pulse_count = 300;
+  const size_t first_block_expected = 255;
+  const size_t second_block_expected = 45;
+  test_return_t r;
+  size_t i, offset;
+  int pulses_blocks_found, first_count, second_count, blk_count;
+
+  lengths = libspectrum_new( libspectrum_dword, pulse_count );
+  repeats = libspectrum_new( size_t, pulse_count );
+  for( i = 0; i < pulse_count; i++ ) {
+    lengths[i] = 1000 + (libspectrum_dword)i;
+    repeats[i] = 1;
+  }
+
+  tape = libspectrum_tape_alloc();
+  if( !tape ) {
+    libspectrum_free( lengths );
+    libspectrum_free( repeats );
+    return TEST_INCOMPLETE;
+  }
+
+  block = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PULSE_SEQUENCE );
+  if( !block ) {
+    libspectrum_free( lengths );
+    libspectrum_free( repeats );
+    libspectrum_tape_free( tape );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_tape_block_set_count( block, pulse_count );
+  libspectrum_tape_block_set_pulse_lengths( block, lengths );
+  libspectrum_tape_block_set_pulse_repeats( block, repeats );
+  lengths = NULL; /* block owns the array now */
+  repeats = NULL;
+  libspectrum_tape_append_block( tape, block );
+
+  output = NULL;
+  length = 0;
+  r = TEST_INCOMPLETE;
+  if( libspectrum_tape_write( &output, &length, tape, LIBSPECTRUM_ID_TAPE_TZX ) ) {
+    fprintf( stderr, "%s: tzx_pulse_sequence_over_255_splits_into_multiple_pulses_blocks: tape write failed\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_INCOMPLETE;
+  }
+  libspectrum_tape_free( tape );
+
+  /* TZX layout:
+       header: "ZXTape!\x1a" (8) + major (1) + minor (1) = 10 bytes
+       SET_SIGNAL_LEVEL (0x2B): ID (1) + length dword (4) + level (1) = 6 bytes
+       PULSES block(s) (0x13): ID (1) + count (1) + count*2 bytes */
+  r = TEST_FAIL;
+  offset = 10; /* skip TZX header */
+
+  if( offset + 6 > length ||
+      output[offset] != LIBSPECTRUM_TAPE_BLOCK_SET_SIGNAL_LEVEL ) {
+    fprintf( stderr, "%s: tzx_pulse_sequence_over_255_splits_into_multiple_pulses_blocks: expected SET_SIGNAL_LEVEL block at offset %lu\n",
+             progname, (unsigned long)offset );
+    goto done;
+  }
+  offset += 6;
+
+  pulses_blocks_found = 0;
+  first_count = 0;
+  second_count = 0;
+  while( offset < length && output[offset] == LIBSPECTRUM_TAPE_BLOCK_PULSES ) {
+    offset++; /* skip ID */
+    if( offset >= length ) goto done;
+    blk_count = output[offset++];
+    pulses_blocks_found++;
+    if( pulses_blocks_found == 1 ) first_count = blk_count;
+    else if( pulses_blocks_found == 2 ) second_count = blk_count;
+    offset += 2 * (size_t)blk_count;
+  }
+
+  if( pulses_blocks_found != 2 ) {
+    fprintf( stderr, "%s: tzx_pulse_sequence_over_255_splits_into_multiple_pulses_blocks: expected 2 PULSES blocks, found %d\n",
+             progname, pulses_blocks_found );
+    goto done;
+  }
+  if( (size_t)first_count != first_block_expected ) {
+    fprintf( stderr, "%s: tzx_pulse_sequence_over_255_splits_into_multiple_pulses_blocks: expected first PULSES count=%lu, got %d\n",
+             progname, (unsigned long)first_block_expected, first_count );
+    goto done;
+  }
+  if( (size_t)second_count != second_block_expected ) {
+    fprintf( stderr, "%s: tzx_pulse_sequence_over_255_splits_into_multiple_pulses_blocks: expected second PULSES count=%lu, got %d\n",
+             progname, (unsigned long)second_block_expected, second_count );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_free( output );
+  return r;
+}
