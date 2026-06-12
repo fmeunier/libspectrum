@@ -1,11 +1,11 @@
 {
-  "last_run": "2026-06-10",
+  "last_run": "2026-06-12",
   "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 70, 75, 81, 82, "test-data-block-accessors-20260610", "eng-apt-linux-cache-20260610"],
-  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 72, 73, 74, 76, 77, 79],
-  "superseded_prs": [54, 67, 69, 70, 75],
-  "notes": "Task 10 2026-06-10: Created DATA_BLOCK accessor round-trip test (branch repo-assist/test-data-block-accessors-20260610, test 147, 158 tests pass). Task 4 2026-06-10: Created apt caching PR for Linux CI sub-workflow (branch repo-assist/eng-apt-linux-cache-20260610) - replaces no-op steps 3/5 with real apt download caching matching macOS Homebrew pattern. PR numbers for both TBD next run. PR #82 is ChangeLog v2.",
+  "open_prs": [45, 47, 82, 86, 87],
+  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 72, 73, 74, 76, 77, 79, 81, 84, 85],
+  "superseded_prs": [54, 67, 69, 70, 75, 84],
+  "notes": "2026-06-12: Fixed TZX PULSES block count overflow bug (PR #86, branch fix-pulse-sequence-count-overflow-20260612). Added libspectrum_buffer_write_word_array perf improvement (PR #87, branch perf-buffer-write-word-array-20260612). PR #82 ChangeLog is current through 82abedf. PR #85 (DATA_BLOCK test) was closed/merged by maintainer on 2026-06-11. User checked off #84 close, #85 review, #83 check. PR #70 superseded by #82.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
@@ -15,14 +15,16 @@
     "changelog-1.6.2-update-v2": {"pr": 82, "status": "open"},
     "pulses-block-accessor-tests": {"pr": 74, "status": "closed-applied-to-master"},
     "pulse-sequence-accessor-tests": {"pr": 75, "status": "superseded-by-81"},
-    "pulse-sequence-accessor-tests-rebased": {"pr": 81, "status": "open"},
+    "pulse-sequence-accessor-tests-rebased": {"pr": 81, "status": "closed-applied-to-master-4e2c39f"},
     "csw-block-alloc-consistency": {"pr": 72, "status": "closed-applied-to-master"},
     "concat-block-coverage": {"pr": 73, "status": "closed-applied-to-master"},
     "pzx-read-string-refactor": {"pr": 76, "status": "closed-applied-to-master-8181653"},
     "tzx-write-string-perf": {"pr": 77, "status": "closed-applied-to-master-d98c2f3"},
     "raw-data-accessor-tests": {"pr": 79, "status": "closed-applied-to-master-5893a47"},
-    "data-block-accessor-tests": {"branch": "repo-assist/test-data-block-accessors-20260610", "status": "submitted-2026-06-10"},
-    "apt-linux-cache-ci": {"branch": "repo-assist/eng-apt-linux-cache-20260610", "status": "submitted-2026-06-10"}
+    "data-block-accessor-tests": {"pr": 85, "status": "closed-applied-to-master-29be29c"},
+    "apt-linux-cache-ci": {"pr": null, "status": "applied-to-master-77fc762-82abedf"},
+    "tzx-pulse-sequence-overflow-fix": {"pr": 86, "status": "open-2026-06-12"},
+    "buffer-write-word-array-perf": {"pr": 87, "status": "open-2026-06-12"}
   },
-  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review"]
+  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review", "pr-84-close", "pr-85-review", "issue-83-check"]
 }
