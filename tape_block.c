@@ -181,7 +181,10 @@ libspectrum_tape_block_free( libspectrum_tape_block *block )
     libspectrum_free( block->types.data_block.bit1_pulses );
     break;
 
-  case LIBSPECTRUM_TAPE_BLOCK_CONCAT: /* This should never occur */
+  case LIBSPECTRUM_TAPE_BLOCK_CONCAT:
+    /* No allocated fields — just fall through to free the block struct */
+    break;
+
   default:
     libspectrum_print_error( LIBSPECTRUM_ERROR_LOGIC,
 			     "%s: unknown block type %d", __func__,
