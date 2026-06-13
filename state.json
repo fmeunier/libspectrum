@@ -1,11 +1,11 @@
 {
-  "last_run": "2026-06-11",
+  "last_run": "2026-06-13",
   "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 82, 84, 85],
-  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81],
+  "open_prs": [45, 47, 82, 85, 86, 87, 88, 89],
+  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 84],
   "superseded_prs": [54, 67, 69, 70, 75, 84],
-  "notes": "Task 6 2026-06-11: Rebased PR #84 (DATA_BLOCK test, had merge conflict with PULSE_SEQUENCE commit 4e2c39f) onto master - created new PR #85 from repo-assist/test-data-block-accessors-20260611; 157 tests pass. Updated PR #82 ChangeLog with TZX pulse-level fix (bugs #352/#357/#431), end_of_block enum, PULSE_SEQUENCE and DATA_BLOCK test entries. PR #81 (PULSE_SEQUENCE) was closed/applied to master as 4e2c39f. Task 2: No real project issues open.",
+  "notes": "2026-06-13 run: Task 3 created PR #88 (fix CONCAT block memory leak/error in tape_block_free; 159 tests pass). Task 4 created PR #89 (pin cygwin/cygwin-install-action@master to @v6). PRs #86 and #87 still open from last run. PR #85 still open (DATA_BLOCK accessor test). No real project bug issues - proactively found and fixed CONCAT block free bug. Note: PR #84 status unknown - may have been closed/superseded.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
@@ -21,9 +21,13 @@
     "pzx-read-string-refactor": {"pr": 76, "status": "closed-applied-to-master-8181653"},
     "tzx-write-string-perf": {"pr": 77, "status": "closed-applied-to-master-d98c2f3"},
     "raw-data-accessor-tests": {"pr": 79, "status": "closed-applied-to-master-5893a47"},
-    "data-block-accessor-tests-v1": {"pr": 84, "status": "open-dirty-superseded-by-85"},
+    "data-block-accessor-tests-v1": {"pr": 84, "status": "closed-superseded-by-85"},
     "data-block-accessor-tests-v2": {"pr": 85, "status": "open-created-2026-06-11"},
-    "apt-linux-cache-ci": {"issue": 83, "status": "blocked-protected-files"}
+    "apt-linux-cache-ci": {"issue": 83, "status": "resolved-applied-to-master-82abedf"},
+    "pulse-sequence-count-overflow": {"pr": 86, "status": "open-created-2026-06-12"},
+    "buffer-write-word-array": {"pr": 87, "status": "open-created-2026-06-12"},
+    "concat-block-free-memleak": {"pr": 88, "status": "open-created-2026-06-13"},
+    "cygwin-action-pin": {"pr": 89, "status": "open-created-2026-06-13"}
   },
   "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review", "pr-70-close", "pr-75-close", "pr-81-review"]
 }
