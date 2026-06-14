@@ -805,6 +805,15 @@ tzx_write_pulse_sequence( libspectrum_tape_block *block, libspectrum_buffer *buf
                            libspectrum_tape_block_pulse_lengths( block, i ),
                            pulse_repeats );
     } else {
+      /* The TZX ID 0x13 (Pulse sequence) block stores its count as a single
+         byte (0-255).  Flush any accumulated pulses before the 256th entry
+         so that every PULSES block we emit has a valid count. */
+      if( uncommitted_pulse_count == 255 ) {
+        add_pulses_block( uncommitted_pulse_count, lengths, block, buffer );
+        uncommitted_pulse_count = 0;
+        max_pulse_count = 0;
+        lengths = NULL;
+      }
       if( uncommitted_pulse_count == max_pulse_count ) {
         max_pulse_count = uncommitted_pulse_count + 64;
         lengths =
