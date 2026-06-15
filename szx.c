@@ -3455,6 +3455,7 @@ write_ay_chunk( libspectrum_buffer *buffer, libspectrum_buffer *data,
 {
   size_t i;
   libspectrum_byte flags;
+  libspectrum_byte regs[16];
 
   flags = 0;
   if( libspectrum_snap_fuller_box_active( snap ) ) flags |= ZXSTAYF_FULLERBOX;
@@ -3465,8 +3466,8 @@ write_ay_chunk( libspectrum_buffer *buffer, libspectrum_buffer *data,
                                  libspectrum_snap_out_ay_registerport( snap ) );
 
   for( i = 0; i < 16; i++ )
-    libspectrum_buffer_write_byte( data,
-                                   libspectrum_snap_ay_registers( snap, i ) );
+    regs[i] = libspectrum_snap_ay_registers( snap, i );
+  libspectrum_buffer_write( data, regs, 16 );
 
   write_chunk( buffer, ZXSTBID_AY, data );
 }
