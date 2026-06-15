@@ -95,8 +95,10 @@ If you prepare releases, you can run the ABI comparison inside Docker
 using the helper files in `tools/`.
 
 The helper does not build in your current working directory. Instead, it
-clones the repository inside the container and compares exported source
-snapshots from that clone.
+clones the repository into a temporary directory inside the container,
+compares exported source snapshots from that clone, and removes the
+temporary directory before exit. Only `abi-out/` is written back to the
+host checkout.
 
 ### Build the ABI checker image
 
@@ -139,7 +141,8 @@ docker run --rm \
 
 The helper script will:
 
-1. clone the mounted repository inside the container
+1. clone the mounted repository into a temporary directory inside the
+   container
 2. select the old ref and new ref to compare
 3. export each ref into a separate source tree without mutating your
    checkout
@@ -147,7 +150,8 @@ The helper script will:
 5. configure both trees with a stable feature set
 6. build and install each tree into a separate prefix
 7. run `abi-dumper` on each installed shared library
-8. run `abi-compliance-checker` and write an HTML report
+8. run `abi-compliance-checker` and write an HTML report under
+   `abi-out/`
 
 The configure flags used are:
 

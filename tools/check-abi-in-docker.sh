@@ -3,11 +3,15 @@ set -eu
 
 ROOT=/work
 OUT="$ROOT/abi-out"
-BUILD="$ROOT/abi-work"
+BUILD="$(mktemp -d /tmp/libspectrum-abi.XXXXXX)"
 REPO="$BUILD/repo"
 
-mkdir -p "$OUT" "$BUILD"
-rm -rf "$BUILD"/*
+cleanup() {
+  rm -rf "$BUILD"
+}
+trap cleanup EXIT HUP INT TERM
+
+mkdir -p "$OUT"
 
 case "$#" in
   0)
@@ -28,7 +32,7 @@ case "$#" in
     ;;
 esac
 
-git clone /work "$REPO"
+git clone --no-local "$ROOT" "$REPO"
 
 if [ -z "${OLD_REF}" ]; then
   OLD_REF="$(git -C "$REPO" describe --tags --abbrev=0)"
