@@ -89,6 +89,93 @@ Review both during a release.
 For libtool versioning rules, see the comment above
 `libspectrum_la_LDFLAGS` in `Makefile.am`.
 
+## ABI compatibility check with Docker
+
+If you prepare releases, you can run the ABI comparison inside Docker
+using the helper files in `tools/`.
+
+The helper does not build in your current working directory. Instead, it
+clones the repository inside the container and compares exported source
+snapshots from that clone.
+
+### Build the ABI checker image
+
+From the top-level `libspectrum/` directory, run:
+
+```sh
+docker build -f tools/Dockerfile.abi -t libspectrum-abi-check .
+```
+
+### Run the ABI comparison
+
+With no arguments, the helper compares the most recent tag against
+`HEAD`:
+
+```sh
+docker run --rm \
+  -v "$PWD:/work" \
+  libspectrum-abi-check \
+  sh /work/tools/check-abi-in-docker.sh
+```
+
+You can also override the refs explicitly. With one argument, it is
+compared against `HEAD`:
+
+```sh
+docker run --rm \
+  -v "$PWD:/work" \
+  libspectrum-abi-check \
+  sh /work/tools/check-abi-in-docker.sh 1.6.0
+```
+
+With two arguments, both old and new refs are explicit:
+
+```sh
+docker run --rm \
+  -v "$PWD:/work" \
+  libspectrum-abi-check \
+  sh /work/tools/check-abi-in-docker.sh 1.6.0 HEAD
+```
+
+The helper script will:
+
+1. clone the mounted repository inside the container
+2. select the old ref and new ref to compare
+3. export each ref into a separate source tree without mutating your
+   checkout
+4. bootstrap Autotools in each exported tree with `autogen.sh`
+5. configure both trees with a stable feature set
+6. build and install each tree into a separate prefix
+7. run `abi-dumper` on each installed shared library
+8. run `abi-compliance-checker` and write an HTML report
+
+The configure flags used are:
+
+```sh
+--with-fake-glib --without-libgcrypt --without-libaudiofile
+```
+
+Using a fixed feature set helps keep the exported ABI consistent across
+runs and avoids accidental differences caused by optional dependencies.
+
+The Docker image also installs Universal Ctags for `abi-dumper`, and the
+helper configures builds with `CFLAGS='-Og -g'` to improve ABI analysis
+and avoid `abi-dumper` warnings about release-style optimisation flags.
+
+By default, this compares committed `HEAD`. Uncommitted local changes in
+your working tree are not included.
+
+### Outputs
+
+The run creates these host-visible files under `abi-out/`:
+
+- `libspectrum-<ref>.dump` for each side of the comparison
+- `libspectrum-abi-report-<old>-to-<new>.html`
+
+Open the HTML report in a browser and use it, together with the libtool
+rules in `Makefile.am`, to decide whether `libspectrum_la_LDFLAGS`
+should change for a backward-compatible ABI update or an ABI break.
+
 ## Verification
 
 After updating release metadata, verify with:
