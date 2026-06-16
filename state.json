@@ -1,11 +1,11 @@
 {
-  "last_run": "2026-06-15",
+  "last_run": "2026-06-16",
   "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 87, 90],
+  "open_prs": [45, 47, 87, 90, "pending-group-loop-signal-tests"],
   "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 84, 85, 86, 88, 89],
   "superseded_prs": [54, 67, 69, 70, 75, 84],
-  "notes": "2026-06-15 run: Task 8 created PR #90 (perf: batch AY register writes; reduces 16 write_byte calls to 1 buffer_write in szx.c and z80.c). PRs #82, #85, #86, #88, #89 all applied to master by fmeunier between 2026-06-13 and 2026-06-14. PR number for #90 is estimated - actual number may differ. 3 perf PRs now open: #45 (buffer write direct), #87 (write_word_array), #90 (AY bulk write).",
+  "notes": "2026-06-16 run: Task 10/Task 3 - created PR for GROUP_START/LOOP_START/SET_SIGNAL_LEVEL accessor round-trip tests (branch repo-assist/test-group-loop-signal-accessors-20260616). 163 tests total, 161 pass, 2 skip. PRs #45, #47, #87, #90 still open. No open bug issues. Future test work: COMMENT/MESSAGE/ARCHIVE_INFO text accessors.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
@@ -28,7 +28,8 @@
     "buffer-write-word-array": {"pr": 87, "status": "open-created-2026-06-12"},
     "concat-block-free-memleak": {"pr": 88, "status": "closed-applied-to-master"},
     "cygwin-action-pin": {"pr": 89, "status": "closed-applied-to-master"},
-    "ay-register-bulk-write": {"pr": 90, "status": "open-created-2026-06-15", "branch": "repo-assist/perf-ay-bulk-write-2026-06-15"}
+    "ay-register-bulk-write": {"pr": 90, "status": "open-created-2026-06-15", "branch": "repo-assist/perf-ay-bulk-write-2026-06-15"},
+    "group-loop-signal-accessor-tests": {"pr": "pending-assignment", "status": "open-created-2026-06-16", "branch": "repo-assist/test-group-loop-signal-accessors-20260616"}
   },
   "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review", "pr-70-close", "pr-75-close", "pr-81-review", "pr-82-review", "pr-86-review", "pr-88-review", "pr-89-review"]
 }
