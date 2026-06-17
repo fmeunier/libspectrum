@@ -175,6 +175,9 @@ test_description tests[] = {
   TEST_ENTRY( snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter, "Snap interface1 custom_rom flag, ROM pointer, and ROM length getter/setter" ),
   TEST_ENTRY( tape_rom_block_data_data_length_and_pause_getter_setter, "Tape ROM block data, data_length, and pause getter/setter" ),
   TEST_ENTRY( tzx_pulse_sequence_over_255_splits_into_multiple_pulses_blocks, "TZX PULSE_SEQUENCE over 255 pulses splits into multiple PULSES blocks" ),
+  TEST_ENTRY( tape_comment_block_text_getter_setter, "Tape COMMENT block text getter/setter" ),
+  TEST_ENTRY( tape_message_block_text_and_pause_getter_setter, "Tape MESSAGE block text and pause getter/setter" ),
+  TEST_ENTRY( tape_archive_info_block_count_ids_and_texts_getter_setter, "Tape ARCHIVE_INFO block count, ids, and texts getter/setter" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
