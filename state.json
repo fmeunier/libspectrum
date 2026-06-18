@@ -1,11 +1,11 @@
 {
-  "last_run": "2026-06-17",
+  "last_run": "2026-06-18",
   "monthly_activity_issue": 71,
   "comments_made": {},
-  "open_prs": [45, 47, 87, 90, 91, 92],
+  "open_prs": [45, 47, 87, 90, 91, 92, 93],
   "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 84, 85, 86, 88, 89],
   "superseded_prs": [54, 67, 69, 70, 75, 84],
-  "notes": "2026-06-17 run: Task 3/10 - created PR #92 for COMMENT/MESSAGE/ARCHIVE_INFO accessor round-trip tests (branch repo-assist/test-comment-message-archive-accessors-20260617). 163 tests total, 161 pass, 2 skip. PRs #45, #47, #87, #90, #91, #92 still open. No open bug issues. Future test work: HARDWARE_INFO (count/ids/values), SELECT (count/descriptions/offsets), CUSTOM (description/data/length).",
+  "notes": "2026-06-18 run: Task 10 - created PR #93 for HARDWARE, SELECT, and CUSTOM block accessor round-trip tests (branch repo-assist/test-hardware-select-custom-accessors-20260618). 163 tests total, 161 pass, 2 skip. Tape block accessor test suite is now complete: all standard block types covered. PRs #45, #47, #87, #90, #91, #92, #93 still open. No open bug issues. Task 2: no real user issues, all open issues are auto-generated workflow artifacts.",
   "backlog_cursor": 0,
   "fix_attempts": {
     "buffer-write-perf": {"pr": 45, "status": "open"},
@@ -30,7 +30,8 @@
     "cygwin-action-pin": {"pr": 89, "status": "closed-applied-to-master"},
     "ay-register-bulk-write": {"pr": 90, "status": "open-created-2026-06-15", "branch": "repo-assist/perf-ay-bulk-write-2026-06-15"},
     "group-loop-signal-accessor-tests": {"pr": 91, "status": "open-created-2026-06-16", "branch": "repo-assist/test-group-loop-signal-accessors-20260616"},
-    "comment-message-archive-accessor-tests": {"pr": 92, "status": "open-created-2026-06-17", "branch": "repo-assist/test-comment-message-archive-accessors-20260617"}
+    "comment-message-archive-accessor-tests": {"pr": 92, "status": "open-created-2026-06-17", "branch": "repo-assist/test-comment-message-archive-accessors-20260617"},
+    "hardware-select-custom-accessor-tests": {"pr": 93, "status": "open-created-2026-06-18", "branch": "repo-assist/test-hardware-select-custom-accessors-20260618"}
   },
   "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review", "pr-70-close", "pr-75-close", "pr-81-review", "pr-82-review", "pr-86-review", "pr-88-review", "pr-89-review"]
 }
