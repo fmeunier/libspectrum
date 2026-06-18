@@ -221,5 +221,8 @@ test_return_t snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_set
 test_return_t tape_comment_block_text_getter_setter( void );
 test_return_t tape_message_block_text_and_pause_getter_setter( void );
 test_return_t tape_archive_info_block_count_ids_and_texts_getter_setter( void );
+test_return_t tape_hardware_block_count_types_ids_and_values_getter_setter( void );
+test_return_t tape_select_block_count_offsets_and_texts_getter_setter( void );
+test_return_t tape_custom_block_text_data_and_data_length_getter_setter( void );
 
 #endif

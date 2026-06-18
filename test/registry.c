@@ -212,6 +212,9 @@ test_description tests[] = {
   TEST_ENTRY( tape_comment_block_text_getter_setter, "Tape COMMENT block text getter/setter" ),
   TEST_ENTRY( tape_message_block_text_and_pause_getter_setter, "Tape MESSAGE block text and pause getter/setter" ),
   TEST_ENTRY( tape_archive_info_block_count_ids_and_texts_getter_setter, "Tape ARCHIVE_INFO block count, ids, and texts getter/setter" ),
+  TEST_ENTRY( tape_hardware_block_count_types_ids_and_values_getter_setter, "Tape HARDWARE block count, types, ids, and values getter/setter" ),
+  TEST_ENTRY( tape_select_block_count_offsets_and_texts_getter_setter, "Tape SELECT block count, offsets, and texts getter/setter" ),
+  TEST_ENTRY( tape_custom_block_text_data_and_data_length_getter_setter, "Tape CUSTOM block text, data, and data_length getter/setter" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
