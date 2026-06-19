@@ -24,7 +24,6 @@
 #include "config.h"
 
 #include <stdio.h>
-#include <string.h>
 
 #include "internals.h"
 #include "tape_block.h"
@@ -1403,105 +1402,51 @@ libspectrum_error
 libspectrum_tape_block_description( char *buffer, size_t length,
 	                            libspectrum_tape_block *block )
 {
-  switch( block->type ) {
-  case LIBSPECTRUM_TAPE_BLOCK_ROM:
-    strncpy( buffer, "Standard Speed Data", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_TURBO:
-    strncpy( buffer, "Turbo Speed Data", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_PURE_TONE:
-    strncpy( buffer, "Pure Tone", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_PULSES:
-    strncpy( buffer, "List of Pulses", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_PURE_DATA:
-    strncpy( buffer, "Pure Data", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_RAW_DATA:
-    strncpy( buffer, "Raw Data", length );
-    break;
+  static const struct {
+    libspectrum_tape_type type;
+    const char *name;
+  } descriptions[] = {
+    { LIBSPECTRUM_TAPE_BLOCK_ROM,              "Standard Speed Data"       },
+    { LIBSPECTRUM_TAPE_BLOCK_TURBO,            "Turbo Speed Data"          },
+    { LIBSPECTRUM_TAPE_BLOCK_PURE_TONE,        "Pure Tone"                 },
+    { LIBSPECTRUM_TAPE_BLOCK_PULSES,           "List of Pulses"            },
+    { LIBSPECTRUM_TAPE_BLOCK_PURE_DATA,        "Pure Data"                 },
+    { LIBSPECTRUM_TAPE_BLOCK_RAW_DATA,         "Raw Data"                  },
+    { LIBSPECTRUM_TAPE_BLOCK_GENERALISED_DATA, "Generalised Data"          },
+    { LIBSPECTRUM_TAPE_BLOCK_PAUSE,            "Pause"                     },
+    { LIBSPECTRUM_TAPE_BLOCK_GROUP_START,      "Group Start"               },
+    { LIBSPECTRUM_TAPE_BLOCK_GROUP_END,        "Group End"                 },
+    { LIBSPECTRUM_TAPE_BLOCK_JUMP,             "Jump"                      },
+    { LIBSPECTRUM_TAPE_BLOCK_LOOP_START,       "Loop Start Block"          },
+    { LIBSPECTRUM_TAPE_BLOCK_LOOP_END,         "Loop End"                  },
+    { LIBSPECTRUM_TAPE_BLOCK_SELECT,           "Select"                    },
+    { LIBSPECTRUM_TAPE_BLOCK_STOP48,           "Stop Tape If In 48K Mode"  },
+    { LIBSPECTRUM_TAPE_BLOCK_SET_SIGNAL_LEVEL, "Set Signal Level"          },
+    { LIBSPECTRUM_TAPE_BLOCK_COMMENT,          "Comment"                   },
+    { LIBSPECTRUM_TAPE_BLOCK_MESSAGE,          "Message"                   },
+    { LIBSPECTRUM_TAPE_BLOCK_ARCHIVE_INFO,     "Archive Info"              },
+    { LIBSPECTRUM_TAPE_BLOCK_HARDWARE,         "Hardware Information"      },
+    { LIBSPECTRUM_TAPE_BLOCK_CUSTOM,           "Custom Info"               },
+    { LIBSPECTRUM_TAPE_BLOCK_RLE_PULSE,        "RLE Pulse"                 },
+    { LIBSPECTRUM_TAPE_BLOCK_PULSE_SEQUENCE,   "Pulse Sequence"            },
+    { LIBSPECTRUM_TAPE_BLOCK_DATA_BLOCK,       "Data Block"                },
+    { LIBSPECTRUM_TAPE_BLOCK_CONCAT,           "Glue Block"                },
+  };
+  size_t i;
 
-  case LIBSPECTRUM_TAPE_BLOCK_GENERALISED_DATA:
-    strncpy( buffer, "Generalised Data", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_PAUSE:
-    strncpy( buffer, "Pause", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_GROUP_START:
-    strncpy( buffer, "Group Start", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_GROUP_END:
-    strncpy( buffer, "Group End", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_JUMP:
-    strncpy( buffer, "Jump", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_LOOP_START:
-    strncpy( buffer, "Loop Start Block", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_LOOP_END:
-    strncpy( buffer, "Loop End", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_SELECT:
-    strncpy( buffer, "Select", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_STOP48:
-    strncpy( buffer, "Stop Tape If In 48K Mode", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_SET_SIGNAL_LEVEL:
-    strncpy( buffer, "Set Signal Level", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_COMMENT:
-    strncpy( buffer, "Comment", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_MESSAGE:
-    strncpy( buffer, "Message", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_ARCHIVE_INFO:
-    strncpy( buffer, "Archive Info", length );
-    break;
-  case LIBSPECTRUM_TAPE_BLOCK_HARDWARE:
-    strncpy( buffer, "Hardware Information", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_CUSTOM:
-    strncpy( buffer, "Custom Info", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_RLE_PULSE:
-    strncpy( buffer, "RLE Pulse", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_PULSE_SEQUENCE:
-    strncpy( buffer, "Pulse Sequence", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_DATA_BLOCK:
-    strncpy( buffer, "Data Block", length );
-    break;
-
-  case LIBSPECTRUM_TAPE_BLOCK_CONCAT:
-    strncpy( buffer, "Glue Block", length );
-    break;
-
-  default:
-    libspectrum_print_error(
-      LIBSPECTRUM_ERROR_LOGIC,
-      "libspectrum_tape_block_description: unknown block type 0x%02x",
-      block->type
-    );
-    return LIBSPECTRUM_ERROR_LOGIC;
+  for( i = 0; i < ARRAY_SIZE( descriptions ); i++ ) {
+    if( descriptions[i].type == block->type ) {
+      snprintf( buffer, length, "%s", descriptions[i].name );
+      return LIBSPECTRUM_ERROR_NONE;
+    }
   }
 
-  buffer[ length-1 ] = '\0';
-  return LIBSPECTRUM_ERROR_NONE;
+  libspectrum_print_error(
+    LIBSPECTRUM_ERROR_LOGIC,
+    "libspectrum_tape_block_description: unknown block type 0x%02x",
+    block->type
+  );
+  return LIBSPECTRUM_ERROR_LOGIC;
 }
 
 /* Given a tape file, attempt to guess which sort of hardware it should run
