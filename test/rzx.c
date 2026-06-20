@@ -108,9 +108,9 @@ tracked_realloc( void *ptr, size_t size )
   if( !ptr ) return tracked_malloc( size );
 
   if( !size ) {
-    free( ptr );
     alloc = tracked_memory_find( ptr );
     if( alloc ) alloc->freed = 1;
+    free( ptr );
     return NULL;
   }
 
