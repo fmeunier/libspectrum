@@ -1,41 +1,142 @@
 {
-  "last_run": "2026-06-20",
-  "monthly_activity_issue": 71,
-  "comments_made": {},
-  "open_prs": [45, 47, 87, 90, 91, 92, 93, 94, 96, 97],
-  "closed_prs": [36, 43, 44, 46, 48, 49, 50, 51, 52, 53, 54, 55, 56, 57, 62, 63, 64, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 84, 85, 86, 88, 89],
-  "superseded_prs": [54, 67, 69, 70, 75, 84],
-  "notes": "2026-06-20 run: Task 8 - replaced 13 sequential switch statements in libspectrum_machine_capabilities() with a single switch (PR #96). Task 9/4 - added test/capabilities.c with 15 machine capability tests for all machine types (PR #97). Issue #95 is a failed PR attempt for macOS brew cache key (protected file) - it's an issue, not a PR. PRs #96/#97 are tentative numbers based on sequential assignment.",
-  "backlog_cursor": 0,
-  "fix_attempts": {
-    "buffer-write-perf": {"pr": 45, "status": "open"},
-    "tap-error-return": {"pr": 47, "status": "open"},
-    "changelog-draft": {"pr": 54, "status": "superseded-by-70"},
-    "changelog-1.6.2-update": {"pr": 70, "status": "closed-superseded-by-82"},
-    "changelog-1.6.2-update-v2": {"pr": 82, "status": "closed-applied-to-master"},
-    "pulses-block-accessor-tests": {"pr": 74, "status": "closed-applied-to-master-9b027b6"},
-    "pulse-sequence-accessor-tests": {"pr": 75, "status": "superseded-by-81"},
-    "pulse-sequence-accessor-tests-rebased": {"pr": 81, "status": "closed-applied-to-master-4e2c39f"},
-    "csw-block-alloc-consistency": {"pr": 72, "status": "closed-applied-to-master"},
-    "concat-block-coverage": {"pr": 73, "status": "closed-applied-to-master"},
-    "pzx-read-string-refactor": {"pr": 76, "status": "closed-applied-to-master-8181653"},
-    "tzx-write-string-perf": {"pr": 77, "status": "closed-applied-to-master-d98c2f3"},
-    "raw-data-accessor-tests": {"pr": 79, "status": "closed-applied-to-master-5893a47"},
-    "data-block-accessor-tests-v1": {"pr": 84, "status": "closed-superseded-by-85"},
-    "data-block-accessor-tests-v2": {"pr": 85, "status": "closed-applied-to-master"},
-    "apt-linux-cache-ci": {"issue": 83, "status": "resolved-applied-to-master-82abedf"},
-    "pulse-sequence-count-overflow": {"pr": 86, "status": "closed-applied-to-master"},
-    "buffer-write-word-array": {"pr": 87, "status": "open-created-2026-06-12"},
-    "concat-block-free-memleak": {"pr": 88, "status": "closed-applied-to-master"},
-    "cygwin-action-pin": {"pr": 89, "status": "closed-applied-to-master"},
-    "ay-register-bulk-write": {"pr": 90, "status": "open-created-2026-06-15"},
-    "group-loop-signal-accessor-tests": {"pr": 91, "status": "open-created-2026-06-16"},
-    "comment-message-archive-accessor-tests": {"pr": 92, "status": "open-created-2026-06-17"},
-    "hardware-select-custom-accessor-tests": {"pr": 93, "status": "open-created-2026-06-18"},
-    "tape-block-description-table-refactor": {"pr": 94, "status": "open-created-2026-06-19"},
-    "macos-brew-cache-key-fix": {"issue": 95, "status": "failed-protected-file-issue-created"},
-    "machine-capabilities-single-switch": {"pr": 96, "status": "open-created-2026-06-20"},
-    "machine-capabilities-tests": {"pr": 97, "status": "open-created-2026-06-20"}
-  },
-  "user_checked_off": ["issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close", "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review", "pr-70-close", "pr-75-close", "pr-81-review", "pr-82-review", "pr-86-review", "pr-88-review", "pr-89-review"]
+    "last_run": "2026-06-21",
+    "monthly_activity_issue": 71,
+    "comments_made": {},
+    "open_prs": [
+        45,
+        47,
+        87,
+        90,
+        91,
+        92,
+        93,
+        94,
+        96,
+        97,
+        98
+    ],
+    "closed_prs": [
+        36,
+        43,
+        44,
+        46,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        62,
+        63,
+        64,
+        67,
+        69,
+        70,
+        72,
+        73,
+        74,
+        75,
+        76,
+        77,
+        79,
+        81,
+        82,
+        84,
+        85,
+        86,
+        88,
+        89
+    ],
+    "superseded_prs": [
+        54,
+        67,
+        69,
+        70,
+        75,
+        84
+    ],
+    "fix_attempts": {
+        "buffer-write-optimization": {
+            "pr": 45,
+            "status": "open-created-2026-05-19"
+        },
+        "tap-write-error-return": {
+            "pr": 47,
+            "status": "open-created-2026-05-19"
+        },
+        "tzx-pulses-block-split": {
+            "pr": 86,
+            "status": "closed-applied-to-master"
+        },
+        "buffer-write-word-array": {
+            "pr": 87,
+            "status": "open-created-2026-06-12"
+        },
+        "concat-block-free-memleak": {
+            "pr": 88,
+            "status": "closed-applied-to-master"
+        },
+        "cygwin-action-pin": {
+            "pr": 89,
+            "status": "closed-applied-to-master"
+        },
+        "ay-register-bulk-write": {
+            "pr": 90,
+            "status": "open-created-2026-06-15"
+        },
+        "group-loop-signal-accessor-tests": {
+            "pr": 91,
+            "status": "open-created-2026-06-16"
+        },
+        "comment-message-archive-accessor-tests": {
+            "pr": 92,
+            "status": "open-created-2026-06-17"
+        },
+        "hardware-select-custom-accessor-tests": {
+            "pr": 93,
+            "status": "open-created-2026-06-18"
+        },
+        "tape-block-description-table-refactor": {
+            "pr": 94,
+            "status": "open-created-2026-06-19"
+        },
+        "macos-brew-cache-key-fix": {
+            "issue": 95,
+            "status": "failed-protected-file-issue-created"
+        },
+        "machine-capabilities-single-switch": {
+            "pr": 96,
+            "status": "open-created-2026-06-20"
+        },
+        "machine-capabilities-tests": {
+            "pr": 97,
+            "status": "open-created-2026-06-20"
+        },
+        "dedup-write-snap-page": {
+            "pr": 98,
+            "status": "open-created-2026-06-21"
+        }
+    },
+    "user_checked_off": [
+        "issue-66",
+        "issue-68",
+        "pr-54-close",
+        "pr-67-close",
+        "pr-69-close",
+        "pr-72-review",
+        "pr-73-review",
+        "pr-74-review",
+        "pr-79-review",
+        "pr-70-close",
+        "pr-75-close",
+        "pr-81-review",
+        "pr-82-review",
+        "pr-86-review",
+        "pr-88-review",
+        "pr-89-review"
+    ]
 }
