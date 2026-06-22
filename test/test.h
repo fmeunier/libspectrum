@@ -186,5 +186,7 @@ test_return_t rzx_add_snap_inserts_snapshot_block( void );
 test_return_t rzx_iterator_begin_next_last_with_snap_and_input_blocks( void );
 test_return_t rzx_get_keyid_returns_zero_with_no_signature_block( void );
 test_return_t rzx_iterator_get_frames_returns_size_t_max_for_non_input_block( void );
+test_return_t tape_jump_block_offset_getter_setter( void );
+test_return_t tape_block_description_returns_correct_string_for_all_types( void );
 
 #endif
