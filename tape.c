@@ -1401,7 +1401,7 @@ libspectrum_tape_insert_block( libspectrum_tape *tape,
 
 libspectrum_error
 libspectrum_tape_block_description( char *buffer, size_t length,
-	                            libspectrum_tape_block *block )
+	                            const libspectrum_tape_block *block )
 {
   switch( block->type ) {
   case LIBSPECTRUM_TAPE_BLOCK_ROM:

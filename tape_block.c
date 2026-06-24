@@ -198,7 +198,7 @@ libspectrum_tape_block_free( libspectrum_tape_block *block )
 }
 
 libspectrum_tape_type
-libspectrum_tape_block_type( libspectrum_tape_block *block )
+libspectrum_tape_block_type( const libspectrum_tape_block *block )
 {
   return block->type;
 }
@@ -415,7 +415,7 @@ data_block_init( libspectrum_tape_data_block *block,
 
 /* Does this block consist solely of metadata? */
 int
-libspectrum_tape_block_metadata( libspectrum_tape_block *block )
+libspectrum_tape_block_metadata( const libspectrum_tape_block *block )
 {
   switch( block->type ) {
   case LIBSPECTRUM_TAPE_BLOCK_ROM:
