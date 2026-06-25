@@ -1,5 +1,5 @@
 {
-    "last_run": "2026-06-24",
+    "last_run": "2026-06-25",
     "monthly_activity_issue": 71,
     "comments_made": {},
     "open_prs": [
@@ -16,7 +16,8 @@
         98,
         99,
         100,
-        101
+        101,
+        102
     ],
     "closed_prs": [
         36,
@@ -122,6 +123,10 @@
         "const-tape-block-getters": {
             "pr": 101,
             "status": "open-created-2026-06-24"
+        },
+        "pause-tstates-rle-pulse-tests": {
+            "pr": 102,
+            "status": "open-created-2026-06-25"
         }
     },
     "user_checked_off": [
