@@ -178,6 +178,21 @@ test_description tests[] = {
   TEST_ENTRY( snap_interface1_custom_rom_rom_pointer_and_rom_length_getter_setter, "Snap interface1 custom_rom flag, ROM pointer, and ROM length getter/setter" ),
   TEST_ENTRY( tape_rom_block_data_data_length_and_pause_getter_setter, "Tape ROM block data, data_length, and pause getter/setter" ),
   TEST_ENTRY( tzx_pulse_sequence_over_255_splits_into_multiple_pulses_blocks, "TZX PULSE_SEQUENCE over 255 pulses splits into multiple PULSES blocks" ),
+  TEST_ENTRY( machine_capabilities_16k_and_48k_have_no_capabilities, "Machine capabilities: 16K, 48K, and UNKNOWN have no capabilities" ),
+  TEST_ENTRY( machine_capabilities_48k_ntsc_has_ntsc_only, "Machine capabilities: 48K NTSC has NTSC only" ),
+  TEST_ENTRY( machine_capabilities_tc2048_has_timex_and_kempston, "Machine capabilities: TC2048 has Timex memory/video and Kempston joystick" ),
+  TEST_ENTRY( machine_capabilities_tc2068_has_ay_timex_and_dock, "Machine capabilities: TC2068 has AY, Timex memory/video, and dock" ),
+  TEST_ENTRY( machine_capabilities_ts2068_has_ay_timex_dock_and_ntsc, "Machine capabilities: TS2068 has AY, Timex memory/video, dock, and NTSC" ),
+  TEST_ENTRY( machine_capabilities_128k_has_ay_and_128_memory, "Machine capabilities: 128K has AY and 128-style memory" ),
+  TEST_ENTRY( machine_capabilities_plus2_has_ay_128_memory_and_sinclair_joystick, "Machine capabilities: +2 has AY, 128 memory, and Sinclair joystick" ),
+  TEST_ENTRY( machine_capabilities_plus2a_has_ay_128_plus3_memory_and_sinclair_joystick, "Machine capabilities: +2A has AY, 128/+3 memory, and Sinclair joystick" ),
+  TEST_ENTRY( machine_capabilities_plus3_and_plus3e_have_full_plus3_capabilities, "Machine capabilities: +3 and +3e have full +3 capability set" ),
+  TEST_ENTRY( machine_capabilities_128e_has_ay_128_plus3_memory_and_sinclair_joystick, "Machine capabilities: 128Ke has AY, 128/+3 memory, and Sinclair joystick" ),
+  TEST_ENTRY( machine_capabilities_pent_has_ay_128_memory_and_trdos, "Machine capabilities: Pentagon 128K has AY, 128 memory, and TRDOS disk" ),
+  TEST_ENTRY( machine_capabilities_pent512_has_ay_128_trdos_and_pent512_memory, "Machine capabilities: Pentagon 512K has AY, 128 memory, TRDOS, and Pentagon 512 memory" ),
+  TEST_ENTRY( machine_capabilities_pent1024_has_ay_128_trdos_pent512_and_pent1024_memory, "Machine capabilities: Pentagon 1024K has all Pentagon capabilities" ),
+  TEST_ENTRY( machine_capabilities_scorp_has_ay_128_trdos_scorp_memory_and_even_m1, "Machine capabilities: Scorpion has AY, 128 memory, TRDOS, Scorpion memory, and even-M1" ),
+  TEST_ENTRY( machine_capabilities_se_has_ay_128_memory_timex_video_kempston_and_se_memory, "Machine capabilities: SE has AY, 128 memory, Timex video, Kempston joystick, and SE memory" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

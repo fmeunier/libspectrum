@@ -25,6 +25,7 @@ TESTS = $(check_PROGRAMS)
 
 test_test_SOURCES = \
 	test/buffer.c \
+	test/capabilities.c \
 	test/common.c \
 	test/creator.c \
 	test/edges.c \

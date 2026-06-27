@@ -189,5 +189,20 @@ test_return_t rzx_add_snap_inserts_snapshot_block( void );
 test_return_t rzx_iterator_begin_next_last_with_snap_and_input_blocks( void );
 test_return_t rzx_get_keyid_returns_zero_with_no_signature_block( void );
 test_return_t rzx_iterator_get_frames_returns_size_t_max_for_non_input_block( void );
+test_return_t machine_capabilities_16k_and_48k_have_no_capabilities( void );
+test_return_t machine_capabilities_48k_ntsc_has_ntsc_only( void );
+test_return_t machine_capabilities_tc2048_has_timex_and_kempston( void );
+test_return_t machine_capabilities_tc2068_has_ay_timex_and_dock( void );
+test_return_t machine_capabilities_ts2068_has_ay_timex_dock_and_ntsc( void );
+test_return_t machine_capabilities_128k_has_ay_and_128_memory( void );
+test_return_t machine_capabilities_plus2_has_ay_128_memory_and_sinclair_joystick( void );
+test_return_t machine_capabilities_plus2a_has_ay_128_plus3_memory_and_sinclair_joystick( void );
+test_return_t machine_capabilities_plus3_and_plus3e_have_full_plus3_capabilities( void );
+test_return_t machine_capabilities_128e_has_ay_128_plus3_memory_and_sinclair_joystick( void );
+test_return_t machine_capabilities_pent_has_ay_128_memory_and_trdos( void );
+test_return_t machine_capabilities_pent512_has_ay_128_trdos_and_pent512_memory( void );
+test_return_t machine_capabilities_pent1024_has_ay_128_trdos_pent512_and_pent1024_memory( void );
+test_return_t machine_capabilities_scorp_has_ay_128_trdos_scorp_memory_and_even_m1( void );
+test_return_t machine_capabilities_se_has_ay_128_memory_timex_video_kempston_and_se_memory( void );
 
 #endif
