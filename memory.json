@@ -1,150 +1,165 @@
 {
-    "last_run": "2026-06-25",
-    "monthly_activity_issue": 71,
-    "comments_made": {},
-    "open_prs": [
-        45,
-        47,
-        87,
-        90,
-        91,
-        92,
-        93,
-        94,
-        96,
-        97,
-        98,
-        99,
-        100,
-        101,
-        102
-    ],
-    "closed_prs": [
-        36,
-        43,
-        44,
-        46,
-        48,
-        49,
-        50,
-        51,
-        52,
-        53,
-        54,
-        55,
-        56,
-        57,
-        62,
-        63,
-        64,
-        67,
-        69,
-        70,
-        72,
-        73,
-        74,
-        75,
-        76,
-        77,
-        79,
-        81,
-        82,
-        84,
-        85,
-        86,
-        88,
-        89
-    ],
-    "superseded_prs": [
-        54,
-        67,
-        69,
-        70,
-        75,
-        84
-    ],
-    "fix_attempts": {
-        "buffer-write-optimization": {
-            "pr": 45,
-            "status": "open-created-2026-05-11"
-        },
-        "tap-write-error-return": {
-            "pr": 47,
-            "status": "open-created-2026-05-13"
-        },
-        "buffer-write-word-array": {
-            "pr": 87,
-            "status": "open-created-2026-06-12"
-        },
-        "ay-register-bulk-write": {
-            "pr": 90,
-            "status": "open-created-2026-06-15"
-        },
-        "group-loop-signal-accessor-tests": {
-            "pr": 91,
-            "status": "open-created-2026-06-16"
-        },
-        "comment-message-archive-accessor-tests": {
-            "pr": 92,
-            "status": "open-created-2026-06-17"
-        },
-        "hardware-select-custom-accessor-tests": {
-            "pr": 93,
-            "status": "open-created-2026-06-18"
-        },
-        "tape-block-description-table-refactor": {
-            "pr": 94,
-            "status": "open-created-2026-06-19"
-        },
-        "macos-brew-cache-key-fix": {
-            "issue": 95,
-            "status": "failed-protected-file-issue-created"
-        },
-        "machine-capabilities-single-switch": {
-            "pr": 96,
-            "status": "open-created-2026-06-20"
-        },
-        "machine-capabilities-tests": {
-            "pr": 97,
-            "status": "open-created-2026-06-20"
-        },
-        "dedup-write-snap-page": {
-            "pr": 98,
-            "status": "open-created-2026-06-21"
-        },
-        "tape-block-desc-jump-accessor-tests": {
-            "pr": 99,
-            "status": "open-created-2026-06-22"
-        },
-        "buffer-growth-raw-write-tests": {
-            "pr": 100,
-            "status": "open-created-2026-06-23"
-        },
-        "const-tape-block-getters": {
-            "pr": 101,
-            "status": "open-created-2026-06-24"
-        },
-        "pause-tstates-rle-pulse-tests": {
-            "pr": 102,
-            "status": "open-created-2026-06-25"
-        }
+  "last_run": "2026-06-27",
+  "monthly_activity_issue": 71,
+  "comments_made": {},
+  "open_prs": [
+    45,
+    47,
+    87,
+    90,
+    92,
+    93,
+    94,
+    96,
+    99,
+    102,
+    104
+  ],
+  "closed_prs": [
+    36,
+    43,
+    44,
+    46,
+    48,
+    49,
+    50,
+    51,
+    52,
+    53,
+    54,
+    55,
+    56,
+    57,
+    62,
+    63,
+    64,
+    67,
+    69,
+    70,
+    72,
+    73,
+    74,
+    75,
+    76,
+    77,
+    79,
+    81,
+    82,
+    84,
+    85,
+    86,
+    88,
+    89,
+    91,
+    97,
+    98,
+    100,
+    101
+  ],
+  "superseded_prs": [
+    54,
+    67,
+    69,
+    70,
+    75,
+    84
+  ],
+  "fix_attempts": {
+    "buffer-write-optimization": {
+      "pr": 45,
+      "status": "open-created-2026-05-11"
     },
-    "user_checked_off": [
-        "issue-66",
-        "issue-68",
-        "pr-54-close",
-        "pr-67-close",
-        "pr-69-close",
-        "pr-72-review",
-        "pr-73-review",
-        "pr-74-review",
-        "pr-79-review",
-        "pr-70-close",
-        "pr-75-close",
-        "pr-81-review",
-        "pr-82-review",
-        "pr-86-review",
-        "pr-88-review",
-        "pr-89-review"
-    ]
+    "tap-write-error-return": {
+      "pr": 47,
+      "status": "open-created-2026-05-13"
+    },
+    "buffer-write-word-array": {
+      "pr": 87,
+      "status": "open-created-2026-06-12"
+    },
+    "ay-register-bulk-write": {
+      "pr": 90,
+      "status": "open-created-2026-06-15"
+    },
+    "group-loop-signal-accessor-tests": {
+      "pr": 91,
+      "status": "open-created-2026-06-16"
+    },
+    "comment-message-archive-accessor-tests": {
+      "pr": 92,
+      "status": "open-created-2026-06-17"
+    },
+    "hardware-select-custom-accessor-tests": {
+      "pr": 93,
+      "status": "open-created-2026-06-18"
+    },
+    "tape-block-description-table-refactor": {
+      "pr": 94,
+      "status": "open-created-2026-06-19"
+    },
+    "macos-brew-cache-key-fix": {
+      "issue": 95,
+      "status": "failed-protected-file-issue-created"
+    },
+    "machine-capabilities-single-switch": {
+      "pr": 96,
+      "status": "open-created-2026-06-20"
+    },
+    "machine-capabilities-tests": {
+      "pr": 97,
+      "status": "open-created-2026-06-20"
+    },
+    "dedup-write-snap-page": {
+      "pr": 98,
+      "status": "open-created-2026-06-21"
+    },
+    "tape-block-desc-jump-accessor-tests": {
+      "pr": 99,
+      "status": "open-created-2026-06-22"
+    },
+    "buffer-growth-raw-write-tests": {
+      "pr": 100,
+      "status": "open-created-2026-06-23"
+    },
+    "const-tape-block-getters": {
+      "pr": 101,
+      "status": "open-created-2026-06-24"
+    },
+    "pause-tstates-rle-pulse-tests": {
+      "pr": 102,
+      "status": "open-created-2026-06-25"
+    },
+    "snap-misc-accessor-tests": {
+      "pr": 104,
+      "branch": "repo-assist/test-snap-misc-accessors-20260627-c9c4d09",
+      "description": "test: add getter/setter tests for melodik, simpleide, issue2, interface2, and joystick snap accessors",
+      "status": "open",
+      "created": "2026-06-27"
+    }
+  },
+  "user_checked_off": [
+    "issue-66",
+    "issue-68",
+    "pr-54-close",
+    "pr-67-close",
+    "pr-69-close",
+    "pr-72-review",
+    "pr-73-review",
+    "pr-74-review",
+    "pr-79-review",
+    "pr-70-close",
+    "pr-75-close",
+    "pr-81-review",
+    "pr-82-review",
+    "pr-86-review",
+    "pr-88-review",
+    "pr-89-review",
+    "pr-91-review",
+    "pr-97-review",
+    "pr-98-review",
+    "pr-100-review",
+    "pr-101-review",
+    "issue-95-check"
+  ],
+  "notes": "Run 2026-06-27: Task6 all 10 open PRs healthy. PRs 91,97,98,100,101 merged by maintainer. Issue 95 macOS cache fix applied. Task3: created PR 104 with 5 new snap peripheral accessor tests (melodik,simpleide,issue2,interface2,joystick). 179->184 tests pass."
 }
