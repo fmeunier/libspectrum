@@ -1396,3 +1396,132 @@ done:
   libspectrum_free( output );
   return r;
 }
+
+test_return_t
+tape_group_start_block_text_getter_setter( void )
+{
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_GROUP_START );
+  char *text;
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_group_start_block_text_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_GROUP_START ) {
+    fprintf( stderr, "%s: tape_group_start_block_text_getter_setter: expected GROUP_START block type\n", progname );
+    goto done;
+  }
+
+  /* Default text should be NULL */
+  if( libspectrum_tape_block_text( block ) != NULL ) {
+    fprintf( stderr, "%s: tape_group_start_block_text_getter_setter: default text should be NULL\n", progname );
+    goto done;
+  }
+
+  /* Set text and round-trip */
+  {
+    const char *test_text = "TestGroup";
+    text = libspectrum_new( char, strlen( test_text ) + 1 );
+    strcpy( text, test_text );
+  }
+  libspectrum_tape_block_set_text( block, text );
+  text = NULL; /* block owns the string now */
+
+  if( strcmp( libspectrum_tape_block_text( block ), "TestGroup" ) != 0 ) {
+    fprintf( stderr, "%s: tape_group_start_block_text_getter_setter: expected text=\"TestGroup\", got \"%s\"\n",
+             progname, libspectrum_tape_block_text( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+test_return_t
+tape_loop_start_block_count_getter_setter( void )
+{
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_LOOP_START );
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_loop_start_block_count_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_LOOP_START ) {
+    fprintf( stderr, "%s: tape_loop_start_block_count_getter_setter: expected LOOP_START block type\n", progname );
+    goto done;
+  }
+
+  /* Default count should be 0 */
+  if( libspectrum_tape_block_count( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_loop_start_block_count_getter_setter: default count should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_count( block, 5 );
+  if( libspectrum_tape_block_count( block ) != 5 ) {
+    fprintf( stderr, "%s: tape_loop_start_block_count_getter_setter: expected count=5, got %lu\n",
+             progname, (unsigned long)libspectrum_tape_block_count( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+test_return_t
+tape_set_signal_level_block_level_getter_setter( void )
+{
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_SET_SIGNAL_LEVEL );
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_set_signal_level_block_level_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_SET_SIGNAL_LEVEL ) {
+    fprintf( stderr, "%s: tape_set_signal_level_block_level_getter_setter: expected SET_SIGNAL_LEVEL block type\n", progname );
+    goto done;
+  }
+
+  /* Default level should be 0 */
+  if( libspectrum_tape_block_level( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_set_signal_level_block_level_getter_setter: default level should be 0, got %d\n",
+             progname, libspectrum_tape_block_level( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_level( block, 1 );
+  if( libspectrum_tape_block_level( block ) != 1 ) {
+    fprintf( stderr, "%s: tape_set_signal_level_block_level_getter_setter: expected level=1, got %d\n",
+             progname, libspectrum_tape_block_level( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_level( block, 0 );
+  if( libspectrum_tape_block_level( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_set_signal_level_block_level_getter_setter: expected level=0 after reset, got %d\n",
+             progname, libspectrum_tape_block_level( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
