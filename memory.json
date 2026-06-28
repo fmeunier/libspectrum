@@ -1,7 +1,126 @@
 {
-  "last_run": "2026-06-27",
-  "monthly_activity_issue": 71,
+  "last_run": "2026-06-28",
   "comments_made": {},
+  "labels_applied": {},
+  "fix_attempts": {
+    "snap-storage-dock-divmmc": {
+      "pr": 105,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-28"
+    },
+    "snap-storage-melodik-simpleide": {
+      "pr": 104,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-06-27",
+      "note": "closed/applied to master as commit 786347c"
+    },
+    "tape-pause-tstates-rle-pulse": {
+      "pr": 102,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-25"
+    },
+    "tape-block-description-jump": {
+      "pr": 99,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-22"
+    },
+    "buffer-write-raw-autogrowth": {
+      "pr": 100,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-06-23",
+      "note": "applied to master"
+    },
+    "machine-capabilities-single-switch": {
+      "pr": 96,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-20"
+    },
+    "machine-capabilities-tests": {
+      "pr": 97,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-06-20",
+      "note": "applied to master"
+    },
+    "tape-block-description-table": {
+      "pr": 94,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-19"
+    },
+    "ci-cache-workflow-hash": {
+      "issue": 95,
+      "pr": null,
+      "status": "closed",
+      "date": "2026-06-19",
+      "note": "applied to master"
+    },
+    "hardware-select-custom-tests": {
+      "pr": 93,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-18"
+    },
+    "comment-message-archive-tests": {
+      "pr": 92,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-17"
+    },
+    "group-start-loop-set-signal-tests": {
+      "pr": 91,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-06-16",
+      "note": "applied to master"
+    },
+    "ay-register-bulk-write": {
+      "pr": 90,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-15"
+    },
+    "const-tape-block-type-metadata": {
+      "pr": 101,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-06-24",
+      "note": "applied to master as commit 69d3023"
+    },
+    "deduplicate-write-page": {
+      "pr": 98,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-06-21",
+      "note": "applied to master as commit a260c10"
+    },
+    "write-page-refactor": {
+      "pr": 98,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-06-21",
+      "note": "applied to master"
+    },
+    "changelog-1.6.2": {
+      "pr": 82,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-06-09",
+      "note": "closed without merge"
+    },
+    "tape-block-description-fix": {
+      "pr": 94,
+      "issue": null,
+      "status": "open",
+      "date": "2026-06-19"
+    }
+  },
   "open_prs": [
     45,
     47,
@@ -13,26 +132,10 @@
     96,
     99,
     102,
-    104
+    105
   ],
   "closed_prs": [
-    36,
-    43,
-    44,
-    46,
-    48,
-    49,
-    50,
-    51,
-    52,
-    53,
     54,
-    55,
-    56,
-    57,
-    62,
-    63,
-    64,
     67,
     69,
     70,
@@ -45,98 +148,20 @@
     79,
     81,
     82,
+    83,
     84,
     85,
     86,
     88,
     89,
     91,
+    95,
     97,
     98,
     100,
-    101
+    101,
+    104
   ],
-  "superseded_prs": [
-    54,
-    67,
-    69,
-    70,
-    75,
-    84
-  ],
-  "fix_attempts": {
-    "buffer-write-optimization": {
-      "pr": 45,
-      "status": "open-created-2026-05-11"
-    },
-    "tap-write-error-return": {
-      "pr": 47,
-      "status": "open-created-2026-05-13"
-    },
-    "buffer-write-word-array": {
-      "pr": 87,
-      "status": "open-created-2026-06-12"
-    },
-    "ay-register-bulk-write": {
-      "pr": 90,
-      "status": "open-created-2026-06-15"
-    },
-    "group-loop-signal-accessor-tests": {
-      "pr": 91,
-      "status": "open-created-2026-06-16"
-    },
-    "comment-message-archive-accessor-tests": {
-      "pr": 92,
-      "status": "open-created-2026-06-17"
-    },
-    "hardware-select-custom-accessor-tests": {
-      "pr": 93,
-      "status": "open-created-2026-06-18"
-    },
-    "tape-block-description-table-refactor": {
-      "pr": 94,
-      "status": "open-created-2026-06-19"
-    },
-    "macos-brew-cache-key-fix": {
-      "issue": 95,
-      "status": "failed-protected-file-issue-created"
-    },
-    "machine-capabilities-single-switch": {
-      "pr": 96,
-      "status": "open-created-2026-06-20"
-    },
-    "machine-capabilities-tests": {
-      "pr": 97,
-      "status": "open-created-2026-06-20"
-    },
-    "dedup-write-snap-page": {
-      "pr": 98,
-      "status": "open-created-2026-06-21"
-    },
-    "tape-block-desc-jump-accessor-tests": {
-      "pr": 99,
-      "status": "open-created-2026-06-22"
-    },
-    "buffer-growth-raw-write-tests": {
-      "pr": 100,
-      "status": "open-created-2026-06-23"
-    },
-    "const-tape-block-getters": {
-      "pr": 101,
-      "status": "open-created-2026-06-24"
-    },
-    "pause-tstates-rle-pulse-tests": {
-      "pr": 102,
-      "status": "open-created-2026-06-25"
-    },
-    "snap-misc-accessor-tests": {
-      "pr": 104,
-      "branch": "repo-assist/test-snap-misc-accessors-20260627-c9c4d09",
-      "description": "test: add getter/setter tests for melodik, simpleide, issue2, interface2, and joystick snap accessors",
-      "status": "open",
-      "created": "2026-06-27"
-    }
-  },
   "user_checked_off": [
     "issue-66",
     "issue-68",
@@ -159,7 +184,22 @@
     "pr-98-review",
     "pr-100-review",
     "pr-101-review",
-    "issue-95-check"
+    "issue-95-check",
+    "pr-104-review"
   ],
-  "notes": "Run 2026-06-27: Task6 all 10 open PRs healthy. PRs 91,97,98,100,101 merged by maintainer. Issue 95 macOS cache fix applied. Task3: created PR 104 with 5 new snap peripheral accessor tests (melodik,simpleide,issue2,interface2,joystick). 179->184 tests pass."
+  "monthly_activity_issue": 71,
+  "notes": "Run 2026-06-28: Task 2 had no real project issues (only agentic-workflow infrastructure issues). Task 10: found 42 untested snap accessor pairs; implemented 4 new test functions covering BetaDisk FDC byte registers (beta_custom_rom, beta_direction, beta_system, beta_track, beta_sector, beta_data, beta_status), beta_rom pointer array (1 element), DivMMC RAM page pointer array (divmmc_ram[0..2]), TC2068 DOCK/EXROM (dock_active, dock_ram[0], dock_cart[0], exrom_ram[0], exrom_cart[0]). All 4 pass. Tests 189-192. Remaining untested: multiface_model_3, roms[4]/rom_length[4], slt/slt_length/slt_screen/slt_screen_level. Previous run 2026-06-27: PR #104 content applied to master as commit 786347c. Maintainer also made commit 891c993 (Fix RZX input block length handling).",
+  "backlog_cursor": {
+    "issues": 0,
+    "prs": 0
+  },
+  "ideas_submitted": [
+    "ci-workflow-cache-key-hash",
+    "const-tape-block-type",
+    "changelog-1.6.2-draft",
+    "buffer-write-word-array",
+    "machine-capabilities-single-switch",
+    "tape-block-description-table",
+    "snap-accessor-tests-missing"
+  ]
 }
