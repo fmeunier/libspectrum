@@ -214,5 +214,9 @@ test_return_t machine_capabilities_pent512_has_ay_128_trdos_and_pent512_memory( 
 test_return_t machine_capabilities_pent1024_has_ay_128_trdos_pent512_and_pent1024_memory( void );
 test_return_t machine_capabilities_scorp_has_ay_128_trdos_scorp_memory_and_even_m1( void );
 test_return_t machine_capabilities_se_has_ay_128_memory_timex_video_kempston_and_se_memory( void );
+test_return_t snap_beta_disk_custom_rom_direction_and_fdc_byte_registers_getter_setter( void );
+test_return_t snap_beta_disk_rom_single_pointer_getter_setter( void );
+test_return_t snap_divmmc_ram_page_pointer_array_getter_setter( void );
+test_return_t snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter( void );
 
 #endif
