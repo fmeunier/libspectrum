@@ -475,3 +475,151 @@ done:
   libspectrum_snap_free( snap );
   return r;
 }
+
+test_return_t
+snap_divmmc_ram_page_pointer_array_getter_setter( void )
+{
+  /* libspectrum_snap: DivMMC RAM page pointer array (SNAPSHOT_DIVMMC_PAGES pages) */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *page0, *page1;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_divmmc_ram_page_pointer_array_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_divmmc_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: snap_divmmc_ram_page_pointer_array_getter_setter: default divmmc_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  page0 = libspectrum_new( libspectrum_byte, 0x2000 );
+  page0[0]      = 0x11;
+  page0[0x1fff] = 0x22;
+
+  libspectrum_snap_set_divmmc_ram( snap, 0, page0 );
+  if( libspectrum_snap_divmmc_ram( snap, 0 ) != page0 ) {
+    fprintf( stderr, "%s: snap_divmmc_ram_page_pointer_array_getter_setter: divmmc_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( page0 );
+    goto done;
+  }
+  if( libspectrum_snap_divmmc_ram( snap, 0 )[0]      != 0x11 ||
+      libspectrum_snap_divmmc_ram( snap, 0 )[0x1fff] != 0x22 ) {
+    fprintf( stderr, "%s: snap_divmmc_ram_page_pointer_array_getter_setter: divmmc_ram[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  page1 = libspectrum_new( libspectrum_byte, 0x2000 );
+  page1[0] = 0x33;
+  libspectrum_snap_set_divmmc_ram( snap, 1, page1 );
+
+  if( libspectrum_snap_divmmc_ram( snap, 2 ) != NULL ) {
+    fprintf( stderr, "%s: snap_divmmc_ram_page_pointer_array_getter_setter: divmmc_ram[2] should still be NULL\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+test_return_t
+snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter( void )
+{
+  /* libspectrum_snap: TC2068 DOCK/EXROM dock_active flag, cart pointers, and ram (writeable) flags */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *dock_data, *exrom_data;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_dock_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: default dock_active should be 0, got %d\n",
+             progname, libspectrum_snap_dock_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_dock_active( snap, 1 );
+  if( libspectrum_snap_dock_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: expected dock_active=1, got %d\n",
+             progname, libspectrum_snap_dock_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_dock_ram( snap, 0 ) != 0 ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: default dock_ram[0] should be 0, got %d\n",
+             progname, libspectrum_snap_dock_ram( snap, 0 ) );
+    goto done;
+  }
+  libspectrum_snap_set_dock_ram( snap, 0, 1 );
+  if( libspectrum_snap_dock_ram( snap, 0 ) != 1 ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: expected dock_ram[0]=1, got %d\n",
+             progname, libspectrum_snap_dock_ram( snap, 0 ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_dock_cart( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: default dock_cart[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  dock_data = libspectrum_new( libspectrum_byte, 0x2000 );
+  dock_data[0]      = 0xab;
+  dock_data[0x1fff] = 0xcd;
+
+  libspectrum_snap_set_dock_cart( snap, 0, dock_data );
+  if( libspectrum_snap_dock_cart( snap, 0 ) != dock_data ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: dock_cart[0] pointer mismatch after set\n", progname );
+    libspectrum_free( dock_data );
+    goto done;
+  }
+  if( libspectrum_snap_dock_cart( snap, 0 )[0]      != 0xab ||
+      libspectrum_snap_dock_cart( snap, 0 )[0x1fff] != 0xcd ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: dock_cart[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_exrom_ram( snap, 0 ) != 0 ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: default exrom_ram[0] should be 0, got %d\n",
+             progname, libspectrum_snap_exrom_ram( snap, 0 ) );
+    goto done;
+  }
+  libspectrum_snap_set_exrom_ram( snap, 0, 1 );
+  if( libspectrum_snap_exrom_ram( snap, 0 ) != 1 ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: expected exrom_ram[0]=1, got %d\n",
+             progname, libspectrum_snap_exrom_ram( snap, 0 ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_exrom_cart( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: default exrom_cart[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  exrom_data = libspectrum_new( libspectrum_byte, 0x2000 );
+  exrom_data[0]      = 0xef;
+  exrom_data[0x1fff] = 0x01;
+
+  libspectrum_snap_set_exrom_cart( snap, 0, exrom_data );
+  if( libspectrum_snap_exrom_cart( snap, 0 ) != exrom_data ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: exrom_cart[0] pointer mismatch after set\n", progname );
+    libspectrum_free( exrom_data );
+    goto done;
+  }
+  if( libspectrum_snap_exrom_cart( snap, 0 )[0]      != 0xef ||
+      libspectrum_snap_exrom_cart( snap, 0 )[0x1fff] != 0x01 ) {
+    fprintf( stderr, "%s: snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter: exrom_cart[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
