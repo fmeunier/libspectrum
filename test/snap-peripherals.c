@@ -1064,3 +1064,42 @@ done:
   libspectrum_snap_free( snap );
   return r;
 }
+
+test_return_t
+snap_multiface_model_3_getter_setter( void )
+{
+  /* libspectrum_snap: multiface_model_3 flag getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_multiface_model_3_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_multiface_model_3( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_multiface_model_3_getter_setter: default multiface_model_3 should be 0, got %d\n",
+             progname, libspectrum_snap_multiface_model_3( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_multiface_model_3( snap, 1 );
+  if( libspectrum_snap_multiface_model_3( snap ) != 1 ) {
+    fprintf( stderr, "%s: snap_multiface_model_3_getter_setter: expected multiface_model_3=1, got %d\n",
+             progname, libspectrum_snap_multiface_model_3( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_multiface_model_3( snap, 0 );
+  if( libspectrum_snap_multiface_model_3( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_multiface_model_3_getter_setter: expected multiface_model_3=0 after reset, got %d\n",
+             progname, libspectrum_snap_multiface_model_3( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}

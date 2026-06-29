@@ -209,6 +209,9 @@ test_description tests[] = {
   TEST_ENTRY( snap_beta_disk_rom_single_pointer_getter_setter, "Snap BetaDisk ROM single-pointer getter/setter" ),
   TEST_ENTRY( snap_divmmc_ram_page_pointer_array_getter_setter, "Snap DivMMC RAM page pointer array getter/setter" ),
   TEST_ENTRY( snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter, "Snap TC2068 DOCK/EXROM active, cart pointer, and ram flag getter/setter" ),
+  TEST_ENTRY( snap_custom_roms_pointer_array_and_rom_length_getter_setter, "Snap custom roms[] pointer array and rom_length[] getter/setter" ),
+  TEST_ENTRY( snap_slt_level_data_length_screen_and_screen_level_getter_setter, "Snap slt[] level data, slt_length[], slt_screen, and slt_screen_level getter/setter" ),
+  TEST_ENTRY( snap_multiface_model_3_getter_setter, "Snap multiface_model_3 getter/setter" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
