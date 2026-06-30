@@ -623,3 +623,174 @@ done:
   libspectrum_snap_free( snap );
   return r;
 }
+
+test_return_t
+snap_custom_roms_pointer_array_and_rom_length_getter_setter( void )
+{
+  /* libspectrum_snap: roms[4] custom ROM pointer array and rom_length[4] size array getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *rom0, *rom3;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_roms( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: default roms[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_rom_length( snap, 0 ) != 0 ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: default rom_length[0] should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_snap_rom_length( snap, 0 ) );
+    goto done;
+  }
+
+  rom0 = libspectrum_new( libspectrum_byte, 0x4000 );
+  rom0[0]      = 0xf3;
+  rom0[0x3fff] = 0xfe;
+
+  libspectrum_snap_set_roms( snap, 0, rom0 );
+  libspectrum_snap_set_rom_length( snap, 0, 0x4000 );
+
+  if( libspectrum_snap_roms( snap, 0 ) != rom0 ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: roms[0] pointer mismatch after set\n", progname );
+    libspectrum_free( rom0 );
+    goto done;
+  }
+  if( libspectrum_snap_roms( snap, 0 )[0]      != 0xf3 ||
+      libspectrum_snap_roms( snap, 0 )[0x3fff] != 0xfe ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: roms[0] data mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_snap_rom_length( snap, 0 ) != 0x4000 ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: rom_length[0] should be 0x4000, got %lu\n",
+             progname, (unsigned long)libspectrum_snap_rom_length( snap, 0 ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_roms( snap, 1 ) != NULL ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: roms[1] should still be NULL\n", progname );
+    goto done;
+  }
+
+  rom3 = libspectrum_new( libspectrum_byte, 0x2000 );
+  rom3[0]      = 0x11;
+  rom3[0x1fff] = 0x22;
+
+  libspectrum_snap_set_roms( snap, 3, rom3 );
+  libspectrum_snap_set_rom_length( snap, 3, 0x2000 );
+
+  if( libspectrum_snap_roms( snap, 3 ) != rom3 ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: roms[3] pointer mismatch after set\n", progname );
+    libspectrum_free( rom3 );
+    goto done;
+  }
+  if( libspectrum_snap_rom_length( snap, 3 ) != 0x2000 ) {
+    fprintf( stderr, "%s: snap_custom_roms_pointer_array_and_rom_length_getter_setter: rom_length[3] should be 0x2000, got %lu\n",
+             progname, (unsigned long)libspectrum_snap_rom_length( snap, 3 ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+test_return_t
+snap_slt_level_data_length_screen_and_screen_level_getter_setter( void )
+{
+  /* libspectrum_snap: slt[] pointer array, slt_length[] size array, slt_screen pointer, and slt_screen_level getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *level_data, *screen;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_slt( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: default slt[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_slt_length( snap, 0 ) != 0 ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: default slt_length[0] should be 0, got %lu\n",
+             progname, (unsigned long)libspectrum_snap_slt_length( snap, 0 ) );
+    goto done;
+  }
+
+  level_data = libspectrum_new( libspectrum_byte, 0x1000 );
+  level_data[0]      = 0xab;
+  level_data[0x0fff] = 0xcd;
+
+  libspectrum_snap_set_slt( snap, 0, level_data );
+  libspectrum_snap_set_slt_length( snap, 0, 0x1000 );
+
+  if( libspectrum_snap_slt( snap, 0 ) != level_data ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: slt[0] pointer mismatch after set\n", progname );
+    libspectrum_free( level_data );
+    goto done;
+  }
+  if( libspectrum_snap_slt( snap, 0 )[0]      != 0xab ||
+      libspectrum_snap_slt( snap, 0 )[0x0fff] != 0xcd ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: slt[0] data mismatch\n", progname );
+    goto done;
+  }
+  if( libspectrum_snap_slt_length( snap, 0 ) != 0x1000 ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: slt_length[0] should be 0x1000, got %lu\n",
+             progname, (unsigned long)libspectrum_snap_slt_length( snap, 0 ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_slt( snap, 1 ) != NULL ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: slt[1] should still be NULL\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_slt_screen( snap ) != NULL ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: default slt_screen should be NULL\n", progname );
+    goto done;
+  }
+
+  screen = libspectrum_new( libspectrum_byte, 6912 );
+  screen[0]    = 0x55;
+  screen[6911] = 0xaa;
+
+  libspectrum_snap_set_slt_screen( snap, screen );
+
+  if( libspectrum_snap_slt_screen( snap ) != screen ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: slt_screen pointer mismatch after set\n", progname );
+    libspectrum_free( screen );
+    goto done;
+  }
+  if( libspectrum_snap_slt_screen( snap )[0]    != 0x55 ||
+      libspectrum_snap_slt_screen( snap )[6911] != 0xaa ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: slt_screen data mismatch\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_snap_slt_screen_level( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: default slt_screen_level should be 0, got %d\n",
+             progname, libspectrum_snap_slt_screen_level( snap ) );
+    goto done;
+  }
+
+  libspectrum_snap_set_slt_screen_level( snap, 3 );
+  if( libspectrum_snap_slt_screen_level( snap ) != 3 ) {
+    fprintf( stderr, "%s: snap_slt_level_data_length_screen_and_screen_level_getter_setter: expected slt_screen_level=3, got %d\n",
+             progname, libspectrum_snap_slt_screen_level( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
