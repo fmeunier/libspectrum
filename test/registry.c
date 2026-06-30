@@ -217,6 +217,8 @@ test_description tests[] = {
   TEST_ENTRY( tape_custom_block_text_data_and_data_length_getter_setter, "Tape CUSTOM block text, data, and data_length getter/setter" ),
   TEST_ENTRY( tape_jump_block_offset_getter_setter, "Tape JUMP block offset getter/setter" ),
   TEST_ENTRY( tape_block_description_returns_correct_string_for_all_types, "Tape block description returns correct string for all 25 block types" ),
+  TEST_ENTRY( tape_pause_tstates_getter_setter_across_block_types, "Tape pause_tstates getter/setter across PAUSE, ROM, TURBO, PURE_DATA, RAW_DATA, and MESSAGE block types" ),
+  TEST_ENTRY( tape_rle_pulse_block_scale_data_and_data_length_getter_setter, "Tape RLE_PULSE block scale, data, and data_length getter/setter" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
