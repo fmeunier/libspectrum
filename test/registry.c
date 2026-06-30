@@ -215,6 +215,8 @@ test_description tests[] = {
   TEST_ENTRY( tape_hardware_block_count_types_ids_and_values_getter_setter, "Tape HARDWARE block count, types, ids, and values getter/setter" ),
   TEST_ENTRY( tape_select_block_count_offsets_and_texts_getter_setter, "Tape SELECT block count, offsets, and texts getter/setter" ),
   TEST_ENTRY( tape_custom_block_text_data_and_data_length_getter_setter, "Tape CUSTOM block text, data, and data_length getter/setter" ),
+  TEST_ENTRY( tape_jump_block_offset_getter_setter, "Tape JUMP block offset getter/setter" ),
+  TEST_ENTRY( tape_block_description_returns_correct_string_for_all_types, "Tape block description returns correct string for all 25 block types" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

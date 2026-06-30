@@ -224,5 +224,7 @@ test_return_t tape_archive_info_block_count_ids_and_texts_getter_setter( void );
 test_return_t tape_hardware_block_count_types_ids_and_values_getter_setter( void );
 test_return_t tape_select_block_count_offsets_and_texts_getter_setter( void );
 test_return_t tape_custom_block_text_data_and_data_length_getter_setter( void );
+test_return_t tape_jump_block_offset_getter_setter( void );
+test_return_t tape_block_description_returns_correct_string_for_all_types( void );
 
 #endif

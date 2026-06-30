@@ -1482,6 +1482,50 @@ done:
 }
 
 test_return_t
+tape_jump_block_offset_getter_setter( void )
+{
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_JUMP );
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_jump_block_offset_getter_setter: tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_JUMP ) {
+    fprintf( stderr, "%s: tape_jump_block_offset_getter_setter: expected JUMP block type\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_offset( block ) != 0 ) {
+    fprintf( stderr, "%s: tape_jump_block_offset_getter_setter: default offset should be 0, got %d\n",
+             progname, libspectrum_tape_block_offset( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_offset( block, -3 );
+  if( libspectrum_tape_block_offset( block ) != -3 ) {
+    fprintf( stderr, "%s: tape_jump_block_offset_getter_setter: expected offset=-3, got %d\n",
+             progname, libspectrum_tape_block_offset( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_offset( block, 5 );
+  if( libspectrum_tape_block_offset( block ) != 5 ) {
+    fprintf( stderr, "%s: tape_jump_block_offset_getter_setter: expected offset=5, got %d\n",
+             progname, libspectrum_tape_block_offset( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+test_return_t
 tape_loop_start_block_count_getter_setter( void )
 {
   libspectrum_tape_block *block =
@@ -1935,5 +1979,74 @@ done:
   libspectrum_free( description );
   libspectrum_free( data );
   libspectrum_tape_block_free( block );
+  return r;
+}
+
+test_return_t
+tape_block_description_returns_correct_string_for_all_types( void )
+{
+  static const struct {
+    libspectrum_tape_type type;
+    const char *expected;
+  } cases[] = {
+    { LIBSPECTRUM_TAPE_BLOCK_ROM,             "Standard Speed Data"       },
+    { LIBSPECTRUM_TAPE_BLOCK_TURBO,           "Turbo Speed Data"          },
+    { LIBSPECTRUM_TAPE_BLOCK_PURE_TONE,       "Pure Tone"                 },
+    { LIBSPECTRUM_TAPE_BLOCK_PULSES,          "List of Pulses"            },
+    { LIBSPECTRUM_TAPE_BLOCK_PURE_DATA,       "Pure Data"                 },
+    { LIBSPECTRUM_TAPE_BLOCK_RAW_DATA,        "Raw Data"                  },
+    { LIBSPECTRUM_TAPE_BLOCK_GENERALISED_DATA,"Generalised Data"          },
+    { LIBSPECTRUM_TAPE_BLOCK_PAUSE,           "Pause"                     },
+    { LIBSPECTRUM_TAPE_BLOCK_GROUP_START,     "Group Start"               },
+    { LIBSPECTRUM_TAPE_BLOCK_GROUP_END,       "Group End"                 },
+    { LIBSPECTRUM_TAPE_BLOCK_JUMP,            "Jump"                      },
+    { LIBSPECTRUM_TAPE_BLOCK_LOOP_START,      "Loop Start Block"          },
+    { LIBSPECTRUM_TAPE_BLOCK_LOOP_END,        "Loop End"                  },
+    { LIBSPECTRUM_TAPE_BLOCK_SELECT,          "Select"                    },
+    { LIBSPECTRUM_TAPE_BLOCK_STOP48,          "Stop Tape If In 48K Mode"  },
+    { LIBSPECTRUM_TAPE_BLOCK_SET_SIGNAL_LEVEL,"Set Signal Level"          },
+    { LIBSPECTRUM_TAPE_BLOCK_COMMENT,         "Comment"                   },
+    { LIBSPECTRUM_TAPE_BLOCK_MESSAGE,         "Message"                   },
+    { LIBSPECTRUM_TAPE_BLOCK_ARCHIVE_INFO,    "Archive Info"              },
+    { LIBSPECTRUM_TAPE_BLOCK_HARDWARE,        "Hardware Information"      },
+    { LIBSPECTRUM_TAPE_BLOCK_CUSTOM,          "Custom Info"               },
+    { LIBSPECTRUM_TAPE_BLOCK_RLE_PULSE,       "RLE Pulse"                 },
+    { LIBSPECTRUM_TAPE_BLOCK_PULSE_SEQUENCE,  "Pulse Sequence"            },
+    { LIBSPECTRUM_TAPE_BLOCK_DATA_BLOCK,      "Data Block"                },
+    { LIBSPECTRUM_TAPE_BLOCK_CONCAT,          "Glue Block"                },
+  };
+
+  char buf[64];
+  size_t i;
+  test_return_t r = TEST_PASS;
+
+  for( i = 0; i < ARRAY_SIZE( cases ); i++ ) {
+    libspectrum_tape_block *block =
+      libspectrum_tape_block_alloc( cases[i].type );
+    libspectrum_error err;
+
+    if( !block ) {
+      fprintf( stderr, "%s: tape_block_description_all_types: tape_block_alloc returned NULL for type 0x%02x\n",
+               progname, cases[i].type );
+      return TEST_INCOMPLETE;
+    }
+
+    err = libspectrum_tape_block_description( buf, sizeof( buf ), block );
+    libspectrum_tape_block_free( block );
+
+    if( err != LIBSPECTRUM_ERROR_NONE ) {
+      fprintf( stderr, "%s: tape_block_description_all_types: description failed for type 0x%02x\n",
+               progname, cases[i].type );
+      r = TEST_FAIL;
+      continue;
+    }
+
+    if( strcmp( buf, cases[i].expected ) != 0 ) {
+      fprintf( stderr, "%s: tape_block_description_all_types: type 0x%02x: expected '%s', got '%s'\n",
+               progname, cases[i].type, cases[i].expected, buf );
+      r = TEST_FAIL;
+    }
+  }
+
   return r;
 }
