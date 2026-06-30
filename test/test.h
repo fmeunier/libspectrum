@@ -218,5 +218,8 @@ test_return_t snap_beta_disk_custom_rom_direction_and_fdc_byte_registers_getter_
 test_return_t snap_beta_disk_rom_single_pointer_getter_setter( void );
 test_return_t snap_divmmc_ram_page_pointer_array_getter_setter( void );
 test_return_t snap_tc2068_dock_exrom_active_cart_pointer_and_ram_flag_getter_setter( void );
+test_return_t tape_comment_block_text_getter_setter( void );
+test_return_t tape_message_block_text_and_pause_getter_setter( void );
+test_return_t tape_archive_info_block_count_ids_and_texts_getter_setter( void );
 
 #endif
