@@ -222,6 +222,8 @@ test_description tests[] = {
   TEST_ENTRY( snap_custom_roms_pointer_array_and_rom_length_getter_setter, "Snap custom roms[] pointer array and rom_length[] getter/setter" ),
   TEST_ENTRY( snap_slt_level_data_length_screen_and_screen_level_getter_setter, "Snap slt[] level data, slt_length[], slt_screen, and slt_screen_level getter/setter" ),
   TEST_ENTRY( snap_multiface_model_3_getter_setter, "Snap multiface_model_3 getter/setter" ),
+  TEST_ENTRY( snap_last_instruction_ei_and_set_f_getter_setter, "Snap last_instruction_ei and last_instruction_set_f getter/setter" ),
+  TEST_ENTRY( snap_out_plus3_memoryport_and_scld_hsr_dec_getter_setter, "Snap out_plus3_memoryport, out_scld_hsr, and out_scld_dec getter/setter" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
