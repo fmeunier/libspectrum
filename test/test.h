@@ -126,6 +126,8 @@ test_return_t microdrive_mdr_write_mdr_read_roundtrip( void );
 test_return_t snap_machine_type_getter_setter_and_default_value( void );
 test_return_t snap_memptr_getter_setter( void );
 test_return_t snap_ula_128k_memory_port_and_ay_register_port_getter_setter( void );
+test_return_t snap_last_instruction_ei_and_set_f_getter_setter( void );
+test_return_t snap_out_plus3_memoryport_and_scld_hsr_dec_getter_setter( void );
 test_return_t snap_custom_rom_flag_and_custom_rom_pages_getter_setter( void );
 test_return_t snap_ram_pages_getter_setter( void );
 test_return_t snap_interface1_active_paged_and_drive_count_getter_setter( void );
