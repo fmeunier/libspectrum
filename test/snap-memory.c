@@ -794,3 +794,120 @@ done:
   libspectrum_snap_free( snap );
   return r;
 }
+
+test_return_t
+snap_zxcf_active_upload_memctl_and_pages_getter_setter( void )
+{
+  /* libspectrum_snap: ZXCF flags (active, upload, memctl, pages) getter/setter */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_zxcf_active( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: default zxcf_active should be 0, got %d\n",
+             progname, libspectrum_snap_zxcf_active( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxcf_active( snap, 1 );
+  if( libspectrum_snap_zxcf_active( snap ) != 1 ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: expected zxcf_active=1, got %d\n",
+             progname, libspectrum_snap_zxcf_active( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxcf_upload( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: default zxcf_upload should be 0, got %d\n",
+             progname, libspectrum_snap_zxcf_upload( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxcf_upload( snap, 1 );
+  if( libspectrum_snap_zxcf_upload( snap ) != 1 ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: expected zxcf_upload=1, got %d\n",
+             progname, libspectrum_snap_zxcf_upload( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxcf_memctl( snap ) != 0x00 ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: default zxcf_memctl should be 0, got 0x%02x\n",
+             progname, libspectrum_snap_zxcf_memctl( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxcf_memctl( snap, 0x37 );
+  if( libspectrum_snap_zxcf_memctl( snap ) != 0x37 ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: expected zxcf_memctl=0x37, got 0x%02x\n",
+             progname, libspectrum_snap_zxcf_memctl( snap ) );
+    goto done;
+  }
+
+  if( libspectrum_snap_zxcf_pages( snap ) != 0 ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: default zxcf_pages should be 0, got %zu\n",
+             progname, libspectrum_snap_zxcf_pages( snap ) );
+    goto done;
+  }
+  libspectrum_snap_set_zxcf_pages( snap, 16 );
+  if( libspectrum_snap_zxcf_pages( snap ) != 16 ) {
+    fprintf( stderr, "%s: snap_zxcf_active_upload_memctl_and_pages_getter_setter: expected zxcf_pages=16, got %zu\n",
+             progname, libspectrum_snap_zxcf_pages( snap ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}
+
+test_return_t
+snap_zxcf_ram_page_pointer_array_getter_setter( void )
+{
+  /* libspectrum_snap: ZXCF RAM page pointer array (SNAPSHOT_ZXCF_PAGES pages) */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  libspectrum_byte *page0, *page1;
+  test_return_t r = TEST_FAIL;
+
+  if( !snap ) {
+    fprintf( stderr, "%s: snap_zxcf_ram_page_pointer_array_getter_setter: snap_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_snap_zxcf_ram( snap, 0 ) != NULL ) {
+    fprintf( stderr, "%s: snap_zxcf_ram_page_pointer_array_getter_setter: default zxcf_ram[0] should be NULL\n", progname );
+    goto done;
+  }
+
+  page0 = libspectrum_new( libspectrum_byte, 0x4000 );
+  page0[0]      = 0xab;
+  page0[0x3fff] = 0xcd;
+
+  libspectrum_snap_set_zxcf_ram( snap, 0, page0 );
+  if( libspectrum_snap_zxcf_ram( snap, 0 ) != page0 ) {
+    fprintf( stderr, "%s: snap_zxcf_ram_page_pointer_array_getter_setter: zxcf_ram[0] pointer mismatch after set\n", progname );
+    libspectrum_free( page0 );
+    goto done;
+  }
+  if( libspectrum_snap_zxcf_ram( snap, 0 )[0]      != 0xab ||
+      libspectrum_snap_zxcf_ram( snap, 0 )[0x3fff] != 0xcd ) {
+    fprintf( stderr, "%s: snap_zxcf_ram_page_pointer_array_getter_setter: zxcf_ram[0] data mismatch\n", progname );
+    goto done;
+  }
+
+  page1 = libspectrum_new( libspectrum_byte, 0x4000 );
+  page1[0] = 0xef;
+  libspectrum_snap_set_zxcf_ram( snap, 1, page1 );
+
+  if( libspectrum_snap_zxcf_ram( snap, 2 ) != NULL ) {
+    fprintf( stderr, "%s: snap_zxcf_ram_page_pointer_array_getter_setter: zxcf_ram[2] should still be NULL\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_snap_free( snap );
+  return r;
+}

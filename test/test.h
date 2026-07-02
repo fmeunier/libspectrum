@@ -233,5 +233,7 @@ test_return_t tape_block_description_returns_correct_string_for_all_types( void 
 test_return_t snap_custom_roms_pointer_array_and_rom_length_getter_setter( void );
 test_return_t snap_slt_level_data_length_screen_and_screen_level_getter_setter( void );
 test_return_t snap_multiface_model_3_getter_setter( void );
+test_return_t snap_zxcf_active_upload_memctl_and_pages_getter_setter( void );
+test_return_t snap_zxcf_ram_page_pointer_array_getter_setter( void );
 
 #endif

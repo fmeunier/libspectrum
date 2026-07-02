@@ -224,6 +224,8 @@ test_description tests[] = {
   TEST_ENTRY( snap_multiface_model_3_getter_setter, "Snap multiface_model_3 getter/setter" ),
   TEST_ENTRY( snap_last_instruction_ei_and_set_f_getter_setter, "Snap last_instruction_ei and last_instruction_set_f getter/setter" ),
   TEST_ENTRY( snap_out_plus3_memoryport_and_scld_hsr_dec_getter_setter, "Snap out_plus3_memoryport, out_scld_hsr, and out_scld_dec getter/setter" ),
+  TEST_ENTRY( snap_zxcf_active_upload_memctl_and_pages_getter_setter, "Snap ZXCF active, upload, memctl, and pages getter/setter" ),
+  TEST_ENTRY( snap_zxcf_ram_page_pointer_array_getter_setter, "Snap ZXCF RAM page pointer array getter/setter" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
