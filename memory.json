@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-07-02",
+  "last_run": "2026-07-03",
   "comments_made": {},
   "labels_applied": {},
   "fix_attempts": {
@@ -112,15 +112,23 @@
       "note": "applied to master as commit 7a225d1"
     },
     "snap-zxcf-accessor-unit-tests": {
-      "pr": "aw_zxcf",
+      "pr": 108,
+      "issue": null,
+      "status": "closed",
+      "date": "2026-07-02",
+      "note": "merged to master as commit 018cc24"
+    },
+    "szx-uspe-pltt-tests": {
+      "pr": 111,
       "issue": null,
       "status": "open",
-      "date": "2026-07-02"
+      "date": "2026-07-03",
+      "note": "4 new write+read tests for USPE and PLTT SZX chunks; 211->215 tests"
     }
   },
-  "open_prs": [45, 47, 87, 90, 94, 96, "aw_zxcf"],
+  "open_prs": [45, 47, 87, 90, 94, 96, 111],
   "closed_prs": [
-    54, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 88, 89, 91, 95, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107
+    54, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 88, 89, 91, 95, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107, 108
   ],
   "user_checked_off": [
     "issue-66",
@@ -152,10 +160,11 @@
     "pr-99-review",
     "pr-102-review",
     "pr-106-review",
-    "pr-107-review"
+    "pr-107-review",
+    "pr-108-review"
   ],
-  "monthly_activity_issue": "aw_july",
-  "notes": "Run 2026-07-02: Task 6 - all 6 open Repo Assist PRs (#45,47,87,90,94,96) have no CI failures and no merge conflicts. Task 9 - added 2 ZXCF snap accessor unit tests (zxcf_active/upload/memctl/pages + zxcf_ram[]) to snap-memory.c; 207->209 tests; PR created (aw_zxcf). Task 11 - closed June monthly activity #71, created new July activity issue (aw_july).",
+  "monthly_activity_issue": 109,
+  "notes": "Run 2026-07-03: Task 6 - all 6 open Repo Assist PRs (#45,47,87,90,94,96) have no CI failures, no merge conflicts. Task 2/9 substitute - added 4 write+read SZX USPE/PLTT chunk tests to test/szx.c; binary fixtures USPE.szx(17b) and PLTT.szx(83b) committed in test/szx-chunks/; 211->215 tests; PR #111 created. PR #108 (ZXCF) was merged to master (commit 018cc24) on 2026-07-02.",
   "backlog_cursor": {
     "issues": 0,
     "prs": 0
@@ -169,6 +178,7 @@
     "tape-block-description-table",
     "snap-accessor-tests-missing",
     "snap-remaining-accessor-unit-tests",
-    "snap-zxcf-accessor-unit-tests"
+    "snap-zxcf-accessor-unit-tests",
+    "szx-uspe-pltt-tests"
   ]
 }
