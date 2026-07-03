@@ -518,6 +518,62 @@ write_szx_zmmc_chunk( void )
 }
 
 static void
+uspeech_setter( libspectrum_snap *snap )
+{
+  libspectrum_snap_set_uspeech_active( snap, 1 );
+  libspectrum_snap_set_uspeech_paged( snap, 1 );
+}
+
+static libspectrum_byte
+test_59_expected[] = {
+  0x01 /* Paged */
+};
+
+test_return_t
+write_szx_uspe_chunk( void )
+{
+  return szx_write_block_test( "USPE", LIBSPECTRUM_MACHINE_48, uspeech_setter,
+      test_59_expected, ARRAY_SIZE(test_59_expected), ARRAY_SIZE(test_59_expected) );
+}
+
+static void
+pltt_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *palette = libspectrum_new( libspectrum_byte, 64 );
+  memset( palette, 0, 64 );
+  palette[0] = 0x11;
+  palette[63] = 0x22;
+
+  libspectrum_snap_set_ulaplus_active( snap, 1 );
+  libspectrum_snap_set_ulaplus_palette_enabled( snap, 1 );
+  libspectrum_snap_set_ulaplus_current_register( snap, 0x15 );
+  libspectrum_snap_set_ulaplus_palette( snap, 0, palette );
+  libspectrum_snap_set_ulaplus_ff_register( snap, 0x30 );
+}
+
+static libspectrum_byte
+test_60_expected[] = {
+  0x01, /* Flags (ENABLED) */
+  0x15, /* Current register */
+  0x11, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* palette[0..7] */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* palette[8..15] */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* palette[16..23] */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* palette[24..31] */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* palette[32..39] */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* palette[40..47] */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* palette[48..55] */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x22, /* palette[56..63] */
+  0x30  /* ff_register */
+};
+
+test_return_t
+write_szx_pltt_chunk( void )
+{
+  return szx_write_block_test( "PLTT", LIBSPECTRUM_MACHINE_48, pltt_setter,
+      test_60_expected, ARRAY_SIZE(test_60_expected), ARRAY_SIZE(test_60_expected) );
+}
+
+static void
 ramp_setter( libspectrum_snap *snap )
 {
   libspectrum_byte *ram = libspectrum_malloc0_n( 1, 0x4000 );
@@ -967,6 +1023,47 @@ test_return_t
 read_szx_zmmc_chunk( void )
 {
   return szx_read_block_test( "ZMMC", test_58_check );
+}
+
+static int
+test_59_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+
+  if( libspectrum_snap_uspeech_active( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_uspeech_paged( snap ) != 0 ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_uspe_chunk( void )
+{
+  return szx_read_block_test( "USPE", test_59_check );
+}
+
+static int
+test_60_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+  libspectrum_byte *palette;
+
+  if( libspectrum_snap_ulaplus_active( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_ulaplus_palette_enabled( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_ulaplus_current_register( snap ) != 0x3f ) failed = 1;
+
+  palette = libspectrum_snap_ulaplus_palette( snap, 0 );
+  if( !palette || palette[0] != 0x5a ) failed = 1;
+
+  if( libspectrum_snap_ulaplus_ff_register( snap ) != 0x7e ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_pltt_chunk( void )
+{
+  return szx_read_block_test( "PLTT", test_60_check );
 }
 
 static int
