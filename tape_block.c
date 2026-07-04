@@ -485,7 +485,7 @@ libspectrum_tape_block_read_symbol_table(
     size_t i, j;
 
     /* Sanity check */
-    if( length < ( 2 * table->max_pulses + 1 ) * table->symbols_in_table ) {
+    if( length < (size_t)( 2 * table->max_pulses + 1 ) * table->symbols_in_table ) {
       libspectrum_print_error( LIBSPECTRUM_ERROR_CORRUPT,
 			       "%s: not enough data in buffer", __func__ );
       return LIBSPECTRUM_ERROR_CORRUPT;

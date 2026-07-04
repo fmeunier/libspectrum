@@ -235,7 +235,7 @@ block_free( rzx_block_t *block )
 }
 
 static void
-block_free_wrapper( gpointer data, gpointer user_data )
+block_free_wrapper( gpointer data, gpointer user_data GCC_UNUSED )
 {
   block_free( data );
 }
@@ -1324,7 +1324,7 @@ libspectrum_rzx_write( libspectrum_byte **buffer, size_t *length,
 }
 
 static void
-rzx_write_header( libspectrum_buffer *buffer, int sign )
+rzx_write_header( libspectrum_buffer *buffer, int sign GCC_UNUSED )
 {
   libspectrum_buffer_write( buffer, rzx_signature, strlen( rzx_signature ) );
 
@@ -1543,10 +1543,10 @@ rzx_write_input( input_block_t *block, libspectrum_buffer *buffer,
 }
 
 static libspectrum_error
-rzx_write_signed_start( libspectrum_buffer *buffer,
-                        libspectrum_buffer *block_data,
-                        libspectrum_rzx_dsa_key *key,
-			libspectrum_creator *creator )
+rzx_write_signed_start( libspectrum_buffer *buffer GCC_UNUSED,
+                        libspectrum_buffer *block_data GCC_UNUSED,
+                        libspectrum_rzx_dsa_key *key GCC_UNUSED,
+			libspectrum_creator *creator GCC_UNUSED )
 {
 #ifdef HAVE_GCRYPT_H
   /* Key ID */
@@ -1577,8 +1577,8 @@ rzx_write_signed_start( libspectrum_buffer *buffer,
 }
 
 static libspectrum_error
-rzx_write_signed_end( libspectrum_buffer *buffer, libspectrum_buffer *block_data,
-                      libspectrum_rzx_dsa_key *key )
+rzx_write_signed_end( libspectrum_buffer *buffer GCC_UNUSED, libspectrum_buffer *block_data GCC_UNUSED,
+                      libspectrum_rzx_dsa_key *key GCC_UNUSED )
 {
 #ifdef HAVE_GCRYPT_H
   libspectrum_error error;
