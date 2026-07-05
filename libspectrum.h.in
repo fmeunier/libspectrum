@@ -806,6 +806,9 @@ LIBSPECTRUM_API libspectrum_tape_generalised_data_symbol* libspectrum_tape_gener
 LIBSPECTRUM_API libspectrum_tape_generalised_data_symbol_edge_type libspectrum_tape_generalised_data_symbol_type( const libspectrum_tape_generalised_data_symbol *symbol );
 LIBSPECTRUM_API libspectrum_word libspectrum_tape_generalised_data_symbol_pulse( const libspectrum_tape_generalised_data_symbol *symbol, size_t which );
 
+LIBSPECTRUM_API char *
+libspectrum_zx_string_to_utf8( const libspectrum_byte *src, size_t length );
+
 
 /*
  * Input recording routines

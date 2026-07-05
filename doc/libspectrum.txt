@@ -218,6 +218,19 @@ General functions
 
 Functions which don't relate directly to one file type or another.
 
+char *
+libspectrum_zx_string_to_utf8( const libspectrum_byte *src, size_t length )
+
+Convert a ZX Spectrum encoded string to a newly allocated UTF-8 string.
+Trailing spaces are stripped. Printable ASCII characters are copied as
+is except for `\\', which is escaped as `\\\\'. Spectrum-specific
+characters are converted to readable UTF-8 or textual equivalents:
+`^' becomes an up-arrow, '`' becomes a pound sign, character 127 becomes
+copyright, graphics characters become backslash-prefixed mosaics, user-
+defined graphics become `\\a' to `\\u', and keyword tokens expand to
+their BASIC text. The returned string should be freed with
+`libspectrum_free'. If `src' is NULL, NULL is returned.
+
 Machine types and capabilities
 ------------------------------
 
