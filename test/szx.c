@@ -1153,3 +1153,50 @@ read_uncompressed_szx_cfrp_chunk( void )
 {
   return szx_read_block_from_compressed_snap_test( "CFRP", cfrp_check );
 }
+
+/* IF1 chunk: Interface 1 without custom ROM */
+
+static void
+if1_setter( libspectrum_snap *snap )
+{
+  libspectrum_snap_set_interface1_active( snap, 1 );
+  libspectrum_snap_set_interface1_paged( snap, 1 );
+  libspectrum_snap_set_interface1_drive_count( snap, 3 );
+}
+
+static libspectrum_byte
+if1_expected[] = {
+  0x05, 0x00, /* flags: ENABLED(1) | PAGED(4) */
+  0x03,       /* drive_count */
+  0x00, 0x00, 0x00, /* reserved bytes */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, /* reserved dwords */
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00  /* expected_length = 0 (no custom ROM) */
+};
+
+test_return_t
+write_szx_if1_chunk( void )
+{
+  return szx_write_block_test( "IF1", LIBSPECTRUM_MACHINE_48, if1_setter,
+      if1_expected, ARRAY_SIZE(if1_expected), ARRAY_SIZE(if1_expected) );
+}
+
+static int
+if1_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+
+  if( libspectrum_snap_interface1_active( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_interface1_paged( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_interface1_drive_count( snap ) != 3 ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_if1_chunk( void )
+{
+  return szx_read_block_test( "IF1", if1_check );
+}
