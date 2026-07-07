@@ -1153,3 +1153,54 @@ read_uncompressed_szx_cfrp_chunk( void )
 {
   return szx_read_block_from_compressed_snap_test( "CFRP", cfrp_check );
 }
+
+static void
+snet_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *w5100 = libspectrum_new0( libspectrum_byte, 0x30 );
+  libspectrum_byte *flash = libspectrum_new0( libspectrum_byte, 0x20000 );
+  libspectrum_byte *ram   = libspectrum_new0( libspectrum_byte, 0x20000 );
+  libspectrum_snap_set_spectranet_active( snap, 1 );
+  libspectrum_snap_set_spectranet_paged( snap, 1 );
+  libspectrum_snap_set_spectranet_page_a( snap, 3 );
+  libspectrum_snap_set_spectranet_page_b( snap, 5 );
+  libspectrum_snap_set_spectranet_w5100( snap, 0, w5100 );
+  libspectrum_snap_set_spectranet_flash( snap, 0, flash );
+  libspectrum_snap_set_spectranet_ram( snap, 0, ram );
+}
+
+/* flags(2) + page_a(1) + page_b(1) + programmable_trap(2) = 6 bytes;
+   remaining 48 bytes are W5100 data (verified as zero by total_length check) */
+static libspectrum_byte
+test_65_expected[] = {
+  0x01, 0x00, /* Flags: PAGED */
+  0x03,       /* page_a */
+  0x05,       /* page_b */
+  0x00, 0x00  /* programmable_trap */
+};
+
+test_return_t
+write_szx_snet_chunk( void )
+{
+  return szx_write_block_test( "SNET", LIBSPECTRUM_MACHINE_48, snet_setter,
+      test_65_expected, ARRAY_SIZE(test_65_expected), 54 );
+}
+
+static int
+test_65_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+
+  if( libspectrum_snap_spectranet_active( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_spectranet_paged( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_spectranet_page_a( snap ) != 3 ) failed = 1;
+  if( libspectrum_snap_spectranet_page_b( snap ) != 5 ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_snet_chunk( void )
+{
+  return szx_read_block_test( "SNET", test_65_check );
+}

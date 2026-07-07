@@ -111,6 +111,7 @@ EXTRA_DIST += \
 	test/szx-chunks/RAMP-uncompressed.szx.gz \
 	test/szx-chunks/SCLD.szx \
 	test/szx-chunks/SIDE.szx \
+	test/szx-chunks/SNET.szx \
 	test/szx-chunks/SPCR.szx \
 	test/szx-chunks/Z80R.szx \
 	test/szx-chunks/ZMMC.szx \
