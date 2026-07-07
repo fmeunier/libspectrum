@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-07-06",
+  "last_run": "2026-07-07",
   "comments_made": {},
   "labels_applied": {},
   "fix_attempts": {
@@ -135,14 +135,28 @@
       "note": "applied to master as commit c890c7f"
     },
     "utf8-if1-tests": {
-      "pr": null,
+      "pr": 113,
       "issue": null,
       "status": "open",
       "date": "2026-07-06",
-      "note": "6 zx_string_to_utf8 unit tests + IF1 write/read tests; 215->221 tests; PR #112 (TBD)"
+      "note": "6 zx_string_to_utf8 unit tests + IF1 write/read tests; 215->221 tests; PR #113"
+    },
+    "ci-windows-cygwin-cache-hashfiles": {
+      "pr": 114,
+      "issue": null,
+      "status": "open",
+      "date": "2026-07-07",
+      "note": "Replace static cygwin cache key with hashFiles() + restore-keys fallback"
+    },
+    "szx-snet-tests": {
+      "pr": 115,
+      "issue": null,
+      "status": "open",
+      "date": "2026-07-07",
+      "note": "write_szx_snet_chunk + read_szx_snet_chunk; 213->215 tests; PR #115"
     }
   },
-  "open_prs": [45, 87, 90, 112],
+  "open_prs": [45, 87, 90, 113, 114, 115],
   "closed_prs": [
     54, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107, 108, 111, 47
   ],
@@ -184,7 +198,7 @@
     "pr-111-review"
   ],
   "monthly_activity_issue": 109,
-  "notes": "Run 2026-07-06: Task 3 - created test/utilities.c with 6 unit tests for new libspectrum_zx_string_to_utf8() (null, ascii, trailing spaces, special chars, UDG, keyword token). Task 10 - added SZX IF1 write+read tests to test/szx.c plus binary fixture test/szx-chunks/IF1.szx. 215->221 tests. PR #112 created. Checked: PRs #47, #94, #96, #111 were all merged to master since last run.",
+  "notes": "Run 2026-07-07: Task 4 - fixed Windows Cygwin static cache key → hashFiles() in build_windows_sub.yml; PR #114. Task 9 - added write_szx_snet_chunk + read_szx_snet_chunk tests; 213->215 tests; PR #115. Note: PR #112 was the compiler-warnings PR (closed July 5 by maintainer). PR for IF1/UTF8 tests is #113 (not #112 as old note said). Run 2026-07-06: Task 3 - created test/utilities.c with 6 unit tests for new libspectrum_zx_string_to_utf8(). Task 10 - added SZX IF1 write+read tests to test/szx.c plus binary fixture test/szx-chunks/IF1.szx. 215->221 tests. PR #113 created.",
   "backlog_cursor": {
     "issues": 0,
     "prs": 0
@@ -201,6 +215,7 @@
     "snap-zxcf-accessor-unit-tests",
     "szx-uspe-pltt-tests",
     "utf8-zx-string-tests",
-    "szx-if1-tests"
+    "szx-snet-tests",
+    "ci-windows-cygwin-cache-hashfiles"
   ]
 }
