@@ -101,6 +101,7 @@ EXTRA_DIST += \
 	test/szx-chunks/ATRP.szx \
 	test/szx-chunks/ATRP-uncompressed.szx.gz \
 	test/szx-chunks/AY.szx \
+	test/szx-chunks/B128.szx \
 	test/szx-chunks/CFRP.szx \
 	test/szx-chunks/CFRP-uncompressed.szx.gz \
 	test/szx-chunks/COVX.szx \
