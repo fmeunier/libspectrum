@@ -107,6 +107,7 @@ EXTRA_DIST += \
 	test/szx-chunks/DRUM.szx \
 	test/szx-chunks/JOY.szx \
 	test/szx-chunks/KEYB.szx \
+	test/szx-chunks/MFCE.szx \
 	test/szx-chunks/RAMP.szx \
 	test/szx-chunks/RAMP-uncompressed.szx.gz \
 	test/szx-chunks/SCLD.szx \

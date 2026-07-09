@@ -1153,3 +1153,60 @@ read_uncompressed_szx_cfrp_chunk( void )
 {
   return szx_read_block_from_compressed_snap_test( "CFRP", cfrp_check );
 }
+
+static void
+mfce_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *ram = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_multiface_active( snap, 1 );
+  libspectrum_snap_set_multiface_model_one( snap, 1 );
+  libspectrum_snap_set_multiface_paged( snap, 1 );
+  libspectrum_snap_set_multiface_ram( snap, 0, ram );
+  libspectrum_snap_set_multiface_ram_length( snap, 0, 0x2000 );
+}
+
+static libspectrum_byte
+mfce_expected[] = {
+  0x00, /* Model = ZXSTMFM_1 */
+  0x01  /* Flags = ZXSTMF_PAGEDIN */
+};
+
+test_return_t
+write_szx_mfce_chunk( void )
+{
+  return szx_write_uncompressed_block_test( "MFCE", LIBSPECTRUM_MACHINE_48,
+      mfce_setter, mfce_expected, ARRAY_SIZE(mfce_expected),
+      ARRAY_SIZE(mfce_expected) + 0x2000 );
+}
+
+static int
+mfce_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+  size_t i;
+  libspectrum_byte *ram;
+
+  if( libspectrum_snap_multiface_active( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_multiface_model_one( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_multiface_paged( snap ) != 1 ) failed = 1;
+
+  ram = libspectrum_snap_multiface_ram( snap, 0 );
+  if( ram ) {
+    for( i = 0; i < 0x2000; i++ ) {
+      if( ram[i] ) {
+        failed = 1;
+        break;
+      }
+    }
+  } else {
+    failed = 1;
+  }
+
+  return failed;
+}
+
+test_return_t
+read_szx_mfce_chunk( void )
+{
+  return szx_read_block_test( "MFCE", mfce_check );
+}
