@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-07-09",
+  "last_run": "2026-07-10",
   "comments_made": {},
   "labels_applied": {},
   "fix_attempts": {
@@ -26,13 +26,12 @@
     "ci-windows-cygwin-cache-hashfiles": { "pr": 114, "issue": null, "status": "closed", "date": "2026-07-07", "note": "PR #114 created but subsequently closed/deleted by maintainer" },
     "szx-snet-tests": { "pr": 115, "issue": null, "status": "open", "date": "2026-07-07", "note": "write_szx_snet_chunk + read_szx_snet_chunk; 213->215 tests; PR #115" },
     "szx-b128-tests": { "pr": 116, "issue": null, "status": "open", "date": "2026-07-08", "note": "write_szx_b128_chunk + read_szx_b128_chunk; 213->215 tests; PR #116" },
-    "szx-mfce-tests": { "pr": "aw_mfcepr", "issue": null, "status": "open", "date": "2026-07-09", "note": "write_szx_mfce_chunk + read_szx_mfce_chunk; 213->215 tests; PR TBD (aw_mfcepr)" },
-    "remove-se-stale-fixme": { "pr": "aw_fixmepr", "issue": null, "status": "open", "date": "2026-07-09", "note": "Remove stale FIXME comment in libspectrum_machine_capabilities for SE machine; PR TBD (aw_fixmepr)" }
+    "szx-mfce-tests": { "pr": 117, "issue": null, "status": "open", "date": "2026-07-09", "note": "write_szx_mfce_chunk + read_szx_mfce_chunk; 213->215 tests; PR #117" },
+    "remove-se-stale-fixme": { "pr": 118, "issue": null, "status": "open", "date": "2026-07-09", "note": "Remove stale FIXME comment in libspectrum_machine_capabilities for SE machine; PR #118" },
+    "szx-dide-dmmc-tests": { "pr": "aw_didedmmcpr", "issue": null, "status": "open", "date": "2026-07-10", "note": "write/read DIDE + DMMC SZX chunk tests (DivIDE/DivMMC EPROM); 213->217 tests; PR branch repo-assist/test-szx-dide-dmmc-20260710" }
   },
-  "open_prs": [45, 87, 90, 113, 115, 116, "aw_mfcepr", "aw_fixmepr"],
-  "closed_prs": [
-    54, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107, 108, 111, 47, 114
-  ],
+  "open_prs": [45, 87, 90, 113, 115, 116, 117, 118, "aw_didedmmcpr"],
+  "closed_prs": [54, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107, 108, 111, 47, 114],
   "user_checked_off": [
     "issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close",
     "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review", "pr-70-close",
@@ -44,7 +43,7 @@
     "pr-111-review"
   ],
   "monthly_activity_issue": 109,
-  "notes": "Run 2026-07-09: Task 3 - added write_szx_mfce_chunk + read_szx_mfce_chunk tests (Multiface MFCE chunk); 213->215 tests; PR branch repo-assist/test-szx-mfce-20260709 (aw_mfcepr). Task 5 - removed stale FIXME comment in libspectrum_machine_capabilities for SE machine (SE already had 128_MEMORY capability, comment was misleading); PR branch repo-assist/remove-se-stale-fixme-20260709 (aw_fixmepr). PR #114 (Cygwin CI) no longer exists - likely closed by maintainer. Remaining untested SZX chunks: DIDE (DivIDE EPROM, needs 8KB), DMMC (DivMMC EPROM, needs 8KB), OPUS (Opus Discovery ROM+RAM), PLSD (Plus SD ROM+RAM), DOCK (TC2068 Dock cartridge).",
+  "notes": "Run 2026-07-10: Task 9 - added write/read DIDE and DMMC SZX chunk tests (DivIDE/DivMMC EPROM); 213->217 tests; PR branch repo-assist/test-szx-dide-dmmc-20260710 (aw_didedmmcpr). Task 6 - all open PRs healthy (action_required CI = repo policy, not failures). PR #117=szx-mfce-tests, PR #118=remove-se-stale-fixme. Remaining untested SZX chunks: OPUS, PLSD, DOCK.",
   "backlog_cursor": { "issues": 0, "prs": 0 },
   "ideas_submitted": [
     "ci-workflow-cache-key-hash", "const-tape-block-type", "changelog-1.6.2-draft",
@@ -53,6 +52,6 @@
     "snap-remaining-accessor-unit-tests", "snap-zxcf-accessor-unit-tests",
     "szx-uspe-pltt-tests", "utf8-zx-string-tests", "szx-snet-tests",
     "ci-windows-cygwin-cache-hashfiles", "szx-b128-tests",
-    "szx-mfce-tests", "remove-se-stale-fixme"
+    "szx-mfce-tests", "remove-se-stale-fixme", "szx-dide-dmmc-tests"
   ]
 }
