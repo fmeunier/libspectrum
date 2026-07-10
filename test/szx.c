@@ -1153,3 +1153,123 @@ read_uncompressed_szx_cfrp_chunk( void )
 {
   return szx_read_block_from_compressed_snap_test( "CFRP", cfrp_check );
 }
+
+static void
+dide_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *eprom = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_divide_active( snap, 1 );
+  libspectrum_snap_set_divide_eprom( snap, 0, eprom );
+}
+
+#ifdef HAVE_ZLIB_H
+static libspectrum_byte
+empty_eprom_page_compressed_expected[] = {
+  0x04, 0x00, /* Flags: COMPRESSED */
+  0x00, /* Control */
+  0x00, /* Page count */
+  /* 8 KB of zeros compressed */
+  0x78, 0xda, 0xed, 0xc1, 0x01, 0x0d, 0x00, 0x00,
+  0x00, 0xc2, 0xa0, 0xf7, 0x4f, 0x6d, 0x0e, 0x37,
+  0xa0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x80, 0x77, 0x03, 0x20, 0x00, 0x00, 0x01
+};
+#else
+static libspectrum_byte
+empty_eprom_page_uncompressed_expected[] = {
+  0x00, 0x00, /* Flags */
+  0x00, /* Control */
+  0x00, /* Page count */
+  /* Followed by 8 KB of uncompressed zeros */
+};
+#endif
+
+test_return_t
+write_szx_dide_chunk( void )
+{
+  return szx_write_block_test( "DIDE", LIBSPECTRUM_MACHINE_48, dide_setter,
+    #ifdef HAVE_ZLIB_H
+      /* gzip enabled in build, so block written compressed */
+      empty_eprom_page_compressed_expected,
+      ARRAY_SIZE(empty_eprom_page_compressed_expected),
+      ARRAY_SIZE(empty_eprom_page_compressed_expected)
+    #else
+      /* gzip not enabled in build, so block written uncompressed */
+      empty_eprom_page_uncompressed_expected,
+      ARRAY_SIZE(empty_eprom_page_uncompressed_expected),
+      ARRAY_SIZE(empty_eprom_page_uncompressed_expected) + 0x2000
+    #endif
+  );
+}
+
+static void
+dmmc_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *eprom = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_divmmc_active( snap, 1 );
+  libspectrum_snap_set_divmmc_eprom( snap, 0, eprom );
+}
+
+test_return_t
+write_szx_dmmc_chunk( void )
+{
+  return szx_write_block_test( "DMMC", LIBSPECTRUM_MACHINE_48, dmmc_setter,
+    #ifdef HAVE_ZLIB_H
+      /* gzip enabled in build, so block written compressed */
+      empty_eprom_page_compressed_expected,
+      ARRAY_SIZE(empty_eprom_page_compressed_expected),
+      ARRAY_SIZE(empty_eprom_page_compressed_expected)
+    #else
+      /* gzip not enabled in build, so block written uncompressed */
+      empty_eprom_page_uncompressed_expected,
+      ARRAY_SIZE(empty_eprom_page_uncompressed_expected),
+      ARRAY_SIZE(empty_eprom_page_uncompressed_expected) + 0x2000
+    #endif
+  );
+}
+
+static int
+dide_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+  libspectrum_byte *eprom;
+
+  if( libspectrum_snap_divide_active( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_divide_paged( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_divide_control( snap ) != 0xab ) failed = 1;
+  if( libspectrum_snap_divide_pages( snap ) != 1 ) failed = 1;
+
+  eprom = libspectrum_snap_divide_eprom( snap, 0 );
+  if( !eprom || eprom[0] != 0x12 ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_dide_chunk( void )
+{
+  return szx_read_block_test( "DIDE", dide_check );
+}
+
+static int
+dmmc_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+  libspectrum_byte *eprom;
+
+  if( libspectrum_snap_divmmc_active( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_divmmc_paged( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_divmmc_control( snap ) != 0xcd ) failed = 1;
+  if( libspectrum_snap_divmmc_pages( snap ) != 2 ) failed = 1;
+
+  eprom = libspectrum_snap_divmmc_eprom( snap, 0 );
+  if( !eprom || eprom[0] != 0x34 ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_dmmc_chunk( void )
+{
+  return szx_read_block_test( "DMMC", dmmc_check );
+}

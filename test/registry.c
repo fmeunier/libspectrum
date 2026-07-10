@@ -230,6 +230,10 @@ test_description tests[] = {
   TEST_ENTRY( snap_out_plus3_memoryport_and_scld_hsr_dec_getter_setter, "Snap out_plus3_memoryport, out_scld_hsr, and out_scld_dec getter/setter" ),
   TEST_ENTRY( snap_zxcf_active_upload_memctl_and_pages_getter_setter, "Snap ZXCF active, upload, memctl, and pages getter/setter" ),
   TEST_ENTRY( snap_zxcf_ram_page_pointer_array_getter_setter, "Snap ZXCF RAM page pointer array getter/setter" ),
+  TEST_ENTRY( write_szx_dide_chunk, "Write SZX DIDE chunk (DivIDE EPROM)" ),
+  TEST_ENTRY( read_szx_dide_chunk, "Read SZX DIDE chunk (DivIDE EPROM)" ),
+  TEST_ENTRY( write_szx_dmmc_chunk, "Write SZX DMMC chunk (DivMMC EPROM)" ),
+  TEST_ENTRY( read_szx_dmmc_chunk, "Read SZX DMMC chunk (DivMMC EPROM)" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

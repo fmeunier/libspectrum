@@ -239,5 +239,9 @@ test_return_t snap_slt_level_data_length_screen_and_screen_level_getter_setter( 
 test_return_t snap_multiface_model_3_getter_setter( void );
 test_return_t snap_zxcf_active_upload_memctl_and_pages_getter_setter( void );
 test_return_t snap_zxcf_ram_page_pointer_array_getter_setter( void );
+test_return_t write_szx_dide_chunk( void );
+test_return_t read_szx_dide_chunk( void );
+test_return_t write_szx_dmmc_chunk( void );
+test_return_t read_szx_dmmc_chunk( void );
 
 #endif
