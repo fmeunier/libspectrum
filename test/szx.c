@@ -1153,3 +1153,216 @@ read_uncompressed_szx_cfrp_chunk( void )
 {
   return szx_read_block_from_compressed_snap_test( "CFRP", cfrp_check );
 }
+
+/* OPUS (Opus Discovery interface) chunk tests */
+
+static void
+opus_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *rom, *ram;
+
+  libspectrum_snap_set_opus_active( snap, 1 );
+  libspectrum_snap_set_opus_paged( snap, 1 );
+  libspectrum_snap_set_opus_direction( snap, 1 );  /* hubwards, no SEEKLOWER */
+
+  libspectrum_snap_set_opus_control_a( snap, 0xca );
+  libspectrum_snap_set_opus_data_reg_a( snap, 0xfe );
+  libspectrum_snap_set_opus_data_dir_a( snap, 0xef );
+  libspectrum_snap_set_opus_control_b( snap, 0xbd );
+  libspectrum_snap_set_opus_data_reg_b( snap, 0xdb );
+  libspectrum_snap_set_opus_data_dir_b( snap, 0xb7 );
+  libspectrum_snap_set_opus_drive_count( snap, 2 );
+  libspectrum_snap_set_opus_track( snap, 5 );
+  libspectrum_snap_set_opus_sector( snap, 0x11 );
+  libspectrum_snap_set_opus_data( snap, 0x22 );
+  libspectrum_snap_set_opus_status( snap, 0x33 );
+
+  rom = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_opus_rom( snap, 0, rom );
+
+  ram = libspectrum_malloc0_n( 1, 0x800 );
+  libspectrum_snap_set_opus_ram( snap, 0, ram );
+}
+
+/* Expected OPUS chunk header: flags(4) + ram_len(4) + rom_len(4) + 11 regs = 23 bytes.
+   Full chunk = 23 + 0x800 (RAM) = 2071 bytes. */
+static libspectrum_byte
+opus_expected[] = {
+  0x01, 0x00, 0x00, 0x00,  /* flags: PAGED */
+  0x00, 0x08, 0x00, 0x00,  /* RAM length: 0x800 */
+  0x00, 0x00, 0x00, 0x00,  /* ROM length: 0 (standard ROM) */
+  0xca,                    /* control_a */
+  0xfe,                    /* data_reg_a */
+  0xef,                    /* data_dir_a */
+  0xbd,                    /* control_b */
+  0xdb,                    /* data_reg_b */
+  0xb7,                    /* data_dir_b */
+  0x02,                    /* drive_count */
+  0x05,                    /* track */
+  0x11,                    /* sector */
+  0x22,                    /* data */
+  0x33,                    /* status */
+};
+
+test_return_t
+write_szx_opus_chunk( void )
+{
+  return szx_write_block_test_with_flags( "OPUS", LIBSPECTRUM_MACHINE_48,
+      LIBSPECTRUM_FLAG_SNAPSHOT_NO_COMPRESSION, opus_setter,
+      opus_expected, ARRAY_SIZE(opus_expected),
+      ARRAY_SIZE(opus_expected) + 0x800 );
+}
+
+static int
+opus_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+
+  if( !libspectrum_snap_opus_active( snap ) ) failed = 1;
+  if( !libspectrum_snap_opus_paged( snap ) ) failed = 1;
+  if( !libspectrum_snap_opus_direction( snap ) ) failed = 1;
+  if( libspectrum_snap_opus_control_a( snap ) != 0xca ) failed = 1;
+  if( libspectrum_snap_opus_data_reg_a( snap ) != 0xfe ) failed = 1;
+  if( libspectrum_snap_opus_data_dir_a( snap ) != 0xef ) failed = 1;
+  if( libspectrum_snap_opus_control_b( snap ) != 0xbd ) failed = 1;
+  if( libspectrum_snap_opus_data_reg_b( snap ) != 0xdb ) failed = 1;
+  if( libspectrum_snap_opus_data_dir_b( snap ) != 0xb7 ) failed = 1;
+  if( libspectrum_snap_opus_drive_count( snap ) != 2 ) failed = 1;
+  if( libspectrum_snap_opus_track( snap ) != 5 ) failed = 1;
+  if( libspectrum_snap_opus_sector( snap ) != 0x11 ) failed = 1;
+  if( libspectrum_snap_opus_data( snap ) != 0x22 ) failed = 1;
+  if( libspectrum_snap_opus_status( snap ) != 0x33 ) failed = 1;
+  if( !libspectrum_snap_opus_ram( snap, 0 ) ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_opus_chunk( void )
+{
+  return szx_read_block_test( "OPUS", opus_check );
+}
+
+/* PLSD (+D interface) chunk tests */
+
+static void
+plusd_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *rom, *ram;
+
+  libspectrum_snap_set_plusd_active( snap, 1 );
+  libspectrum_snap_set_plusd_paged( snap, 1 );
+  libspectrum_snap_set_plusd_direction( snap, 1 );  /* hubwards, no SEEKLOWER */
+
+  libspectrum_snap_set_plusd_control( snap, 0xbc );
+  libspectrum_snap_set_plusd_drive_count( snap, 1 );
+  libspectrum_snap_set_plusd_track( snap, 7 );
+  libspectrum_snap_set_plusd_sector( snap, 0x0a );
+  libspectrum_snap_set_plusd_data( snap, 0xff );
+  libspectrum_snap_set_plusd_status( snap, 0x00 );
+
+  rom = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_plusd_rom( snap, 0, rom );
+
+  ram = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_plusd_ram( snap, 0, ram );
+}
+
+/* Expected PLSD chunk header: flags(4) + ram_len(4) + rom_len(4) + rom_type(1) + 6 regs = 19 bytes.
+   Full chunk = 19 + 0x2000 (RAM) = 8211 bytes. */
+static libspectrum_byte
+plusd_expected[] = {
+  0x01, 0x00, 0x00, 0x00,  /* flags: PAGED */
+  0x00, 0x20, 0x00, 0x00,  /* RAM length: 0x2000 */
+  0x00, 0x00, 0x00, 0x00,  /* ROM length: 0 (standard GDOS ROM) */
+  0x00,                    /* rom_type: GDOS */
+  0xbc,                    /* control */
+  0x01,                    /* drive_count */
+  0x07,                    /* track */
+  0x0a,                    /* sector */
+  0xff,                    /* data */
+  0x00,                    /* status */
+};
+
+test_return_t
+write_szx_plsd_chunk( void )
+{
+  return szx_write_block_test_with_flags( "PLSD", LIBSPECTRUM_MACHINE_48,
+      LIBSPECTRUM_FLAG_SNAPSHOT_NO_COMPRESSION, plusd_setter,
+      plusd_expected, ARRAY_SIZE(plusd_expected),
+      ARRAY_SIZE(plusd_expected) + 0x2000 );
+}
+
+static int
+plusd_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+
+  if( !libspectrum_snap_plusd_active( snap ) ) failed = 1;
+  if( !libspectrum_snap_plusd_paged( snap ) ) failed = 1;
+  if( !libspectrum_snap_plusd_direction( snap ) ) failed = 1;
+  if( libspectrum_snap_plusd_control( snap ) != 0xbc ) failed = 1;
+  if( libspectrum_snap_plusd_drive_count( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_plusd_track( snap ) != 7 ) failed = 1;
+  if( libspectrum_snap_plusd_sector( snap ) != 0x0a ) failed = 1;
+  if( libspectrum_snap_plusd_data( snap ) != 0xff ) failed = 1;
+  if( libspectrum_snap_plusd_status( snap ) != 0x00 ) failed = 1;
+  if( !libspectrum_snap_plusd_ram( snap, 0 ) ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_plsd_chunk( void )
+{
+  return szx_read_block_test( "PLSD", plusd_check );
+}
+
+/* DOCK (TC2068 cartridge slot) chunk tests */
+
+static void
+dock_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *cart;
+
+  libspectrum_snap_set_dock_active( snap, 1 );
+
+  cart = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_dock_cart( snap, 0, cart );
+  libspectrum_snap_set_dock_ram( snap, 0, 0 );  /* not writeable */
+}
+
+/* Expected DOCK chunk: flags word (EXROMDOCK=4) + page byte + 8192 data bytes.
+   Checked prefix = 3 bytes; total = 3 + 0x2000 = 8195 bytes. */
+static libspectrum_byte
+dock_expected[] = {
+  0x04, 0x00,  /* flags: ZXSTDOCKF_EXROMDOCK (DOCK slot, not writeable, uncompressed) */
+  0x00,        /* page 0 */
+};
+
+test_return_t
+write_szx_dock_chunk( void )
+{
+  return szx_write_block_test_with_flags( "DOCK", LIBSPECTRUM_MACHINE_TC2048,
+      LIBSPECTRUM_FLAG_SNAPSHOT_NO_COMPRESSION, dock_setter,
+      dock_expected, ARRAY_SIZE(dock_expected),
+      ARRAY_SIZE(dock_expected) + 0x2000 );
+}
+
+static int
+dock_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+
+  if( !libspectrum_snap_dock_active( snap ) ) failed = 1;
+  if( !libspectrum_snap_dock_cart( snap, 0 ) ) failed = 1;
+  if( libspectrum_snap_dock_ram( snap, 0 ) ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_dock_chunk( void )
+{
+  return szx_read_block_test( "DOCK", dock_check );
+}
