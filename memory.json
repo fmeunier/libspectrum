@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-07-10",
+  "last_run": "2026-07-11",
   "comments_made": {},
   "labels_applied": {},
   "fix_attempts": {
@@ -28,9 +28,11 @@
     "szx-b128-tests": { "pr": 116, "issue": null, "status": "open", "date": "2026-07-08", "note": "write_szx_b128_chunk + read_szx_b128_chunk; 213->215 tests; PR #116" },
     "szx-mfce-tests": { "pr": 117, "issue": null, "status": "open", "date": "2026-07-09", "note": "write_szx_mfce_chunk + read_szx_mfce_chunk; 213->215 tests; PR #117" },
     "remove-se-stale-fixme": { "pr": 118, "issue": null, "status": "open", "date": "2026-07-09", "note": "Remove stale FIXME comment in libspectrum_machine_capabilities for SE machine; PR #118" },
-    "szx-dide-dmmc-tests": { "pr": "aw_didedmmcpr", "issue": null, "status": "open", "date": "2026-07-10", "note": "write/read DIDE + DMMC SZX chunk tests (DivIDE/DivMMC EPROM); 213->217 tests; PR branch repo-assist/test-szx-dide-dmmc-20260710" }
+    "szx-dide-dmmc-tests": { "pr": 119, "issue": null, "status": "open", "date": "2026-07-10", "note": "write/read DIDE + DMMC SZX chunk tests (DivIDE/DivMMC EPROM); 213->217 tests; PR #119" },
+    "szx-opus-plsd-dock-tests": { "pr": "aw_opusplsddock", "issue": null, "status": "open", "date": "2026-07-11", "note": "write/read OPUS + PLSD + DOCK SZX chunk tests; 211->217 tests; PR branch repo-assist/test-szx-opus-plsd-dock-20260711" },
+    "ci-actions-upgrade": { "pr": "aw_ciactionsupg", "issue": null, "status": "open", "date": "2026-07-11", "note": "Upgrade actions/checkout v5->v6 and upload-artifact v6->v7 in all 4 build sub-workflows; PR branch repo-assist/ci-actions-upgrade-20260711" }
   },
-  "open_prs": [45, 87, 90, 113, 115, 116, 117, 118, "aw_didedmmcpr"],
+  "open_prs": [45, 87, 90, 113, 115, 116, 117, 118, 119, "aw_opusplsddock", "aw_ciactionsupg"],
   "closed_prs": [54, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107, 108, 111, 47, 114],
   "user_checked_off": [
     "issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close",
@@ -43,7 +45,7 @@
     "pr-111-review"
   ],
   "monthly_activity_issue": 109,
-  "notes": "Run 2026-07-10: Task 9 - added write/read DIDE and DMMC SZX chunk tests (DivIDE/DivMMC EPROM); 213->217 tests; PR branch repo-assist/test-szx-dide-dmmc-20260710 (aw_didedmmcpr). Task 6 - all open PRs healthy (action_required CI = repo policy, not failures). PR #117=szx-mfce-tests, PR #118=remove-se-stale-fixme. Remaining untested SZX chunks: OPUS, PLSD, DOCK.",
+  "notes": "Run 2026-07-11: Task 9 - added write/read OPUS, PLSD, DOCK SZX chunk tests; 211->217 tests; PR branch repo-assist/test-szx-opus-plsd-dock-20260711 (aw_opusplsddock). Task 4 - upgraded actions/checkout v5->v6 and upload-artifact v6->v7 in all 4 build sub-workflows; PR branch repo-assist/ci-actions-upgrade-20260711 (aw_ciactionsupg). No remaining untested SZX chunk groups (OPUS, PLSD, DOCK all covered). PR #119=szx-dide-dmmc-tests (was aw_didedmmcpr).",
   "backlog_cursor": { "issues": 0, "prs": 0 },
   "ideas_submitted": [
     "ci-workflow-cache-key-hash", "const-tape-block-type", "changelog-1.6.2-draft",
@@ -52,6 +54,7 @@
     "snap-remaining-accessor-unit-tests", "snap-zxcf-accessor-unit-tests",
     "szx-uspe-pltt-tests", "utf8-zx-string-tests", "szx-snet-tests",
     "ci-windows-cygwin-cache-hashfiles", "szx-b128-tests",
-    "szx-mfce-tests", "remove-se-stale-fixme", "szx-dide-dmmc-tests"
+    "szx-mfce-tests", "remove-se-stale-fixme", "szx-dide-dmmc-tests",
+    "szx-opus-plsd-dock-tests", "ci-actions-upgrade"
   ]
 }
