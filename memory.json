@@ -1,5 +1,5 @@
 {
-  "last_run": "2026-07-11",
+  "last_run": "2026-07-12",
   "comments_made": {},
   "labels_applied": {},
   "fix_attempts": {
@@ -29,10 +29,10 @@
     "szx-mfce-tests": { "pr": 117, "issue": null, "status": "open", "date": "2026-07-09", "note": "write_szx_mfce_chunk + read_szx_mfce_chunk; 213->215 tests; PR #117" },
     "remove-se-stale-fixme": { "pr": 118, "issue": null, "status": "open", "date": "2026-07-09", "note": "Remove stale FIXME comment in libspectrum_machine_capabilities for SE machine; PR #118" },
     "szx-dide-dmmc-tests": { "pr": 119, "issue": null, "status": "open", "date": "2026-07-10", "note": "write/read DIDE + DMMC SZX chunk tests (DivIDE/DivMMC EPROM); 213->217 tests; PR #119" },
-    "szx-opus-plsd-dock-tests": { "pr": "aw_opusplsddock", "issue": null, "status": "open", "date": "2026-07-11", "note": "write/read OPUS + PLSD + DOCK SZX chunk tests; 211->217 tests; PR branch repo-assist/test-szx-opus-plsd-dock-20260711" },
-    "ci-actions-upgrade": { "pr": "aw_ciactionsupg", "issue": null, "status": "open", "date": "2026-07-11", "note": "Upgrade actions/checkout v5->v6 and upload-artifact v6->v7 in all 4 build sub-workflows; PR branch repo-assist/ci-actions-upgrade-20260711" }
+    "szx-opus-plsd-dock-tests": { "pr": 120, "issue": null, "status": "open", "date": "2026-07-11", "note": "write/read OPUS + PLSD + DOCK SZX chunk tests; 211->217 tests; PR #120" },
+    "ci-actions-upgrade": { "pr": null, "issue": 121, "status": "open", "date": "2026-07-11", "note": "Blocked by workflow file permissions; created as Issue #121 with manual instructions for maintainer" }
   },
-  "open_prs": [45, 87, 90, 113, 115, 116, 117, 118, 119, "aw_opusplsddock", "aw_ciactionsupg"],
+  "open_prs": [45, 87, 90, 113, 115, 116, 117, 118, 119, 120],
   "closed_prs": [54, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107, 108, 111, 47, 114],
   "user_checked_off": [
     "issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close",
@@ -45,7 +45,7 @@
     "pr-111-review"
   ],
   "monthly_activity_issue": 109,
-  "notes": "Run 2026-07-11: Task 9 - added write/read OPUS, PLSD, DOCK SZX chunk tests; 211->217 tests; PR branch repo-assist/test-szx-opus-plsd-dock-20260711 (aw_opusplsddock). Task 4 - upgraded actions/checkout v5->v6 and upload-artifact v6->v7 in all 4 build sub-workflows; PR branch repo-assist/ci-actions-upgrade-20260711 (aw_ciactionsupg). No remaining untested SZX chunk groups (OPUS, PLSD, DOCK all covered). PR #119=szx-dide-dmmc-tests (was aw_didedmmcpr).",
+  "notes": "Run 2026-07-12: Task 2 - no open user issues to engage with. Task 4 - CI upgrade (Issue #121) already from last run; 10 open PRs pending, held off creating more. Future work: SNEF/SNER (Spectranet flash/RAM pages), DIRP/DMRP (DivIDE/DivMMC RAM pages), IF2R (IF2 ROM) chunk tests.",
   "backlog_cursor": { "issues": 0, "prs": 0 },
   "ideas_submitted": [
     "ci-workflow-cache-key-hash", "const-tape-block-type", "changelog-1.6.2-draft",
