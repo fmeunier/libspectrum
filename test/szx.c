@@ -1153,3 +1153,196 @@ read_uncompressed_szx_cfrp_chunk( void )
 {
   return szx_read_block_from_compressed_snap_test( "CFRP", cfrp_check );
 }
+
+/* DivIDE RAM page (DIRP) — 8 KB pages */
+
+static void
+dirp_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *eprom = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_byte *ram   = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_divide_active( snap, 1 );
+  libspectrum_snap_set_divide_pages( snap, 1 );
+  libspectrum_snap_set_divide_eprom( snap, 0, eprom );
+  libspectrum_snap_set_divide_ram( snap, 0, ram );
+}
+
+#ifdef HAVE_ZLIB_H
+static libspectrum_byte
+empty_8k_ram_page_expected[] = {
+  0x01, 0x00, /* Flags (COMPRESSED) */
+  0x00,       /* Page number */
+  /* 8 KB of zeros compressed */
+  0x78, 0xda, 0xed, 0xc1, 0x01, 0x0d, 0x00, 0x00,
+  0x00, 0xc2, 0xa0, 0xf7, 0x4f, 0x6d, 0x0e, 0x37,
+  0xa0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x80, 0x77, 0x03, 0x20, 0x00, 0x00, 0x01
+};
+#else
+static libspectrum_byte
+empty_8k_ram_page_uncompressed_expected[] = {
+  0x00, 0x00, /* Flags */
+  0x00,       /* Page number */
+  /* 8 KB of zeros uncompressed */
+};
+#endif
+
+test_return_t
+write_szx_dirp_chunk( void )
+{
+  return szx_write_block_test( "DIRP", LIBSPECTRUM_MACHINE_48, dirp_setter,
+    #ifdef HAVE_ZLIB_H
+      empty_8k_ram_page_expected, ARRAY_SIZE(empty_8k_ram_page_expected),
+      ARRAY_SIZE(empty_8k_ram_page_expected)
+    #else
+      empty_8k_ram_page_uncompressed_expected,
+      ARRAY_SIZE(empty_8k_ram_page_uncompressed_expected),
+      ARRAY_SIZE(empty_8k_ram_page_uncompressed_expected) + 0x2000
+    #endif
+  );
+}
+
+static int
+empty_8k_ram_page_check( libspectrum_snap *snap,
+    libspectrum_byte* (*get_ram_page)( libspectrum_snap*, int ) )
+{
+  int failed = 0;
+  size_t i;
+
+  libspectrum_byte *page = get_ram_page( snap, 0 );
+  if( page ) {
+    for( i = 0; i < 0x2000; i++ ) {
+      if( page[i] ) {
+        failed = 1;
+        break;
+      }
+    }
+  } else {
+    failed = 1;
+  }
+
+  return failed;
+}
+
+static int
+dirp_check( libspectrum_snap *snap )
+{
+  return empty_8k_ram_page_check( snap, libspectrum_snap_divide_ram );
+}
+
+test_return_t
+read_szx_dirp_chunk( void )
+{
+  #ifndef HAVE_ZLIB_H
+    return TEST_SKIPPED; /* gzip not enabled in build */
+  #endif
+
+  return szx_read_block_test( "DIRP", dirp_check );
+}
+
+/* DivMMC RAM page (DMRP) — 8 KB pages */
+
+static void
+dmrp_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *eprom = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_byte *ram   = libspectrum_malloc0_n( 1, 0x2000 );
+  libspectrum_snap_set_divmmc_active( snap, 1 );
+  libspectrum_snap_set_divmmc_pages( snap, 1 );
+  libspectrum_snap_set_divmmc_eprom( snap, 0, eprom );
+  libspectrum_snap_set_divmmc_ram( snap, 0, ram );
+}
+
+test_return_t
+write_szx_dmrp_chunk( void )
+{
+  return szx_write_block_test( "DMRP", LIBSPECTRUM_MACHINE_48, dmrp_setter,
+    #ifdef HAVE_ZLIB_H
+      empty_8k_ram_page_expected, ARRAY_SIZE(empty_8k_ram_page_expected),
+      ARRAY_SIZE(empty_8k_ram_page_expected)
+    #else
+      empty_8k_ram_page_uncompressed_expected,
+      ARRAY_SIZE(empty_8k_ram_page_uncompressed_expected),
+      ARRAY_SIZE(empty_8k_ram_page_uncompressed_expected) + 0x2000
+    #endif
+  );
+}
+
+static int
+dmrp_check( libspectrum_snap *snap )
+{
+  return empty_8k_ram_page_check( snap, libspectrum_snap_divmmc_ram );
+}
+
+test_return_t
+read_szx_dmrp_chunk( void )
+{
+  #ifndef HAVE_ZLIB_H
+    return TEST_SKIPPED; /* gzip not enabled in build */
+  #endif
+
+  return szx_read_block_test( "DMRP", dmrp_check );
+}
+
+/* Interface 2 ROM (IF2R) — 16 KB, always compressed */
+
+static void
+if2r_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *rom = libspectrum_malloc0_n( 1, 0x4000 );
+  libspectrum_snap_set_interface2_active( snap, 1 );
+  libspectrum_snap_set_interface2_rom( snap, 0, rom );
+}
+
+#ifdef HAVE_ZLIB_H
+static libspectrum_byte
+if2r_expected[] = {
+  /* Compressed length (little-endian dword) */
+  0x27, 0x00, 0x00, 0x00,
+  /* 16 KB of zeros compressed */
+  0x78, 0xda, 0xed, 0xc1, 0x31, 0x01, 0x00, 0x00,
+  0x00, 0xc2, 0xa0, 0xf5, 0x4f, 0x6d, 0x0c, 0x1f,
+  0xa0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x80, 0xb7, 0x01, 0x40, 0x00, 0x00, 0x01
+};
+#endif
+
+test_return_t
+write_szx_if2r_chunk( void )
+{
+  #ifndef HAVE_ZLIB_H
+    return TEST_SKIPPED; /* IF2R always writes compressed — requires zlib */
+  #endif
+
+  return szx_write_block_test( "IF2R", LIBSPECTRUM_MACHINE_48, if2r_setter,
+      if2r_expected, ARRAY_SIZE(if2r_expected), ARRAY_SIZE(if2r_expected) );
+}
+
+static int
+if2r_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+  size_t i;
+
+  if( !libspectrum_snap_interface2_active( snap ) ) return 1;
+
+  libspectrum_byte *rom = libspectrum_snap_interface2_rom( snap, 0 );
+  if( !rom ) return 1;
+
+  for( i = 0; i < 0x4000; i++ ) {
+    if( rom[i] ) { failed = 1; break; }
+  }
+
+  return failed;
+}
+
+test_return_t
+read_szx_if2r_chunk( void )
+{
+  #ifndef HAVE_ZLIB_H
+    return TEST_SKIPPED; /* IF2R always reads compressed — requires zlib */
+  #endif
+
+  return szx_read_block_test( "IF2R", if2r_check );
+}
