@@ -92,7 +92,9 @@ jobs:
         with:
           path: |
             C:\cygwin-packages
-          key: cygwin-packages-libspectrum-1
+          key: cygwin-packages-libspectrum-${{ hashFiles('.github/workflows/build_windows_sub.yml') }}
+          restore-keys: |
+            cygwin-packages-libspectrum-
 
       - name: (4) Install Cygwin (32 bit) with libs
         uses: cygwin/cygwin-install-action@v6
@@ -130,7 +132,7 @@ jobs:
         with:
           path: |
             C:\cygwin-packages
-          key: cygwin-packages-libspectrum-1
+          key: cygwin-packages-libspectrum-${{ hashFiles('.github/workflows/build_windows_sub.yml') }}
 
       - name: (6) Autogen.sh
         run: |
