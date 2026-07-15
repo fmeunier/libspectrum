@@ -1153,3 +1153,141 @@ read_uncompressed_szx_cfrp_chunk( void )
 {
   return szx_read_block_from_compressed_snap_test( "CFRP", cfrp_check );
 }
+
+static void
+spectranet_setter( libspectrum_snap *snap )
+{
+  libspectrum_byte *flash = libspectrum_malloc0_n( 1, 0x20000 );
+  libspectrum_byte *ram = libspectrum_malloc0_n( 1, 0x20000 );
+  libspectrum_byte *w5100 = libspectrum_malloc0_n( 1, 0x30 );
+  libspectrum_snap_set_spectranet_active( snap, 1 );
+  libspectrum_snap_set_spectranet_flash( snap, 0, flash );
+  libspectrum_snap_set_spectranet_ram( snap, 0, ram );
+  libspectrum_snap_set_spectranet_w5100( snap, 0, w5100 );
+}
+
+static void
+snef_setter( libspectrum_snap *snap )
+{
+  spectranet_setter( snap );
+}
+
+static void
+sner_setter( libspectrum_snap *snap )
+{
+  spectranet_setter( snap );
+}
+
+#ifdef HAVE_ZLIB_H
+static libspectrum_byte
+empty_spectranet_page_expected[] = {
+  0x01,                         /* flags: compressed */
+  0x95, 0x00, 0x00, 0x00,       /* compressed_data_size: 149 */
+  /* 128 KB of zeros compressed */
+  0x78, 0xda, 0xed, 0xc1, 0x31, 0x01, 0x00, 0x00,
+  0x00, 0xc2, 0xa0, 0xf5, 0x4f, 0xed, 0x61, 0x0d,
+  0xa0, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+  0x6e, 0x00, 0x1e, 0x00, 0x01,
+};
+#endif
+
+test_return_t
+write_szx_snef_chunk( void )
+{
+  #ifndef HAVE_ZLIB_H
+    return TEST_SKIPPED; /* gzip not enabled in build */
+  #endif
+
+  return szx_write_block_test( "SNEF", LIBSPECTRUM_MACHINE_48, snef_setter,
+      empty_spectranet_page_expected, ARRAY_SIZE(empty_spectranet_page_expected),
+      ARRAY_SIZE(empty_spectranet_page_expected) );
+}
+
+test_return_t
+write_szx_sner_chunk( void )
+{
+  #ifndef HAVE_ZLIB_H
+    return TEST_SKIPPED; /* gzip not enabled in build */
+  #endif
+
+  return szx_write_block_test( "SNER", LIBSPECTRUM_MACHINE_48, sner_setter,
+      empty_spectranet_page_expected, ARRAY_SIZE(empty_spectranet_page_expected),
+      ARRAY_SIZE(empty_spectranet_page_expected) );
+}
+
+static int
+snef_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+  size_t i;
+
+  libspectrum_byte *page = libspectrum_snap_spectranet_flash( snap, 0 );
+  if( page ) {
+    for( i = 0; i < 0x20000; i++ ) {
+      if( page[i] ) {
+        failed = 1;
+        break;
+      }
+    }
+  } else {
+    failed = 1;
+  }
+
+  return failed;
+}
+
+test_return_t
+read_szx_snef_chunk( void )
+{
+  #ifndef HAVE_ZLIB_H
+    return TEST_SKIPPED; /* gzip not enabled in build */
+  #endif
+
+  return szx_read_block_test( "SNEF", snef_check );
+}
+
+static int
+sner_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+  size_t i;
+
+  libspectrum_byte *page = libspectrum_snap_spectranet_ram( snap, 0 );
+  if( page ) {
+    for( i = 0; i < 0x20000; i++ ) {
+      if( page[i] ) {
+        failed = 1;
+        break;
+      }
+    }
+  } else {
+    failed = 1;
+  }
+
+  return failed;
+}
+
+test_return_t
+read_szx_sner_chunk( void )
+{
+  #ifndef HAVE_ZLIB_H
+    return TEST_SKIPPED; /* gzip not enabled in build */
+  #endif
+
+  return szx_read_block_test( "SNER", sner_check );
+}
