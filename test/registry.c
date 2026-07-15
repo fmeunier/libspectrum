@@ -230,6 +230,14 @@ test_description tests[] = {
   TEST_ENTRY( snap_out_plus3_memoryport_and_scld_hsr_dec_getter_setter, "Snap out_plus3_memoryport, out_scld_hsr, and out_scld_dec getter/setter" ),
   TEST_ENTRY( snap_zxcf_active_upload_memctl_and_pages_getter_setter, "Snap ZXCF active, upload, memctl, and pages getter/setter" ),
   TEST_ENTRY( snap_zxcf_ram_page_pointer_array_getter_setter, "Snap ZXCF RAM page pointer array getter/setter" ),
+  TEST_ENTRY( utilities_zx_string_to_utf8_null_returns_null, "libspectrum_zx_string_to_utf8: NULL src returns NULL" ),
+  TEST_ENTRY( utilities_zx_string_to_utf8_plain_ascii, "libspectrum_zx_string_to_utf8: plain ASCII passed through unchanged" ),
+  TEST_ENTRY( utilities_zx_string_to_utf8_trailing_spaces_stripped, "libspectrum_zx_string_to_utf8: trailing spaces stripped" ),
+  TEST_ENTRY( utilities_zx_string_to_utf8_special_chars, "libspectrum_zx_string_to_utf8: special chars convert to Unicode equivalents" ),
+  TEST_ENTRY( utilities_zx_string_to_utf8_udg_char, "libspectrum_zx_string_to_utf8: UDG char 0x90 renders as \\a" ),
+  TEST_ENTRY( utilities_zx_string_to_utf8_spectrum_token, "libspectrum_zx_string_to_utf8: Spectrum token 0xFB renders as RANDOMIZE" ),
+  TEST_ENTRY( write_szx_if1_chunk, "Write SZX IF1 chunk (Interface 1 without custom ROM)" ),
+  TEST_ENTRY( read_szx_if1_chunk, "Read SZX IF1 chunk (Interface 1 without custom ROM)" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
