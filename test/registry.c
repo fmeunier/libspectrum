@@ -90,6 +90,8 @@ test_description tests[] = {
   TEST_ENTRY( read_uncompressed_szx_ramp_chunk, "Read uncompressed SZX RAMP chunk" ),
   TEST_ENTRY( read_uncompressed_szx_atrp_chunk, "Read uncompressed SZX ATRP chunk" ),
   TEST_ENTRY( read_uncompressed_szx_cfrp_chunk, "Read uncompressed SZX CFRP chunk" ),
+  TEST_ENTRY( write_szx_b128_chunk, "Write SZX B128 chunk" ),
+  TEST_ENTRY( read_szx_b128_chunk, "Read SZX B128 chunk" ),
   TEST_ENTRY( write_rzx_with_incompressible_snap, "Write RZX with incompressible snap" ),
   TEST_ENTRY( tape_peek_next_block, "Tape peek next block" ),
   TEST_ENTRY( read_tzx_raw_block_edge_handling, "Read TZX RAW block edge handling" ),

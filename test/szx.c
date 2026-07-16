@@ -1200,3 +1200,61 @@ read_szx_if1_chunk( void )
 {
   return szx_read_block_test( "IF1", if1_check );
 }
+
+/* B128 chunk: Beta 128 disk interface without custom ROM */
+
+static void
+b128_setter( libspectrum_snap *snap )
+{
+  libspectrum_snap_set_beta_active( snap, 1 );
+  libspectrum_snap_set_beta_paged( snap, 1 );
+  libspectrum_snap_set_beta_autoboot( snap, 1 );
+  libspectrum_snap_set_beta_direction( snap, 1 ); /* seek higher, so SEEKLOWER not set */
+  libspectrum_snap_set_beta_drive_count( snap, 2 );
+  libspectrum_snap_set_beta_system( snap, 0x11 );
+  libspectrum_snap_set_beta_track( snap, 5 );
+  libspectrum_snap_set_beta_sector( snap, 3 );
+  libspectrum_snap_set_beta_data( snap, 0xAA );
+  libspectrum_snap_set_beta_status( snap, 0xFF );
+}
+
+static libspectrum_byte
+b128_expected[] = {
+  0x0d, 0x00, 0x00, 0x00, /* flags: CONNECTED(1) | PAGED(4) | AUTOBOOT(8) */
+  0x02,                   /* drive_count */
+  0x11,                   /* system */
+  0x05,                   /* track */
+  0x03,                   /* sector */
+  0xaa,                   /* data */
+  0xff                    /* status */
+};
+
+test_return_t
+write_szx_b128_chunk( void )
+{
+  return szx_write_block_test( "B128", LIBSPECTRUM_MACHINE_48, b128_setter,
+      b128_expected, ARRAY_SIZE(b128_expected), ARRAY_SIZE(b128_expected) );
+}
+
+static int
+b128_check( libspectrum_snap *snap )
+{
+  int failed = 0;
+
+  if( libspectrum_snap_beta_active( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_beta_paged( snap ) != 1 ) failed = 1;
+  if( libspectrum_snap_beta_drive_count( snap ) != 2 ) failed = 1;
+  if( libspectrum_snap_beta_system( snap ) != 0x11 ) failed = 1;
+  if( libspectrum_snap_beta_track( snap ) != 5 ) failed = 1;
+  if( libspectrum_snap_beta_sector( snap ) != 3 ) failed = 1;
+  if( libspectrum_snap_beta_data( snap ) != 0xAA ) failed = 1;
+  if( libspectrum_snap_beta_status( snap ) != 0xFF ) failed = 1;
+
+  return failed;
+}
+
+test_return_t
+read_szx_b128_chunk( void )
+{
+  return szx_read_block_test( "B128", b128_check );
+}
