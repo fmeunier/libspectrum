@@ -1,333 +1,63 @@
 {
-  "last_run": "2026-07-14",
+  "last_run": "2026-07-16",
   "comments_made": {},
   "labels_applied": {},
   "fix_attempts": {
-    "snap-storage-dock-divmmc": {
-      "pr": 105,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-28",
-      "note": "applied to master"
-    },
-    "snap-storage-melodik-simpleide": {
-      "pr": 104,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-27",
-      "note": "applied to master"
-    },
-    "tape-pause-tstates-rle-pulse": {
-      "pr": 102,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-25",
-      "note": "applied to master"
-    },
-    "tape-block-description-jump": {
-      "pr": 99,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-22",
-      "note": "applied to master"
-    },
-    "buffer-write-raw-autogrowth": {
-      "pr": 100,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-23",
-      "note": "applied to master"
-    },
-    "machine-capabilities-single-switch": {
-      "pr": 96,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-20",
-      "note": "applied to master"
-    },
-    "machine-capabilities-tests": {
-      "pr": 97,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-20",
-      "note": "applied to master"
-    },
-    "tape-block-description-table": {
-      "pr": 94,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-19",
-      "note": "applied to master"
-    },
-    "hardware-select-custom-tests": {
-      "pr": 93,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-18",
-      "note": "applied to master"
-    },
-    "comment-message-archive-tests": {
-      "pr": 92,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-17",
-      "note": "applied to master"
-    },
-    "ay-register-bulk-write": {
-      "pr": 90,
-      "issue": null,
-      "status": "open",
-      "date": "2026-06-15"
-    },
-    "const-tape-block-type-metadata": {
-      "pr": 101,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-24",
-      "note": "applied to master"
-    },
-    "deduplicate-write-page": {
-      "pr": 98,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-21",
-      "note": "applied to master"
-    },
-    "buffer-write-word-array": {
-      "pr": 87,
-      "issue": null,
-      "status": "open",
-      "date": "2026-06-12"
-    },
-    "snap-roms-slt-multiface-model3": {
-      "pr": 106,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-06-29",
-      "note": "applied to master"
-    },
-    "snap-last-instruction-scld": {
-      "pr": 107,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-07-01",
-      "note": "applied to master"
-    },
-    "snap-zxcf-accessor-unit-tests": {
-      "pr": 108,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-07-02",
-      "note": "merged to master"
-    },
-    "szx-uspe-pltt-tests": {
-      "pr": 111,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-07-03",
-      "note": "applied to master"
-    },
-    "tap-error-return": {
-      "pr": 47,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-07-03",
-      "note": "applied to master"
-    },
-    "utf8-if1-tests": {
-      "pr": 113,
-      "issue": null,
-      "status": "open",
-      "date": "2026-07-06",
-      "note": "6 zx_string_to_utf8 unit tests + IF1 write/read tests; 215->221 tests; PR #113"
-    },
-    "ci-windows-cygwin-cache-hashfiles": {
-      "pr": 114,
-      "issue": null,
-      "status": "closed",
-      "date": "2026-07-07",
-      "note": "PR #114 created but subsequently closed/deleted by maintainer"
-    },
-    "szx-snet-tests": {
-      "pr": 115,
-      "issue": null,
-      "status": "open",
-      "date": "2026-07-07",
-      "note": "write_szx_snet_chunk + read_szx_snet_chunk; 213->215 tests; PR #115"
-    },
-    "szx-b128-tests": {
-      "pr": 116,
-      "issue": null,
-      "status": "open",
-      "date": "2026-07-08",
-      "note": "write_szx_b128_chunk + read_szx_b128_chunk; 213->215 tests; PR #116"
-    },
-    "szx-mfce-tests": {
-      "pr": 117,
-      "issue": null,
-      "status": "open",
-      "date": "2026-07-09",
-      "note": "write_szx_mfce_chunk + read_szx_mfce_chunk; 213->215 tests; PR #117"
-    },
-    "remove-se-stale-fixme": {
-      "pr": 118,
-      "issue": null,
-      "status": "open",
-      "date": "2026-07-09",
-      "note": "Remove stale FIXME comment in libspectrum_machine_capabilities for SE machine; PR #118"
-    },
-    "szx-dide-dmmc-tests": {
-      "pr": 119,
-      "issue": null,
-      "status": "open",
-      "date": "2026-07-10",
-      "note": "write/read DIDE + DMMC SZX chunk tests (DivIDE/DivMMC EPROM); 213->217 tests; PR #119"
-    },
-    "szx-opus-plsd-dock-tests": {
-      "pr": 120,
-      "issue": null,
-      "status": "open",
-      "date": "2026-07-11",
-      "note": "write/read OPUS + PLSD + DOCK SZX chunk tests; 211->217 tests; PR #120"
-    },
-    "ci-actions-upgrade": {
-      "pr": null,
-      "issue": 121,
-      "status": "open",
-      "date": "2026-07-11",
-      "note": "Blocked by workflow file permissions; created as Issue #121 with manual instructions for maintainer"
-    },
-    "szx-dirp-dmrp-if2r-tests": {
-      "pr": 122,
-      "issue": null,
-      "status": "open",
-      "date": "2026-07-14",
-      "note": "write/read DIRP + DMRP + IF2R SZX chunk tests; 213->219 tests; PR #122"
-    },
-    "snef-sner-pr123": {
-      "pr": 123,
-      "branch": "repo-assist/testing-szx-snef-sner-20260715",
-      "status": "open",
-      "description": "Add write/read tests for SZX SNEF and SNER chunks"
-    }
+    "snap-storage-dock-divmmc": {"pr": 105, "issue": null, "status": "closed", "date": "2026-06-28", "note": "applied to master"},
+    "snap-storage-melodik-simpleide": {"pr": 104, "issue": null, "status": "closed", "date": "2026-06-27", "note": "applied to master"},
+    "tape-pause-tstates-rle-pulse": {"pr": 102, "issue": null, "status": "closed", "date": "2026-06-25", "note": "applied to master"},
+    "tape-block-description-jump": {"pr": 99, "issue": null, "status": "closed", "date": "2026-06-22", "note": "applied to master"},
+    "buffer-write-raw-autogrowth": {"pr": 100, "issue": null, "status": "closed", "date": "2026-06-23", "note": "applied to master"},
+    "machine-capabilities-single-switch": {"pr": 96, "issue": null, "status": "closed", "date": "2026-06-20", "note": "applied to master"},
+    "machine-capabilities-tests": {"pr": 97, "issue": null, "status": "closed", "date": "2026-06-20", "note": "applied to master"},
+    "tape-block-description-table": {"pr": 94, "issue": null, "status": "closed", "date": "2026-06-19", "note": "applied to master"},
+    "hardware-select-custom-tests": {"pr": 93, "issue": null, "status": "closed", "date": "2026-06-18", "note": "applied to master"},
+    "comment-message-archive-tests": {"pr": 92, "issue": null, "status": "closed", "date": "2026-06-17", "note": "applied to master"},
+    "ay-register-bulk-write": {"pr": 90, "issue": null, "status": "open", "date": "2026-06-15"},
+    "const-tape-block-type-metadata": {"pr": 101, "issue": null, "status": "closed", "date": "2026-06-24", "note": "applied to master"},
+    "deduplicate-write-page": {"pr": 98, "issue": null, "status": "closed", "date": "2026-06-21", "note": "applied to master"},
+    "buffer-write-word-array": {"pr": 87, "issue": null, "status": "open", "date": "2026-06-12"},
+    "snap-roms-slt-multiface-model3": {"pr": 106, "issue": null, "status": "closed", "date": "2026-06-29", "note": "applied to master"},
+    "snap-last-instruction-scld": {"pr": 107, "issue": null, "status": "closed", "date": "2026-07-01", "note": "applied to master"},
+    "snap-zxcf-accessor-unit-tests": {"pr": 108, "issue": null, "status": "closed", "date": "2026-07-02", "note": "merged to master"},
+    "szx-uspe-pltt-tests": {"pr": 111, "issue": null, "status": "closed", "date": "2026-07-03", "note": "applied to master"},
+    "tap-error-return": {"pr": 47, "issue": null, "status": "closed", "date": "2026-07-03", "note": "applied to master"},
+    "utf8-if1-tests": {"pr": 113, "issue": null, "status": "closed", "date": "2026-07-06", "note": "merged to master"},
+    "ci-windows-cygwin-cache-hashfiles": {"pr": 114, "issue": null, "status": "closed", "date": "2026-07-07", "note": "merged to master"},
+    "szx-snet-tests": {"pr": 115, "issue": null, "status": "open-conflicted", "date": "2026-07-07", "note": "conflicted with IF1 merge; superseded by consolidated PR"},
+    "szx-b128-tests": {"pr": 116, "issue": null, "status": "open-conflicted", "date": "2026-07-08", "note": "conflicted with IF1 merge; superseded by consolidated PR"},
+    "szx-mfce-tests": {"pr": 117, "issue": null, "status": "open-conflicted", "date": "2026-07-09", "note": "conflicted with IF1 merge; superseded by consolidated PR"},
+    "remove-se-stale-fixme": {"pr": 118, "issue": null, "status": "open", "date": "2026-07-09", "note": "Remove stale FIXME comment in libspectrum_machine_capabilities for SE machine"},
+    "szx-dide-dmmc-tests": {"pr": 119, "issue": null, "status": "open-conflicted", "date": "2026-07-10", "note": "conflicted with IF1 merge; superseded by consolidated PR"},
+    "szx-opus-plsd-dock-tests": {"pr": 120, "issue": null, "status": "open-conflicted", "date": "2026-07-11", "note": "conflicted with IF1 merge; superseded by consolidated PR"},
+    "ci-actions-upgrade": {"pr": null, "issue": 121, "status": "open", "date": "2026-07-11", "note": "Blocked by workflow file permissions; created as Issue #121 with manual instructions for maintainer"},
+    "szx-dirp-dmrp-if2r-tests": {"pr": 122, "issue": null, "status": "open-conflicted", "date": "2026-07-14", "note": "conflicted with IF1 merge; superseded by consolidated PR"},
+    "snef-sner-pr123": {"pr": 123, "status": "open-conflicted", "date": "2026-07-15", "note": "conflicted with IF1 merge; superseded by consolidated PR"},
+    "szx-consolidated-chunks": {"pr": "pending-branch:repo-assist/test-szx-chunks-rebase-20260716", "issue": null, "status": "open", "date": "2026-07-16", "note": "Consolidated PR for B128+SNET+MFCE+DIDE+DMMC+OPUS+PLSD+DOCK+DIRP+DMRP+IF2R+SNEF+SNER; resolves conflicts from PRs #115,116,117,119,120,122,123; 222->248 tests"}
   },
-  "open_prs": [
-    45,
-    87,
-    90,
-    113,
-    115,
-    116,
-    117,
-    118,
-    119,
-    120,
-    122
-  ],
-  "closed_prs": [
-    54,
-    67,
-    69,
-    70,
-    72,
-    73,
-    74,
-    75,
-    76,
-    77,
-    79,
-    81,
-    82,
-    83,
-    84,
-    85,
-    86,
-    88,
-    89,
-    91,
-    92,
-    93,
-    94,
-    95,
-    96,
-    97,
-    98,
-    99,
-    100,
-    101,
-    102,
-    104,
-    105,
-    106,
-    107,
-    108,
-    111,
-    47,
-    114
-  ],
+  "open_prs": [45, 87, 90, 118, "szx-consolidated-chunks"],
+  "closed_prs": [54, 67, 69, 70, 72, 73, 74, 75, 76, 77, 79, 81, 82, 83, 84, 85, 86, 88, 89, 91, 92, 93, 94, 95, 96, 97, 98, 99, 100, 101, 102, 104, 105, 106, 107, 108, 111, 47, 113, 114],
   "user_checked_off": [
-    "issue-66",
-    "issue-68",
-    "pr-54-close",
-    "pr-67-close",
-    "pr-69-close",
-    "pr-72-review",
-    "pr-73-review",
-    "pr-74-review",
-    "pr-79-review",
-    "pr-70-close",
-    "pr-75-close",
-    "pr-81-review",
-    "pr-82-review",
-    "pr-86-review",
-    "pr-88-review",
-    "pr-89-review",
-    "pr-91-review",
-    "pr-97-review",
-    "pr-98-review",
-    "pr-100-review",
-    "pr-101-review",
-    "issue-95-check",
-    "pr-104-review",
-    "pr-105-review",
-    "pr-92-review",
-    "pr-93-review",
-    "pr-99-review",
-    "pr-102-review",
-    "pr-106-review",
-    "pr-107-review",
-    "pr-108-review",
-    "pr-47-review",
-    "pr-94-review",
-    "pr-96-review",
-    "pr-111-review"
+    "issue-66", "issue-68", "pr-54-close", "pr-67-close", "pr-69-close",
+    "pr-72-review", "pr-73-review", "pr-74-review", "pr-79-review", "pr-70-close",
+    "pr-75-close", "pr-81-review", "pr-82-review", "pr-86-review", "pr-88-review",
+    "pr-89-review", "pr-91-review", "pr-97-review", "pr-98-review", "pr-100-review",
+    "pr-101-review", "issue-95-check", "pr-104-review", "pr-105-review",
+    "pr-92-review", "pr-93-review", "pr-99-review", "pr-102-review", "pr-106-review",
+    "pr-107-review", "pr-108-review", "pr-47-review", "pr-94-review", "pr-96-review",
+    "pr-111-review", "pr-113-review"
   ],
   "monthly_activity_issue": 109,
-  "notes": "SNEF/SNER now covered by PR #123. All major SZX peripheral chunks tested.",
-  "backlog_cursor": {
-    "issues": 0,
-    "prs": 0
-  },
+  "notes": "2026-07-16: Created consolidated SZX chunk tests PR (branch: repo-assist/test-szx-chunks-rebase-20260716) that replaces conflicted PRs #115,116,117,119,120,122,123. Commented on each conflicted PR. PRs #115,116,117,118,119,120,122,123 still technically open but #115,116,117,119,120,122,123 superseded.",
+  "backlog_cursor": {"issues": 0, "prs": 0},
   "ideas_submitted": [
-    "ci-workflow-cache-key-hash",
-    "const-tape-block-type",
-    "changelog-1.6.2-draft",
-    "buffer-write-word-array",
-    "machine-capabilities-single-switch",
-    "tape-block-description-table",
-    "snap-accessor-tests-missing",
-    "snap-remaining-accessor-unit-tests",
-    "snap-zxcf-accessor-unit-tests",
-    "szx-uspe-pltt-tests",
-    "utf8-zx-string-tests",
-    "szx-snet-tests",
-    "ci-windows-cygwin-cache-hashfiles",
-    "szx-b128-tests",
-    "szx-mfce-tests",
-    "remove-se-stale-fixme",
-    "szx-dide-dmmc-tests",
-    "szx-opus-plsd-dock-tests",
-    "ci-actions-upgrade",
-    "szx-dirp-dmrp-if2r-tests"
+    "ci-workflow-cache-key-hash", "const-tape-block-type", "changelog-1.6.2-draft",
+    "buffer-write-word-array", "machine-capabilities-single-switch",
+    "tape-block-description-table", "snap-accessor-tests-missing",
+    "snap-remaining-accessor-unit-tests", "snap-zxcf-accessor-unit-tests",
+    "szx-uspe-pltt-tests", "utf8-zx-string-tests", "szx-snet-tests",
+    "ci-windows-cygwin-cache-hashfiles", "szx-b128-tests", "szx-mfce-tests",
+    "remove-se-stale-fixme", "szx-dide-dmmc-tests", "szx-opus-plsd-dock-tests",
+    "ci-actions-upgrade", "szx-dirp-dmrp-if2r-tests", "szx-consolidated-chunks"
   ]
 }
