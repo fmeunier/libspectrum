@@ -635,19 +635,18 @@ read_crtr_chunk( libspectrum_snap *snap GCC_UNUSED, libspectrum_word version GCC
   *buffer += 36;
   data_length -= 36;
 
-  /* This is ugly, but I can't see a better way to do it */
-  if( sizeof( libspectrum_byte ) == sizeof( char ) ) {
+  {
     char *custom = libspectrum_new( char, data_length + 1 );
-    char *libspectrum;
+    char *ver;
 
     memcpy( custom, *buffer, data_length );
     custom[data_length] = 0;
 
-    libspectrum = strstr( custom, libspectrum_string );
-    if( libspectrum ) {
+    ver = strstr( custom, libspectrum_string );
+    if( ver ) {
       int matches, v1, v2, v3;
-      libspectrum += strlen( libspectrum_string );
-      matches = sscanf( libspectrum, "%d.%d.%d", &v1, &v2, &v3 );
+      ver += strlen( libspectrum_string );
+      matches = sscanf( ver, "%d.%d.%d", &v1, &v2, &v3 );
       if( matches == 3 ) {
         if( v1 == 0 ) {
           if( v2 < 5 || ( v2 == 5 && v3 == 0 ) ) {
