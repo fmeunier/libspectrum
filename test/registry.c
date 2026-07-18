@@ -235,6 +235,8 @@ test_description tests[] = {
   TEST_ENTRY( machine_capabilities_pent1024_has_ay_128_trdos_pent512_and_pent1024_memory, "Machine capabilities: Pentagon 1024K has all Pentagon capabilities" ),
   TEST_ENTRY( machine_capabilities_scorp_has_ay_128_trdos_scorp_memory_and_even_m1, "Machine capabilities: Scorpion has AY, 128 memory, TRDOS, Scorpion memory, and even-M1" ),
   TEST_ENTRY( machine_capabilities_se_has_ay_128_memory_timex_video_kempston_and_se_memory, "Machine capabilities: SE has AY, 128 memory, Timex video, Kempston joystick, and SE memory" ),
+  TEST_ENTRY( machine_name_returns_correct_string_for_all_machines, "libspectrum_machine_name returns correct string for every machine type" ),
+  TEST_ENTRY( joystick_name_returns_correct_string_for_all_types, "libspectrum_joystick_name returns correct string for every joystick type" ),
   TEST_ENTRY( snap_beta_disk_custom_rom_direction_and_fdc_byte_registers_getter_setter, "Snap BetaDisk custom_rom, direction, and FDC byte registers getter/setter" ),
   TEST_ENTRY( snap_beta_disk_rom_single_pointer_getter_setter, "Snap BetaDisk ROM single-pointer getter/setter" ),
   TEST_ENTRY( snap_divmmc_ram_page_pointer_array_getter_setter, "Snap DivMMC RAM page pointer array getter/setter" ),
