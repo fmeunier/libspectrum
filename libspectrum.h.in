@@ -809,6 +809,16 @@ LIBSPECTRUM_API libspectrum_word libspectrum_tape_generalised_data_symbol_pulse(
 LIBSPECTRUM_API char *
 libspectrum_zx_string_to_utf8( const libspectrum_byte *src, size_t length );
 
+/* Convert between milliseconds and ZX Spectrum t-states (TZX clock: 3.5 MHz) */
+LIBSPECTRUM_API libspectrum_dword
+libspectrum_ms_to_tstates( libspectrum_dword ms );
+
+LIBSPECTRUM_API libspectrum_dword
+libspectrum_tstates_to_ms( libspectrum_dword tstates );
+
+/* Round a bit count up to the nearest byte boundary */
+LIBSPECTRUM_API size_t
+libspectrum_bits_to_bytes( size_t bits );
 
 /*
  * Input recording routines
