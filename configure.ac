@@ -202,7 +202,7 @@ AM_CONDITIONAL(HAVE_LOCK, test "$stdatomic_available" = yes)
 
 dnl If it appears we're using gcc as our compiler, turn on warnings
 if test "$ac_cv_c_compiler_gnu" = yes; then
-  CFLAGS="$CFLAGS -Wall -Wwrite-strings"
+  CFLAGS="$CFLAGS -Wall -Wextra -Wsign-compare -Wwrite-strings"
   dnl And possibly lots of warnings
   AC_MSG_CHECKING(whether lots of warnings requested)
   AC_ARG_ENABLE(warnings,
