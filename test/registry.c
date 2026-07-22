@@ -266,6 +266,8 @@ test_description tests[] = {
   TEST_ENTRY( utilities_zx_string_to_utf8_spectrum_token, "libspectrum_zx_string_to_utf8: Spectrum token 0xFB renders as RANDOMIZE" ),
   TEST_ENTRY( write_szx_if1_chunk, "Write SZX IF1 chunk (Interface 1 without custom ROM)" ),
   TEST_ENTRY( read_szx_if1_chunk, "Read SZX IF1 chunk (Interface 1 without custom ROM)" ),
+  TEST_ENTRY( tape_present_returns_false_for_empty_tape, "libspectrum_tape_present returns 0 for empty tape" ),
+  TEST_ENTRY( tape_present_true_after_load_and_false_after_clear, "libspectrum_tape_present/tape_clear: present after load, absent after clear" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

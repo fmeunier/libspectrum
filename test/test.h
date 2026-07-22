@@ -280,4 +280,8 @@ test_return_t utilities_zx_string_to_utf8_spectrum_token( void );
 test_return_t write_szx_if1_chunk( void );
 test_return_t read_szx_if1_chunk( void );
 
+/* tape.c: tape_present and tape_clear */
+test_return_t tape_present_returns_false_for_empty_tape( void );
+test_return_t tape_present_true_after_load_and_false_after_clear( void );
+
 #endif
