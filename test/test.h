@@ -280,4 +280,29 @@ test_return_t utilities_zx_string_to_utf8_spectrum_token( void );
 test_return_t write_szx_if1_chunk( void );
 test_return_t read_szx_if1_chunk( void );
 
+/* identify.c */
+test_return_t identify_class_unknown_returns_class_unknown( void );
+test_return_t identify_class_tape_tap_returns_class_tape( void );
+test_return_t identify_class_tape_tzx_returns_class_tape( void );
+test_return_t identify_class_tape_pzx_returns_class_tape( void );
+test_return_t identify_class_tape_csw_returns_class_tape( void );
+test_return_t identify_class_snapshot_sna_returns_class_snapshot( void );
+test_return_t identify_class_snapshot_szx_returns_class_snapshot( void );
+test_return_t identify_class_snapshot_z80_returns_class_snapshot( void );
+test_return_t identify_class_recording_rzx_returns_class_recording( void );
+test_return_t identify_class_compressed_gz_returns_class_compressed( void );
+test_return_t identify_class_compressed_bz2_returns_class_compressed( void );
+test_return_t identify_class_disk_dsk_returns_class_disk_plus3( void );
+test_return_t identify_class_disk_trd_returns_class_disk_trdos( void );
+test_return_t identify_class_disk_mdr_returns_class_microdrive( void );
+test_return_t identify_class_disk_img_returns_class_disk_plusd( void );
+test_return_t identify_class_harddisk_hdf_returns_class_harddisk( void );
+test_return_t identify_class_cartridge_dck_returns_class_cartridge_timex( void );
+test_return_t identify_class_cartridge_if2_returns_class_cartridge_if2( void );
+test_return_t identify_class_disk_udi_returns_class_disk_generic( void );
+test_return_t identify_class_pok_returns_class_auxiliary( void );
+test_return_t identify_class_screen_scr_returns_class_screenshot( void );
+test_return_t identify_class_disk_opd_returns_class_disk_opus( void );
+test_return_t identify_class_disk_d80_returns_class_disk_didaktik( void );
+
 #endif
