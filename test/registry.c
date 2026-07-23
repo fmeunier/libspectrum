@@ -266,6 +266,11 @@ test_description tests[] = {
   TEST_ENTRY( utilities_zx_string_to_utf8_spectrum_token, "libspectrum_zx_string_to_utf8: Spectrum token 0xFB renders as RANDOMIZE" ),
   TEST_ENTRY( write_szx_if1_chunk, "Write SZX IF1 chunk (Interface 1 without custom ROM)" ),
   TEST_ENTRY( read_szx_if1_chunk, "Read SZX IF1 chunk (Interface 1 without custom ROM)" ),
+  TEST_ENTRY( timings_48k_processor_speed_and_frame_timing, "Timings: 48K processor speed and frame timing" ),
+  TEST_ENTRY( timings_128k_processor_speed_and_frame_timing, "Timings: 128K processor speed and frame timing" ),
+  TEST_ENTRY( timings_pentagon_processor_speed_and_frame_timing, "Timings: Pentagon processor speed and frame timing" ),
+  TEST_ENTRY( timings_ts2068_processor_speed_and_frame_timing, "Timings: TS2068 processor speed and frame timing" ),
+  TEST_ENTRY( timings_unknown_machine_returns_zero_for_all_frame_timings, "Timings: UNKNOWN machine returns zero for all frame timings" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
