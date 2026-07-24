@@ -20,7 +20,7 @@ dnl
 dnl E-mail: philip-fuse@shadowmagic.org.uk
 
 dnl Package version
-m4_define([libspectrum_version], [1.6.2])
+m4_define([libspectrum_version], [1.6.3])
 
 dnl Product full version
 m4_define([libspectrum_major_version], [1])

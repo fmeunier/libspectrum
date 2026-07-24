@@ -1,3 +1,43 @@
+2026-07-23  Fredrick Meunier  <fredm@spamcop.net>
+
+        * libspectrum 1.6.3 released.
+
+        * Add libspectrum_zx_string_to_utf8() to translate ZX Spectrum
+          charset strings to UTF-8, useful for tape browser dialogs and
+          CLI utilities listing tape, microdrive, and disk files
+          (Fredrick Meunier).
+
+        * Add const to libspectrum_tape_block_type(),
+          libspectrum_tape_block_metadata(), and
+          libspectrum_tape_block_description() parameters (Fredrick
+          Meunier).
+
+        * Various minor bug fixes/improvements:
+          * Fix RZX input block length handling (Fredrick Meunier).
+          * Fix return value in internal_tap_write() skip_block error
+            paths to return the correct error code rather than the
+            literal 1 (Fredrick Meunier).
+          * Fix the build on Windows for 64-bit systems (Sergio
+            Baldoví).
+          * Simplify libspectrum_tape_block_description() (Fredrick
+            Meunier).
+          * Determine machine capabilities from machine type directly,
+            simplifying libspectrum_machine_capabilities() (Fredrick
+            Meunier).
+          * Deduplicate write_page helper into
+            libspectrum_write_snap_page() (Fredrick Meunier).
+          * Enable -Wextra and -Wsign-compare in default GCC warning
+            flags and fix resulting warnings (Fredrick Meunier).
+          * Upgrade actions/checkout and actions/upload-artifact in CI
+            build workflows, and improve Cygwin cache key hashing
+            (Fredrick Meunier).
+          * Add extensive unit tests for SZX peripheral chunks, ZXCF
+            accessors, machine capabilities, buffer write, tape
+            accessors, snapshot accessors, timing functions,
+            file-class identification, and the new
+            libspectrum_zx_string_to_utf8() function (Fredrick
+            Meunier).
+
 2026-06-14  Fredrick Meunier  <fredm@spamcop.net>
 
         * libspectrum 1.6.2 released.
