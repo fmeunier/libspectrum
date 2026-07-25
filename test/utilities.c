@@ -189,3 +189,53 @@ utilities_zx_string_to_utf8_buffer_too_short_is_invalid( void )
 
   return TEST_PASS;
 }
+
+/* libspectrum_version: returns a non-NULL, non-empty string */
+test_return_t
+utilities_version_returns_nonempty_string( void )
+{
+  const char *ver = libspectrum_version();
+  if( !ver || ver[0] == '\0' ) {
+    fprintf( stderr, "%s: utilities_version_returns_nonempty_string: "
+             "expected non-empty version string\n", progname );
+    return TEST_FAIL;
+  }
+  return TEST_PASS;
+}
+
+/* libspectrum_check_version: current version satisfies itself */
+test_return_t
+utilities_check_version_current_version_returns_true( void )
+{
+  const char *ver = libspectrum_version();
+  if( !libspectrum_check_version( ver ) ) {
+    fprintf( stderr, "%s: utilities_check_version_current_version_returns_true: "
+             "expected 1 for version \"%s\"\n", progname, ver );
+    return TEST_FAIL;
+  }
+  return TEST_PASS;
+}
+
+/* libspectrum_check_version: very old required version (0.0.0) is satisfied */
+test_return_t
+utilities_check_version_very_old_required_returns_true( void )
+{
+  if( !libspectrum_check_version( "0.0.0" ) ) {
+    fprintf( stderr, "%s: utilities_check_version_very_old_required_returns_true: "
+             "expected 1 for version \"0.0.0\"\n", progname );
+    return TEST_FAIL;
+  }
+  return TEST_PASS;
+}
+
+/* libspectrum_check_version: future major version (99.0.0) is not satisfied */
+test_return_t
+utilities_check_version_future_major_returns_false( void )
+{
+  if( libspectrum_check_version( "99.0.0" ) ) {
+    fprintf( stderr, "%s: utilities_check_version_future_major_returns_false: "
+             "expected 0 for version \"99.0.0\"\n", progname );
+    return TEST_FAIL;
+  }
+  return TEST_PASS;
+}

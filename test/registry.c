@@ -297,6 +297,10 @@ test_description tests[] = {
   TEST_ENTRY( identify_class_screen_scr_returns_class_screenshot, "libspectrum_identify_class: SCREEN_SCR maps to CLASS_SCREENSHOT" ),
   TEST_ENTRY( identify_class_disk_opd_returns_class_disk_opus, "libspectrum_identify_class: DISK_OPD maps to CLASS_DISK_OPUS" ),
   TEST_ENTRY( identify_class_disk_d80_returns_class_disk_didaktik, "libspectrum_identify_class: DISK_D80 maps to CLASS_DISK_DIDAKTIK" ),
+  TEST_ENTRY( utilities_version_returns_nonempty_string, "libspectrum_version: returns non-empty string" ),
+  TEST_ENTRY( utilities_check_version_current_version_returns_true, "libspectrum_check_version: current version satisfies itself" ),
+  TEST_ENTRY( utilities_check_version_very_old_required_returns_true, "libspectrum_check_version: very old required version (0.0.0) is satisfied" ),
+  TEST_ENTRY( utilities_check_version_future_major_returns_false, "libspectrum_check_version: future major version (99.0.0) is not satisfied" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

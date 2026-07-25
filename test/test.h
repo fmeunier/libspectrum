@@ -317,4 +317,10 @@ test_return_t identify_class_screen_scr_returns_class_screenshot( void );
 test_return_t identify_class_disk_opd_returns_class_disk_opus( void );
 test_return_t identify_class_disk_d80_returns_class_disk_didaktik( void );
 
+/* utilities.c (check_version / version) */
+test_return_t utilities_version_returns_nonempty_string( void );
+test_return_t utilities_check_version_current_version_returns_true( void );
+test_return_t utilities_check_version_very_old_required_returns_true( void );
+test_return_t utilities_check_version_future_major_returns_false( void );
+
 #endif
