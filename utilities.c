@@ -67,14 +67,18 @@ static const char *graphics_tokens[] = {
   "\\..", "\\.:", "\\:.", "\\::"
 };
 
-static char *
-append_bytes( char *ptr, const char *text )
+static libspectrum_error
+append_bytes( char **ptr, size_t *remaining, const char *text )
 {
   size_t length = strlen( text );
 
-  memcpy( ptr, text, length );
+  if( length >= *remaining ) return LIBSPECTRUM_ERROR_INVALID;
 
-  return ptr + length;
+  memcpy( *ptr, text, length );
+  *ptr += length;
+  *remaining -= length;
+
+  return LIBSPECTRUM_ERROR_NONE;
 }
 
 libspectrum_dword 
@@ -113,65 +117,72 @@ libspectrum_bits_to_bytes( size_t bits )
   return ( bits + LIBSPECTRUM_BITS_IN_BYTE - 1 ) / LIBSPECTRUM_BITS_IN_BYTE;
 }
 
-char *
-libspectrum_zx_string_to_utf8( const libspectrum_byte *src, size_t length )
+libspectrum_error
+libspectrum_zx_string_to_utf8( char *buffer, size_t length,
+                               const libspectrum_byte *src, size_t src_length )
 {
-  char *out, *ptr;
-  size_t end, i, allocated;
+  char *ptr;
+  const char *text;
+  size_t end, i, remaining;
   libspectrum_byte b;
   char udg[3] = "\\a";
   char ascii[2] = " ";
 
-  if( !src ) return NULL;
+  if( !buffer || !length || !src ) return LIBSPECTRUM_ERROR_INVALID;
 
-  end = length;
+  buffer[0] = '\0';
+  ptr = buffer;
+  remaining = length;
+
+  end = src_length;
   while( end > 0 && src[ end - 1 ] == ' ' ) end--;
-
-  allocated = end * 10 + 1;
-  out = libspectrum_new( char, allocated );
-  ptr = out;
 
   for( i = 0; i < end; i++ ) {
     b = src[ i ];
 
     switch( b ) {
     case '\\':
-      ptr = append_bytes( ptr, "\\\\" );
+      text = "\\\\";
       break;
 
     case '^':
-      ptr = append_bytes( ptr, "↑" );
+      text = "↑";
       break;
 
     case '`':
-      ptr = append_bytes( ptr, "£" );
+      text = "£";
       break;
 
     case 127:
-      ptr = append_bytes( ptr, "©" );
+      text = "©";
       break;
 
     default:
       if( b >= 32 && b < 127 ) {
         ascii[0] = b;
-        ptr = append_bytes( ptr, ascii );
+        text = ascii;
       } else if( b >= 128 && b <= 143 ) {
-        ptr = append_bytes( ptr, graphics_tokens[ b - 128 ] );
+        text = graphics_tokens[ b - 128 ];
       } else if( b >= 144 && b <= 164 ) {
         udg[1] = 'a' + b - 144;
-        ptr = append_bytes( ptr, udg );
+        text = udg;
       } else if( b >= 165 ) {
-        ptr = append_bytes( ptr, spectrum_tokens[ b - 165 ] );
+        text = spectrum_tokens[ b - 165 ];
       } else {
-        ptr = append_bytes( ptr, "?" );
+        text = "?";
       }
       break;
+    }
+
+    if( append_bytes( &ptr, &remaining, text ) ) {
+      *ptr = '\0';
+      return LIBSPECTRUM_ERROR_INVALID;
     }
   }
 
   *ptr = '\0';
 
-  return libspectrum_renew( char, out, ptr - out + 1 );
+  return LIBSPECTRUM_ERROR_NONE;
 }
 
 char*
