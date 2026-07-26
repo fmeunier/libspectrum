@@ -292,6 +292,15 @@ test_return_t timings_unknown_machine_returns_zero_for_all_frame_timings( void )
 test_return_t tape_present_returns_false_for_empty_tape( void );
 test_return_t tape_present_true_after_load_and_false_after_clear( void );
 
+/* tape-iterator.c */
+test_return_t tape_iterator_init_on_empty_tape_returns_null( void );
+test_return_t tape_iterator_traverses_appended_blocks_in_order( void );
+test_return_t tape_iterator_peek_next_returns_null_at_last_block( void );
+test_return_t tape_iterator_peek_next_does_not_advance_iterator( void );
+test_return_t tape_position_returns_zero_for_first_block( void );
+test_return_t tape_nth_block_selects_correct_block( void );
+test_return_t tape_insert_block_at_position( void );
+
 /* identify.c */
 test_return_t identify_class_unknown_returns_class_unknown( void );
 test_return_t identify_class_tape_tap_returns_class_tape( void );
