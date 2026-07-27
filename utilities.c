@@ -81,13 +81,13 @@ append_bytes( char **ptr, size_t *remaining, const char *text )
   return LIBSPECTRUM_ERROR_NONE;
 }
 
-libspectrum_dword 
+LIBSPECTRUM_API libspectrum_dword 
 libspectrum_ms_to_tstates( libspectrum_dword ms )
 {
   return ms * tstates_per_ms;
 }
 
-libspectrum_dword 
+LIBSPECTRUM_API libspectrum_dword 
 libspectrum_tstates_to_ms( libspectrum_dword tstates )
 {
   return tstates / tstates_per_ms;
@@ -111,7 +111,7 @@ libspectrum_set_pause_tstates( libspectrum_tape_block *block,
                                   libspectrum_tstates_to_ms( pause_tstates ) );
 }
 
-size_t
+LIBSPECTRUM_API size_t
 libspectrum_bits_to_bytes( size_t bits )
 {
   return ( bits + LIBSPECTRUM_BITS_IN_BYTE - 1 ) / LIBSPECTRUM_BITS_IN_BYTE;
