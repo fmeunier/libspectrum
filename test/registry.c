@@ -271,6 +271,8 @@ test_description tests[] = {
   TEST_ENTRY( timings_pentagon_processor_speed_and_frame_timing, "Timings: Pentagon processor speed and frame timing" ),
   TEST_ENTRY( timings_ts2068_processor_speed_and_frame_timing, "Timings: TS2068 processor speed and frame timing" ),
   TEST_ENTRY( timings_unknown_machine_returns_zero_for_all_frame_timings, "Timings: UNKNOWN machine returns zero for all frame timings" ),
+  TEST_ENTRY( tape_present_returns_false_for_empty_tape, "libspectrum_tape_present returns 0 for empty tape" ),
+  TEST_ENTRY( tape_present_true_after_load_and_false_after_clear, "libspectrum_tape_present/tape_clear: present after load, absent after clear" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
