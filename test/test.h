@@ -248,6 +248,8 @@ test_return_t machine_capabilities_pent512_has_ay_128_trdos_and_pent512_memory( 
 test_return_t machine_capabilities_pent1024_has_ay_128_trdos_pent512_and_pent1024_memory( void );
 test_return_t machine_capabilities_scorp_has_ay_128_trdos_scorp_memory_and_even_m1( void );
 test_return_t machine_capabilities_se_has_ay_128_memory_timex_video_kempston_and_se_memory( void );
+test_return_t machine_name_returns_correct_string_for_all_machines( void );
+test_return_t joystick_name_returns_correct_string_for_all_types( void );
 test_return_t snap_beta_disk_custom_rom_direction_and_fdc_byte_registers_getter_setter( void );
 test_return_t snap_beta_disk_rom_single_pointer_getter_setter( void );
 test_return_t snap_divmmc_ram_page_pointer_array_getter_setter( void );
@@ -267,18 +269,6 @@ test_return_t snap_zxcf_active_upload_memctl_and_pages_getter_setter( void );
 test_return_t snap_zxcf_ram_page_pointer_array_getter_setter( void );
 
 /* utilities.c */
-test_return_t utilities_ms_to_tstates_zero( void );
-test_return_t utilities_ms_to_tstates_one_ms( void );
-test_return_t utilities_ms_to_tstates_one_second( void );
-test_return_t utilities_tstates_to_ms_zero( void );
-test_return_t utilities_tstates_to_ms_one_ms( void );
-test_return_t utilities_tstates_to_ms_truncates( void );
-test_return_t utilities_tstates_to_ms_one_second( void );
-test_return_t utilities_bits_to_bytes_zero( void );
-test_return_t utilities_bits_to_bytes_one_bit( void );
-test_return_t utilities_bits_to_bytes_exact_byte( void );
-test_return_t utilities_bits_to_bytes_nine_bits( void );
-test_return_t utilities_bits_to_bytes_twenty_four_bits( void );
 test_return_t utilities_zx_string_to_utf8_null_returns_null( void );
 test_return_t utilities_zx_string_to_utf8_plain_ascii( void );
 test_return_t utilities_zx_string_to_utf8_trailing_spaces_stripped( void );
