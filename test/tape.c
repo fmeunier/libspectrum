@@ -2277,3 +2277,86 @@ done:
   libspectrum_tape_block_free( block );
   return r;
 }
+
+/* libspectrum_tape_present returns 0 for a freshly allocated (empty) tape */
+test_return_t
+tape_present_returns_false_for_empty_tape( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_present_returns_false_for_empty_tape: "
+             "tape_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_present( tape ) ) {
+    fprintf( stderr, "%s: tape_present_returns_false_for_empty_tape: "
+             "expected tape_present to return 0 for empty tape\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  libspectrum_tape_free( tape );
+  return TEST_PASS;
+}
+
+/* libspectrum_tape_present returns non-zero after loading blocks from a
+   tape file, and libspectrum_tape_clear makes it empty again */
+test_return_t
+tape_present_true_after_load_and_false_after_clear( void )
+{
+  const char *filename = STATIC_TEST_PATH( "standard-tap.tap" );
+  libspectrum_byte *buffer = NULL;
+  size_t filesize = 0;
+  libspectrum_tape *tape;
+  test_return_t r = TEST_INCOMPLETE;
+
+  if( read_file( &buffer, &filesize, filename ) ) return TEST_INCOMPLETE;
+
+  tape = libspectrum_tape_alloc();
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_present_true_after_load_and_false_after_clear: "
+             "tape_alloc returned NULL\n", progname );
+    libspectrum_free( buffer );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_read( tape, buffer, filesize, LIBSPECTRUM_ID_UNKNOWN,
+                             filename ) ) {
+    fprintf( stderr, "%s: tape_present_true_after_load_and_false_after_clear: "
+             "tape_read failed\n", progname );
+    libspectrum_tape_free( tape );
+    libspectrum_free( buffer );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_free( buffer );
+
+  if( !libspectrum_tape_present( tape ) ) {
+    fprintf( stderr, "%s: tape_present_true_after_load_and_false_after_clear: "
+             "expected tape_present to return non-zero after loading\n",
+             progname );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  if( libspectrum_tape_clear( tape ) != LIBSPECTRUM_ERROR_NONE ) {
+    fprintf( stderr, "%s: tape_present_true_after_load_and_false_after_clear: "
+             "tape_clear returned error\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  if( libspectrum_tape_present( tape ) ) {
+    fprintf( stderr, "%s: tape_present_true_after_load_and_false_after_clear: "
+             "expected tape_present to return 0 after tape_clear\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_FAIL;
+  }
+
+  r = TEST_PASS;
+
+  libspectrum_tape_free( tape );
+  return r;
+}
