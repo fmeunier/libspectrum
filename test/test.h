@@ -269,64 +269,15 @@ test_return_t snap_zxcf_active_upload_memctl_and_pages_getter_setter( void );
 test_return_t snap_zxcf_ram_page_pointer_array_getter_setter( void );
 
 /* utilities.c */
-test_return_t utilities_ms_to_tstates_zero( void );
-test_return_t utilities_ms_to_tstates_one_ms( void );
-test_return_t utilities_ms_to_tstates_one_second( void );
-test_return_t utilities_tstates_to_ms_zero( void );
-test_return_t utilities_tstates_to_ms_one_ms( void );
-test_return_t utilities_tstates_to_ms_truncates( void );
-test_return_t utilities_tstates_to_ms_one_second( void );
-test_return_t utilities_bits_to_bytes_zero( void );
-test_return_t utilities_bits_to_bytes_one_bit( void );
-test_return_t utilities_bits_to_bytes_exact_byte( void );
-test_return_t utilities_bits_to_bytes_nine_bits( void );
-test_return_t utilities_bits_to_bytes_twenty_four_bits( void );
-test_return_t utilities_zx_string_to_utf8_null_source_is_invalid( void );
+test_return_t utilities_zx_string_to_utf8_null_returns_null( void );
 test_return_t utilities_zx_string_to_utf8_plain_ascii( void );
 test_return_t utilities_zx_string_to_utf8_trailing_spaces_stripped( void );
 test_return_t utilities_zx_string_to_utf8_special_chars( void );
 test_return_t utilities_zx_string_to_utf8_udg_char( void );
 test_return_t utilities_zx_string_to_utf8_spectrum_token( void );
-test_return_t utilities_zx_string_to_utf8_buffer_too_short_is_invalid( void );
 
 /* szx.c (IF1) */
 test_return_t write_szx_if1_chunk( void );
 test_return_t read_szx_if1_chunk( void );
-
-/* timings.c */
-test_return_t timings_48k_processor_speed_and_frame_timing( void );
-test_return_t timings_128k_processor_speed_and_frame_timing( void );
-test_return_t timings_pentagon_processor_speed_and_frame_timing( void );
-test_return_t timings_ts2068_processor_speed_and_frame_timing( void );
-test_return_t timings_unknown_machine_returns_zero_for_all_frame_timings( void );
-
-/* tape.c: tape_present and tape_clear */
-test_return_t tape_present_returns_false_for_empty_tape( void );
-test_return_t tape_present_true_after_load_and_false_after_clear( void );
-
-/* identify.c */
-test_return_t identify_class_unknown_returns_class_unknown( void );
-test_return_t identify_class_tape_tap_returns_class_tape( void );
-test_return_t identify_class_tape_tzx_returns_class_tape( void );
-test_return_t identify_class_tape_pzx_returns_class_tape( void );
-test_return_t identify_class_tape_csw_returns_class_tape( void );
-test_return_t identify_class_snapshot_sna_returns_class_snapshot( void );
-test_return_t identify_class_snapshot_szx_returns_class_snapshot( void );
-test_return_t identify_class_snapshot_z80_returns_class_snapshot( void );
-test_return_t identify_class_recording_rzx_returns_class_recording( void );
-test_return_t identify_class_compressed_gz_returns_class_compressed( void );
-test_return_t identify_class_compressed_bz2_returns_class_compressed( void );
-test_return_t identify_class_disk_dsk_returns_class_disk_plus3( void );
-test_return_t identify_class_disk_trd_returns_class_disk_trdos( void );
-test_return_t identify_class_disk_mdr_returns_class_microdrive( void );
-test_return_t identify_class_disk_img_returns_class_disk_plusd( void );
-test_return_t identify_class_harddisk_hdf_returns_class_harddisk( void );
-test_return_t identify_class_cartridge_dck_returns_class_cartridge_timex( void );
-test_return_t identify_class_cartridge_if2_returns_class_cartridge_if2( void );
-test_return_t identify_class_disk_udi_returns_class_disk_generic( void );
-test_return_t identify_class_pok_returns_class_auxiliary( void );
-test_return_t identify_class_screen_scr_returns_class_screenshot( void );
-test_return_t identify_class_disk_opd_returns_class_disk_opus( void );
-test_return_t identify_class_disk_d80_returns_class_disk_didaktik( void );
 
 #endif
