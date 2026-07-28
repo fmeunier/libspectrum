@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include <stdio.h>
+#include <string.h>
 
 #include "test.h"
 
@@ -201,4 +202,72 @@ machine_capabilities_se_has_ay_128_memory_timex_video_kempston_and_se_memory( vo
     LIBSPECTRUM_MACHINE_CAPABILITY_TIMEX_VIDEO       |
     LIBSPECTRUM_MACHINE_CAPABILITY_KEMPSTON_JOYSTICK |
     LIBSPECTRUM_MACHINE_CAPABILITY_SE_MEMORY );
+}
+
+/* Helper: assert that libspectrum_machine_name returns the expected string. */
+static test_return_t
+check_machine_name( libspectrum_machine machine, const char *expected )
+{
+  const char *got = libspectrum_machine_name( machine );
+  if( strcmp( got, expected ) != 0 ) {
+    fprintf( stderr,
+             "%s: machine_name(%d): expected \"%s\", got \"%s\"\n",
+             progname, (int)machine, expected, got );
+    return TEST_FAIL;
+  }
+  return TEST_PASS;
+}
+
+/* libspectrum_machine_name returns the correct string for every machine. */
+test_return_t
+machine_name_returns_correct_string_for_all_machines( void )
+{
+  if( check_machine_name( LIBSPECTRUM_MACHINE_16,       "Spectrum 16K"         ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_48,       "Spectrum 48K"         ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_48_NTSC,  "Spectrum 48K (NTSC)"  ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_TC2048,   "Timex TC2048"         ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_TC2068,   "Timex TC2068"         ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_TS2068,   "Timex TS2068"         ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_128,      "Spectrum 128K"        ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_128E,     "Spectrum 128Ke"       ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_PLUS2,    "Spectrum +2"          ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_PLUS2A,   "Spectrum +2A"         ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_PLUS3,    "Spectrum +3"          ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_PLUS3E,   "Spectrum +3e"         ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_PENT,     "Pentagon 128K"        ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_PENT512,  "Pentagon 512K"        ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_PENT1024, "Pentagon 1024K"       ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_SCORP,    "Scorpion ZS 256"      ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_SE,       "Spectrum SE"          ) != TEST_PASS ) return TEST_FAIL;
+  if( check_machine_name( LIBSPECTRUM_MACHINE_UNKNOWN,  "(unknown)"            ) != TEST_PASS ) return TEST_FAIL;
+  return TEST_PASS;
+}
+
+/* Helper: assert that libspectrum_joystick_name returns the expected string. */
+static test_return_t
+check_joystick_name( libspectrum_joystick type, const char *expected )
+{
+  const char *got = libspectrum_joystick_name( type );
+  if( strcmp( got, expected ) != 0 ) {
+    fprintf( stderr,
+             "%s: joystick_name(%d): expected \"%s\", got \"%s\"\n",
+             progname, (int)type, expected, got );
+    return TEST_FAIL;
+  }
+  return TEST_PASS;
+}
+
+/* libspectrum_joystick_name returns the correct string for every joystick. */
+test_return_t
+joystick_name_returns_correct_string_for_all_types( void )
+{
+  if( check_joystick_name( LIBSPECTRUM_JOYSTICK_NONE,       "(None)"      ) != TEST_PASS ) return TEST_FAIL;
+  if( check_joystick_name( LIBSPECTRUM_JOYSTICK_CURSOR,     "Cursor"      ) != TEST_PASS ) return TEST_FAIL;
+  if( check_joystick_name( LIBSPECTRUM_JOYSTICK_KEMPSTON,   "Kempston"    ) != TEST_PASS ) return TEST_FAIL;
+  if( check_joystick_name( LIBSPECTRUM_JOYSTICK_SINCLAIR_1, "Sinclair 1"  ) != TEST_PASS ) return TEST_FAIL;
+  if( check_joystick_name( LIBSPECTRUM_JOYSTICK_SINCLAIR_2, "Sinclair 2"  ) != TEST_PASS ) return TEST_FAIL;
+  if( check_joystick_name( LIBSPECTRUM_JOYSTICK_TIMEX_1,    "Timex 1"     ) != TEST_PASS ) return TEST_FAIL;
+  if( check_joystick_name( LIBSPECTRUM_JOYSTICK_TIMEX_2,    "Timex 2"     ) != TEST_PASS ) return TEST_FAIL;
+  if( check_joystick_name( LIBSPECTRUM_JOYSTICK_FULLER,     "Fuller"      ) != TEST_PASS ) return TEST_FAIL;
+  return TEST_PASS;
 }
