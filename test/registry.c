@@ -297,6 +297,13 @@ test_description tests[] = {
   TEST_ENTRY( identify_class_screen_scr_returns_class_screenshot, "libspectrum_identify_class: SCREEN_SCR maps to CLASS_SCREENSHOT" ),
   TEST_ENTRY( identify_class_disk_opd_returns_class_disk_opus, "libspectrum_identify_class: DISK_OPD maps to CLASS_DISK_OPUS" ),
   TEST_ENTRY( identify_class_disk_d80_returns_class_disk_didaktik, "libspectrum_identify_class: DISK_D80 maps to CLASS_DISK_DIDAKTIK" ),
+  TEST_ENTRY( identify_file_tzx_magic_returns_tape_tzx, "libspectrum_identify_file: TZX magic bytes → TAPE_TZX" ),
+  TEST_ENTRY( identify_file_szx_magic_returns_snapshot_szx, "libspectrum_identify_file: SZX magic bytes → SNAPSHOT_SZX" ),
+  TEST_ENTRY( identify_file_rzx_magic_returns_recording_rzx, "libspectrum_identify_file: RZX magic bytes → RECORDING_RZX" ),
+  TEST_ENTRY( identify_file_pzx_magic_returns_tape_pzx, "libspectrum_identify_file: PZX magic bytes → TAPE_PZX" ),
+  TEST_ENTRY( identify_file_unknown_buffer_returns_unknown, "libspectrum_identify_file: unrecognised data → ID_UNKNOWN" ),
+  TEST_ENTRY( identify_file_with_class_tzx_returns_type_and_tape_class, "libspectrum_identify_file_with_class: TZX → type=TAPE_TZX class=TAPE" ),
+  TEST_ENTRY( identify_file_with_class_szx_returns_type_and_snapshot_class, "libspectrum_identify_file_with_class: SZX → type=SNAPSHOT_SZX class=SNAPSHOT" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

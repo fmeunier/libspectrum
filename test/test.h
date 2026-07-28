@@ -317,4 +317,13 @@ test_return_t identify_class_screen_scr_returns_class_screenshot( void );
 test_return_t identify_class_disk_opd_returns_class_disk_opus( void );
 test_return_t identify_class_disk_d80_returns_class_disk_didaktik( void );
 
+/* identify_file */
+test_return_t identify_file_tzx_magic_returns_tape_tzx( void );
+test_return_t identify_file_szx_magic_returns_snapshot_szx( void );
+test_return_t identify_file_rzx_magic_returns_recording_rzx( void );
+test_return_t identify_file_pzx_magic_returns_tape_pzx( void );
+test_return_t identify_file_unknown_buffer_returns_unknown( void );
+test_return_t identify_file_with_class_tzx_returns_type_and_tape_class( void );
+test_return_t identify_file_with_class_szx_returns_type_and_snapshot_class( void );
+
 #endif
