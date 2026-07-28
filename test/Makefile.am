@@ -42,8 +42,7 @@ test_test_SOURCES = \
 	test/tape-edges.c \
 	test/tape.c \
 	test/timings.c \
-	test/utilities.c \
-	test/identify.c
+	test/utilities.c
 
 test_test_CFLAGS = -DSRCDIR='"$(srcdir)"'
 
