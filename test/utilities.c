@@ -29,16 +29,16 @@
 #include "internals.h"
 #include "test.h"
 
-/* NULL source returns NULL */
+/* NULL source is invalid */
 test_return_t
-utilities_zx_string_to_utf8_null_returns_null( void )
+utilities_zx_string_to_utf8_null_source_is_invalid( void )
 {
-  char *result = libspectrum_zx_string_to_utf8( NULL, 5 );
+  char result[ 46 ];
 
-  if( result != NULL ) {
-    fprintf( stderr, "%s: utilities_zx_string_to_utf8_null_returns_null: "
-             "expected NULL, got non-NULL\n", progname );
-    libspectrum_free( result );
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), NULL, 5 ) !=
+      LIBSPECTRUM_ERROR_INVALID ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_null_source_is_invalid: "
+             "expected LIBSPECTRUM_ERROR_INVALID\n", progname );
     return TEST_FAIL;
   }
 
@@ -50,27 +50,22 @@ test_return_t
 utilities_zx_string_to_utf8_plain_ascii( void )
 {
   static const libspectrum_byte src[] = { 'H', 'E', 'L', 'L', 'O' };
-  char *result;
-  test_return_t r = TEST_FAIL;
+  char result[ sizeof( src ) * 9 + 1 ];
 
-  result = libspectrum_zx_string_to_utf8( src, sizeof( src ) );
-  if( !result ) {
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src,
+                                     sizeof( src ) ) ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_plain_ascii: "
-             "returned NULL\n", progname );
-    return TEST_INCOMPLETE;
+             "conversion failed\n", progname );
+    return TEST_FAIL;
   }
 
   if( strcmp( result, "HELLO" ) != 0 ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_plain_ascii: "
              "expected \"HELLO\", got \"%s\"\n", progname, result );
-    goto done;
+    return TEST_FAIL;
   }
 
-  r = TEST_PASS;
-
-done:
-  libspectrum_free( result );
-  return r;
+  return TEST_PASS;
 }
 
 /* Trailing spaces are stripped before conversion */
@@ -78,27 +73,22 @@ test_return_t
 utilities_zx_string_to_utf8_trailing_spaces_stripped( void )
 {
   static const libspectrum_byte src[] = { 'H', 'I', ' ', ' ', ' ' };
-  char *result;
-  test_return_t r = TEST_FAIL;
+  char result[ sizeof( src ) * 9 + 1 ];
 
-  result = libspectrum_zx_string_to_utf8( src, sizeof( src ) );
-  if( !result ) {
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src,
+                                     sizeof( src ) ) ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_trailing_spaces_stripped: "
-             "returned NULL\n", progname );
-    return TEST_INCOMPLETE;
+             "conversion failed\n", progname );
+    return TEST_FAIL;
   }
 
   if( strcmp( result, "HI" ) != 0 ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_trailing_spaces_stripped: "
              "expected \"HI\", got \"%s\"\n", progname, result );
-    goto done;
+    return TEST_FAIL;
   }
 
-  r = TEST_PASS;
-
-done:
-  libspectrum_free( result );
-  return r;
+  return TEST_PASS;
 }
 
 /* ZX Spectrum special characters convert to Unicode equivalents:
@@ -110,28 +100,23 @@ utilities_zx_string_to_utf8_special_chars( void )
   static const libspectrum_byte src[] = {
     '\\', '^', '`', 0x7f
   };
-  char *result;
-  test_return_t r = TEST_FAIL;
+  char result[ sizeof( src ) * 9 + 1 ];
 
-  result = libspectrum_zx_string_to_utf8( src, sizeof( src ) );
-  if( !result ) {
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src,
+                                     sizeof( src ) ) ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_special_chars: "
-             "returned NULL\n", progname );
-    return TEST_INCOMPLETE;
+             "conversion failed\n", progname );
+    return TEST_FAIL;
   }
 
   /* expected: "\\" + "↑" + "£" + "©" */
   if( strcmp( result, "\\\\" "\xe2\x86\x91" "\xc2\xa3" "\xc2\xa9" ) != 0 ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_special_chars: "
              "unexpected result\n", progname );
-    goto done;
+    return TEST_FAIL;
   }
 
-  r = TEST_PASS;
-
-done:
-  libspectrum_free( result );
-  return r;
+  return TEST_PASS;
 }
 
 /* UDG characters (bytes 144–164) render as \a through \u */
@@ -140,27 +125,22 @@ utilities_zx_string_to_utf8_udg_char( void )
 {
   /* 0x90 = 144 -> UDG 'a' -> rendered as \a */
   static const libspectrum_byte src[] = { 0x90 };
-  char *result;
-  test_return_t r = TEST_FAIL;
+  char result[ sizeof( src ) * 9 + 1 ];
 
-  result = libspectrum_zx_string_to_utf8( src, sizeof( src ) );
-  if( !result ) {
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src,
+                                     sizeof( src ) ) ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_udg_char: "
-             "returned NULL\n", progname );
-    return TEST_INCOMPLETE;
+             "conversion failed\n", progname );
+    return TEST_FAIL;
   }
 
   if( strcmp( result, "\\a" ) != 0 ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_udg_char: "
              "expected \"\\\\a\", got \"%s\"\n", progname, result );
-    goto done;
+    return TEST_FAIL;
   }
 
-  r = TEST_PASS;
-
-done:
-  libspectrum_free( result );
-  return r;
+  return TEST_PASS;
 }
 
 /* Spectrum BASIC keyword tokens (bytes >= 165) expand to keyword text.
@@ -169,25 +149,43 @@ test_return_t
 utilities_zx_string_to_utf8_spectrum_token( void )
 {
   static const libspectrum_byte src[] = { 0xfb };
-  char *result;
-  test_return_t r = TEST_FAIL;
+  char result[ sizeof( src ) * 9 + 1 ];
 
-  result = libspectrum_zx_string_to_utf8( src, sizeof( src ) );
-  if( !result ) {
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src,
+                                     sizeof( src ) ) ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_spectrum_token: "
-             "returned NULL\n", progname );
-    return TEST_INCOMPLETE;
+             "conversion failed\n", progname );
+    return TEST_FAIL;
   }
 
   if( strcmp( result, "RANDOMIZE" ) != 0 ) {
     fprintf( stderr, "%s: utilities_zx_string_to_utf8_spectrum_token: "
              "expected \"RANDOMIZE\", got \"%s\"\n", progname, result );
-    goto done;
+    return TEST_FAIL;
   }
 
-  r = TEST_PASS;
+  return TEST_PASS;
+}
 
-done:
-  libspectrum_free( result );
-  return r;
+/* A buffer without space for the terminating NUL is rejected */
+test_return_t
+utilities_zx_string_to_utf8_buffer_too_short_is_invalid( void )
+{
+  static const libspectrum_byte src[] = { 0xfb };
+  char result[ 9 ];
+
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src,
+                                     sizeof( src ) ) != LIBSPECTRUM_ERROR_INVALID ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_buffer_too_short_is_invalid: "
+             "expected LIBSPECTRUM_ERROR_INVALID\n", progname );
+    return TEST_FAIL;
+  }
+
+  if( strcmp( result, "" ) != 0 ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_buffer_too_short_is_invalid: "
+             "expected empty result\n", progname );
+    return TEST_FAIL;
+  }
+
+  return TEST_PASS;
 }
