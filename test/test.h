@@ -287,4 +287,8 @@ test_return_t timings_pentagon_processor_speed_and_frame_timing( void );
 test_return_t timings_ts2068_processor_speed_and_frame_timing( void );
 test_return_t timings_unknown_machine_returns_zero_for_all_frame_timings( void );
 
+/* tape.c: tape_present and tape_clear */
+test_return_t tape_present_returns_false_for_empty_tape( void );
+test_return_t tape_present_true_after_load_and_false_after_clear( void );
+
 #endif
