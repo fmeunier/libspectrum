@@ -292,6 +292,33 @@ test_return_t timings_unknown_machine_returns_zero_for_all_frame_timings( void )
 test_return_t tape_present_returns_false_for_empty_tape( void );
 test_return_t tape_present_true_after_load_and_false_after_clear( void );
 
+/* tape.c: tape_block_description */
+test_return_t tape_block_description_rom( void );
+test_return_t tape_block_description_turbo( void );
+test_return_t tape_block_description_pure_tone( void );
+test_return_t tape_block_description_pulses( void );
+test_return_t tape_block_description_pure_data( void );
+test_return_t tape_block_description_raw_data( void );
+test_return_t tape_block_description_generalised_data( void );
+test_return_t tape_block_description_pause( void );
+test_return_t tape_block_description_group_start( void );
+test_return_t tape_block_description_group_end( void );
+test_return_t tape_block_description_jump( void );
+test_return_t tape_block_description_loop_start( void );
+test_return_t tape_block_description_loop_end( void );
+test_return_t tape_block_description_select( void );
+test_return_t tape_block_description_stop48( void );
+test_return_t tape_block_description_set_signal_level( void );
+test_return_t tape_block_description_comment( void );
+test_return_t tape_block_description_message( void );
+test_return_t tape_block_description_archive_info( void );
+test_return_t tape_block_description_hardware( void );
+test_return_t tape_block_description_custom( void );
+test_return_t tape_block_description_concat( void );
+test_return_t tape_block_description_rle_pulse( void );
+test_return_t tape_block_description_pulse_sequence( void );
+test_return_t tape_block_description_data_block( void );
+
 /* identify.c */
 test_return_t identify_class_unknown_returns_class_unknown( void );
 test_return_t identify_class_tape_tap_returns_class_tape( void );
