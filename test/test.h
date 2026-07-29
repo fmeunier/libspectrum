@@ -269,6 +269,18 @@ test_return_t snap_zxcf_active_upload_memctl_and_pages_getter_setter( void );
 test_return_t snap_zxcf_ram_page_pointer_array_getter_setter( void );
 
 /* utilities.c */
+test_return_t utilities_ms_to_tstates_zero( void );
+test_return_t utilities_ms_to_tstates_one_ms( void );
+test_return_t utilities_ms_to_tstates_one_second( void );
+test_return_t utilities_tstates_to_ms_zero( void );
+test_return_t utilities_tstates_to_ms_one_ms( void );
+test_return_t utilities_tstates_to_ms_truncates( void );
+test_return_t utilities_tstates_to_ms_one_second( void );
+test_return_t utilities_bits_to_bytes_zero( void );
+test_return_t utilities_bits_to_bytes_one_bit( void );
+test_return_t utilities_bits_to_bytes_exact_byte( void );
+test_return_t utilities_bits_to_bytes_nine_bits( void );
+test_return_t utilities_bits_to_bytes_twenty_four_bits( void );
 test_return_t utilities_zx_string_to_utf8_null_source_is_invalid( void );
 test_return_t utilities_zx_string_to_utf8_plain_ascii( void );
 test_return_t utilities_zx_string_to_utf8_trailing_spaces_stripped( void );
