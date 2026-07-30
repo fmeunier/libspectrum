@@ -280,4 +280,11 @@ test_return_t utilities_zx_string_to_utf8_spectrum_token( void );
 test_return_t write_szx_if1_chunk( void );
 test_return_t read_szx_if1_chunk( void );
 
+/* timings.c */
+test_return_t timings_48k_processor_speed_and_frame_timing( void );
+test_return_t timings_128k_processor_speed_and_frame_timing( void );
+test_return_t timings_pentagon_processor_speed_and_frame_timing( void );
+test_return_t timings_ts2068_processor_speed_and_frame_timing( void );
+test_return_t timings_unknown_machine_returns_zero_for_all_frame_timings( void );
+
 #endif
