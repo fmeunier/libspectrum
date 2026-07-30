@@ -269,12 +269,13 @@ test_return_t snap_zxcf_active_upload_memctl_and_pages_getter_setter( void );
 test_return_t snap_zxcf_ram_page_pointer_array_getter_setter( void );
 
 /* utilities.c */
-test_return_t utilities_zx_string_to_utf8_null_returns_null( void );
+test_return_t utilities_zx_string_to_utf8_null_source_is_invalid( void );
 test_return_t utilities_zx_string_to_utf8_plain_ascii( void );
 test_return_t utilities_zx_string_to_utf8_trailing_spaces_stripped( void );
 test_return_t utilities_zx_string_to_utf8_special_chars( void );
 test_return_t utilities_zx_string_to_utf8_udg_char( void );
 test_return_t utilities_zx_string_to_utf8_spectrum_token( void );
+test_return_t utilities_zx_string_to_utf8_buffer_too_short_is_invalid( void );
 
 /* szx.c (IF1) */
 test_return_t write_szx_if1_chunk( void );
