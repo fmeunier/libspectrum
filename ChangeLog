@@ -5,7 +5,7 @@
         * Add libspectrum_zx_string_to_utf8() to translate ZX Spectrum strings
           to UTF-8 (Fredrick Meunier).
 
-        * Fix 64-bit Windows cross-compilation (Sergio Baldoví).
+        * Fix 64-bit Windows compilation on MSYS2/MINGW64 (Sergio Baldoví).
 
         * Fix use-after-free and RZX input block length handling (Fredrick
           Meunier).
