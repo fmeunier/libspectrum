@@ -1,5 +1,10 @@
 2026-07-25  Fredrick Meunier  <fredm@spamcop.net>
 
+        * Add libspectrum_buffer_ensure_capacity() to pre-reserve buffer
+          space before multi-field writes, avoiding repeated reallocation
+          checks. Use it in write_z80r_chunk (37 bytes, 21 writes) and
+          write_amxm_chunk (7 bytes, 7 writes).
+
         * libspectrum 1.6.3 released.
 
         * Add libspectrum_zx_string_to_utf8() to translate ZX Spectrum strings
