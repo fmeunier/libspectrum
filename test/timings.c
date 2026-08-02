@@ -179,6 +179,105 @@ timings_ts2068_processor_speed_and_frame_timing( void )
   return TEST_PASS;
 }
 
+/* +3 machine: 3.5469 MHz, AY, Amstrad ASIC frame timings.
+   Line = 24+128+24+52 = 228 T-states; frame = 311 lines = 70908 T-states. */
+test_return_t
+timings_plus3_processor_speed_and_frame_timing( void )
+{
+  if( check_timing( "+3", "processor_speed",
+                    3546900,
+                    libspectrum_timings_processor_speed( LIBSPECTRUM_MACHINE_PLUS3 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "+3", "ay_speed",
+                    1773400,
+                    libspectrum_timings_ay_speed( LIBSPECTRUM_MACHINE_PLUS3 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "+3", "tstates_per_line",
+                    228,
+                    libspectrum_timings_tstates_per_line( LIBSPECTRUM_MACHINE_PLUS3 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "+3", "lines_per_frame",
+                    311,
+                    libspectrum_timings_lines_per_frame( LIBSPECTRUM_MACHINE_PLUS3 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "+3", "tstates_per_frame",
+                    70908,
+                    libspectrum_timings_tstates_per_frame( LIBSPECTRUM_MACHINE_PLUS3 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  return TEST_PASS;
+}
+
+/* TC2048 machine: 3.5 MHz, no AY, Timex SCLD 50 Hz frame timings.
+   Line = 24+128+24+48 = 224 T-states; frame = 312 lines = 69888 T-states. */
+test_return_t
+timings_tc2048_processor_speed_and_frame_timing( void )
+{
+  if( check_timing( "TC2048", "processor_speed",
+                    3500000,
+                    libspectrum_timings_processor_speed( LIBSPECTRUM_MACHINE_TC2048 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "TC2048", "ay_speed",
+                    0,
+                    libspectrum_timings_ay_speed( LIBSPECTRUM_MACHINE_TC2048 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "TC2048", "tstates_per_line",
+                    224,
+                    libspectrum_timings_tstates_per_line( LIBSPECTRUM_MACHINE_TC2048 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "TC2048", "lines_per_frame",
+                    312,
+                    libspectrum_timings_lines_per_frame( LIBSPECTRUM_MACHINE_TC2048 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "TC2048", "tstates_per_frame",
+                    69888,
+                    libspectrum_timings_tstates_per_frame( LIBSPECTRUM_MACHINE_TC2048 ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  return TEST_PASS;
+}
+
+/* Scorpion machine: 3.5 MHz, AY, Scorpion frame timings.
+   Line = 24+128+32+40 = 224 T-states; frame = 312 lines = 69888 T-states. */
+test_return_t
+timings_scorpion_processor_speed_and_frame_timing( void )
+{
+  if( check_timing( "Scorpion", "processor_speed",
+                    3500000,
+                    libspectrum_timings_processor_speed( LIBSPECTRUM_MACHINE_SCORP ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "Scorpion", "ay_speed",
+                    1750000,
+                    libspectrum_timings_ay_speed( LIBSPECTRUM_MACHINE_SCORP ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "Scorpion", "tstates_per_line",
+                    224,
+                    libspectrum_timings_tstates_per_line( LIBSPECTRUM_MACHINE_SCORP ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "Scorpion", "lines_per_frame",
+                    312,
+                    libspectrum_timings_lines_per_frame( LIBSPECTRUM_MACHINE_SCORP ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  if( check_timing( "Scorpion", "tstates_per_frame",
+                    69888,
+                    libspectrum_timings_tstates_per_frame( LIBSPECTRUM_MACHINE_SCORP ) )
+      != TEST_PASS ) return TEST_FAIL;
+
+  return TEST_PASS;
+}
+
 /* UNKNOWN machine: all timing accessors must return 0 (no timings defined). */
 test_return_t
 timings_unknown_machine_returns_zero_for_all_frame_timings( void )
