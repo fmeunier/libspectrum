@@ -1,8 +1,8 @@
 {
-  "last_run": "2026-08-01",
+  "last_run": "2026-08-02",
   "comments_made": {},
   "labels_applied": {},
-  "open_prs": [45, 87, 90, 118, 133, 134, 136, 137, 138, 141, 142, 143],
+  "open_prs": [45, 87, 90, 118, 125, 128, 133, 134, 136, 137, 138, 141, 142, 147],
   "closed_prs_summary": "54,67,69-70,72-77,79,81-86,88-89,91-102,104-108,111,47,113-117,119-120,122-124,126-127,129-132",
   "fix_attempts": {
     "ay-register-bulk-write": {"pr": 90, "status": "open", "date": "2026-06-15"},
@@ -18,12 +18,13 @@
     "buffer-ensure-capacity": {"pr": 141, "status": "open", "date": "2026-07-30", "note": "perf: ensure_capacity API + use in write_z80r/write_amxm"},
     "buffer-write-perf": {"pr": 45, "status": "open", "date": "2026-05-11"},
     "rzx-rollback-tests": {"pr": 142, "status": "open", "date": "2026-07-31", "note": "4 tests: rollback, rollback_to, iterator_delete"},
-    "zx-string-tests-20260801": {"pr": 143, "status": "open", "date": "2026-08-01", "note": "3 new tests: graphics tokens, control chars, empty source; 10 total pass"}
+    "zx-string-tests-20260801": {"pr": 147, "status": "open", "date": "2026-08-01", "note": "3 new tests: graphics tokens, control chars, empty source; 10 total pass"},
+    "machine-timings-tests-20260802": {"pr": "TBD", "status": "open", "date": "2026-08-02", "note": "3 new timings tests: +3 (Amstrad ASIC), TC2048 (Timex SCLD), Scorpion; 283 pass"}
   },
   "user_checked_off": [
     "issue-66","issue-68","pr-54-close","pr-67-close","pr-69-close",
-    "pr-72-review","pr-73-review","pr-74-review","pr-79-review","pr-70-close",
-    "pr-75-close","pr-81-review","pr-82-review","pr-86-review","pr-88-review",
+    "pr-70-close","pr-72-review","pr-73-review","pr-74-review","pr-75-close",
+    "pr-79-review","pr-81-review","pr-82-review","pr-86-review","pr-88-review",
     "pr-89-review","pr-91-review","pr-97-review","pr-98-review","pr-100-review",
     "pr-101-review","issue-95-check","pr-104-review","pr-105-review","pr-92-review",
     "pr-93-review","pr-99-review","pr-102-review","pr-106-review","pr-107-review",
@@ -31,8 +32,8 @@
     "pr-113-review","pr-126-review","pr-127-review","pr-129-review","pr-130-review",
     "pr-131-review"
   ],
-  "monthly_activity_issue": 144,
-  "notes": "2026-08-01: Tasks 5+6. Task 6: Rebased #118,#90,#87,#45. PR #125 crtr patch already in master - should close. Task 5: Created PR #143 (3 new zx_string tests). Closed July issue #109, opened August issue.",
+  "monthly_activity_issue": 148,
+  "notes": "2026-08-02: Tasks 3+2. Task 2: no real user issues to comment on (all open issues are system/infrastructure). Task 3: Created PR for 3 new timings tests (+3 Amstrad ASIC, TC2048 Timex SCLD, Scorpion). PR #125 crtr patch already in master - should close. PR #128 superseded by #137.",
   "backlog_cursor": {"issues": 0, "prs": 0},
   "ideas_submitted": [
     "buffer-write-word-array","machine-capabilities-single-switch","tape-block-description-table",
@@ -41,6 +42,6 @@
     "timings-api-unit-tests","tape-present-clear-tests","identify-class-tests",
     "release-prep-1.6.3","check-version-tests","tape-iterator-tests","identify-file-tests",
     "utility-api-public-20260729","tape-block-description-tests","buffer-ensure-capacity",
-    "rzx-rollback-tests","zx-string-tests-20260801"
+    "rzx-rollback-tests","zx-string-tests-20260801","machine-timings-tests-20260802"
   ]
 }
