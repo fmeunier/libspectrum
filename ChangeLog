@@ -1,3 +1,11 @@
+2026-08-05  Repo Assist  <github-actions[bot]>
+
+        * z80.c: Use memset for run-length fills in compress_block and
+          uncompress_block, replacing byte-by-byte while loops. This
+          leverages the C library's optimised memset (typically
+          SIMD-accelerated) for runs of repeated bytes, the common case
+          in ZX Spectrum memory pages.
+
 2026-07-25  Fredrick Meunier  <fredm@spamcop.net>
 
         * libspectrum 1.6.3 released.
