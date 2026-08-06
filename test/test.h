@@ -280,6 +280,9 @@ test_return_t utilities_zx_string_to_utf8_special_chars( void );
 test_return_t utilities_zx_string_to_utf8_udg_char( void );
 test_return_t utilities_zx_string_to_utf8_spectrum_token( void );
 test_return_t utilities_zx_string_to_utf8_buffer_too_short_is_invalid( void );
+test_return_t utilities_zx_string_to_utf8_graphics_token( void );
+test_return_t utilities_zx_string_to_utf8_control_char( void );
+test_return_t utilities_zx_string_to_utf8_empty_source( void );
 
 /* szx.c (IF1) */
 test_return_t write_szx_if1_chunk( void );

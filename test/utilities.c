@@ -239,3 +239,73 @@ utilities_check_version_future_major_returns_false( void )
   }
   return TEST_PASS;
 }
+
+/* Graphics block tokens (bytes 128-143) render as four-character \XX sequences */
+test_return_t
+utilities_zx_string_to_utf8_graphics_token( void )
+{
+  /* 0x80 = 128 -> graphics_tokens[0] = "\\  " (space-space block) */
+  static const libspectrum_byte src[] = { 0x80 };
+  char result[ sizeof( src ) * 9 + 1 ];
+
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src,
+                                     sizeof( src ) ) ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_graphics_token: "
+             "conversion failed\n", progname );
+    return TEST_FAIL;
+  }
+
+  if( strcmp( result, "\\  " ) != 0 ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_graphics_token: "
+             "expected \"\\\\ \", got \"%s\"\n", progname, result );
+    return TEST_FAIL;
+  }
+
+  return TEST_PASS;
+}
+
+/* Control characters (bytes 0-31, excluding handled specials) render as "?" */
+test_return_t
+utilities_zx_string_to_utf8_control_char( void )
+{
+  /* 0x01 is a control character, not specially handled */
+  static const libspectrum_byte src[] = { 0x01 };
+  char result[ sizeof( src ) * 9 + 1 ];
+
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src,
+                                     sizeof( src ) ) ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_control_char: "
+             "conversion failed\n", progname );
+    return TEST_FAIL;
+  }
+
+  if( strcmp( result, "?" ) != 0 ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_control_char: "
+             "expected \"?\", got \"%s\"\n", progname, result );
+    return TEST_FAIL;
+  }
+
+  return TEST_PASS;
+}
+
+/* Empty source string produces empty output */
+test_return_t
+utilities_zx_string_to_utf8_empty_source( void )
+{
+  static const libspectrum_byte src[] = { 0 };
+  char result[ 16 ];
+
+  if( libspectrum_zx_string_to_utf8( result, sizeof( result ), src, 0 ) ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_empty_source: "
+             "conversion failed\n", progname );
+    return TEST_FAIL;
+  }
+
+  if( strcmp( result, "" ) != 0 ) {
+    fprintf( stderr, "%s: utilities_zx_string_to_utf8_empty_source: "
+             "expected empty string, got \"%s\"\n", progname, result );
+    return TEST_FAIL;
+  }
+
+  return TEST_PASS;
+}
