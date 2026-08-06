@@ -293,6 +293,9 @@ test_return_t timings_48k_processor_speed_and_frame_timing( void );
 test_return_t timings_128k_processor_speed_and_frame_timing( void );
 test_return_t timings_pentagon_processor_speed_and_frame_timing( void );
 test_return_t timings_ts2068_processor_speed_and_frame_timing( void );
+test_return_t timings_plus3_processor_speed_and_frame_timing( void );
+test_return_t timings_tc2048_processor_speed_and_frame_timing( void );
+test_return_t timings_scorpion_processor_speed_and_frame_timing( void );
 test_return_t timings_unknown_machine_returns_zero_for_all_frame_timings( void );
 
 /* tape.c: tape_present and tape_clear */
