@@ -2360,3 +2360,58 @@ tape_present_true_after_load_and_false_after_clear( void )
   libspectrum_tape_free( tape );
   return r;
 }
+
+/* Helper: allocate a block of given type, call description, free block */
+static libspectrum_error
+description_for_type( libspectrum_tape_type type, char *buf, size_t len )
+{
+  libspectrum_tape_block *block = libspectrum_tape_block_alloc( type );
+  libspectrum_error e;
+  if( !block ) return LIBSPECTRUM_ERROR_MEMORY;
+  e = libspectrum_tape_block_description( buf, len, block );
+  libspectrum_tape_block_free( block );
+  return e;
+}
+
+#define TAPE_DESC_TEST( name, type, expected ) \
+test_return_t \
+tape_block_description_ ## name ( void ) \
+{ \
+  char buf[64]; \
+  if( description_for_type( LIBSPECTRUM_TAPE_BLOCK_ ## type, buf, sizeof( buf ) ) != LIBSPECTRUM_ERROR_NONE ) { \
+    fprintf( stderr, "%s: tape_block_description_" #name ": returned error\n", progname ); \
+    return TEST_FAIL; \
+  } \
+  if( strcmp( buf, expected ) != 0 ) { \
+    fprintf( stderr, "%s: tape_block_description_" #name ": expected \"%s\", got \"%s\"\n", \
+             progname, expected, buf ); \
+    return TEST_FAIL; \
+  } \
+  return TEST_PASS; \
+}
+
+TAPE_DESC_TEST( rom,              ROM,              "Standard Speed Data" )
+TAPE_DESC_TEST( turbo,            TURBO,            "Turbo Speed Data" )
+TAPE_DESC_TEST( pure_tone,        PURE_TONE,        "Pure Tone" )
+TAPE_DESC_TEST( pulses,           PULSES,           "List of Pulses" )
+TAPE_DESC_TEST( pure_data,        PURE_DATA,        "Pure Data" )
+TAPE_DESC_TEST( raw_data,         RAW_DATA,         "Raw Data" )
+TAPE_DESC_TEST( generalised_data, GENERALISED_DATA, "Generalised Data" )
+TAPE_DESC_TEST( pause,            PAUSE,            "Pause" )
+TAPE_DESC_TEST( group_start,      GROUP_START,      "Group Start" )
+TAPE_DESC_TEST( group_end,        GROUP_END,        "Group End" )
+TAPE_DESC_TEST( jump,             JUMP,             "Jump" )
+TAPE_DESC_TEST( loop_start,       LOOP_START,       "Loop Start Block" )
+TAPE_DESC_TEST( loop_end,         LOOP_END,         "Loop End" )
+TAPE_DESC_TEST( select,           SELECT,           "Select" )
+TAPE_DESC_TEST( stop48,           STOP48,           "Stop Tape If In 48K Mode" )
+TAPE_DESC_TEST( set_signal_level, SET_SIGNAL_LEVEL, "Set Signal Level" )
+TAPE_DESC_TEST( comment,          COMMENT,          "Comment" )
+TAPE_DESC_TEST( message,          MESSAGE,          "Message" )
+TAPE_DESC_TEST( archive_info,     ARCHIVE_INFO,     "Archive Info" )
+TAPE_DESC_TEST( hardware,         HARDWARE,         "Hardware Information" )
+TAPE_DESC_TEST( custom,           CUSTOM,           "Custom Info" )
+TAPE_DESC_TEST( concat,           CONCAT,           "Glue Block" )
+TAPE_DESC_TEST( rle_pulse,        RLE_PULSE,        "RLE Pulse" )
+TAPE_DESC_TEST( pulse_sequence,   PULSE_SEQUENCE,   "Pulse Sequence" )
+TAPE_DESC_TEST( data_block,       DATA_BLOCK,       "Data Block" )
