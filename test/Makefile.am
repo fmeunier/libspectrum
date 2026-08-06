@@ -40,6 +40,7 @@ test_test_SOURCES = \
 	test/snap-z80.c \
 	test/szx.c \
 	test/tape-edges.c \
+	test/tape-iterator.c \
 	test/tape.c \
 	test/timings.c \
 	test/utilities.c \
