@@ -1049,3 +1049,158 @@ done:
   libspectrum_rzx_free( rzx );
   return r;
 }
+
+/* rzx_start_playback returns INVALID when no input block exists */
+test_return_t
+rzx_start_playback_returns_invalid_with_no_input_block( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap = NULL;
+  libspectrum_error error;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_start_playback_returns_invalid_with_no_input_block: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  error = libspectrum_rzx_start_playback( rzx, 0, &snap );
+  if( error != LIBSPECTRUM_ERROR_INVALID ) {
+    fprintf( stderr, "%s: rzx_start_playback_returns_invalid_with_no_input_block: expected INVALID, got %d\n",
+             progname, error );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+/* rzx_start_playback succeeds and rzx_playback/playback_frame deliver stored IN bytes */
+test_return_t
+rzx_playback_delivers_stored_in_bytes( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap = NULL;
+  libspectrum_byte in_bytes[3] = { 0x11, 0x22, 0x33 };
+  libspectrum_byte got;
+  int finished = 0;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_playback_delivers_stored_in_bytes: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+
+  if( libspectrum_rzx_store_frame( rzx, 10, 3, in_bytes ) ) {
+    fprintf( stderr, "%s: rzx_playback_delivers_stored_in_bytes: store_frame returned error\n",
+             progname );
+    goto done;
+  }
+
+  libspectrum_rzx_stop_input( rzx );
+
+  if( libspectrum_rzx_start_playback( rzx, 0, &snap ) ) {
+    fprintf( stderr, "%s: rzx_playback_delivers_stored_in_bytes: start_playback returned error\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_playback( rzx, &got ) || got != 0x11 ) {
+    fprintf( stderr, "%s: rzx_playback_delivers_stored_in_bytes: byte 0 expected 0x11, got 0x%02x\n",
+             progname, got );
+    goto done;
+  }
+
+  if( libspectrum_rzx_playback( rzx, &got ) || got != 0x22 ) {
+    fprintf( stderr, "%s: rzx_playback_delivers_stored_in_bytes: byte 1 expected 0x22, got 0x%02x\n",
+             progname, got );
+    goto done;
+  }
+
+  if( libspectrum_rzx_playback( rzx, &got ) || got != 0x33 ) {
+    fprintf( stderr, "%s: rzx_playback_delivers_stored_in_bytes: byte 2 expected 0x33, got 0x%02x\n",
+             progname, got );
+    goto done;
+  }
+
+  /* After consuming all 3 INs, playback_frame should succeed with finished=1 */
+  if( libspectrum_rzx_playback_frame( rzx, &finished, &snap ) ) {
+    fprintf( stderr, "%s: rzx_playback_delivers_stored_in_bytes: playback_frame returned error\n",
+             progname );
+    goto done;
+  }
+
+  if( !finished ) {
+    fprintf( stderr, "%s: rzx_playback_delivers_stored_in_bytes: expected finished=1, got 0\n",
+             progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+/* rzx_playback_frame returns CORRUPT when IN count mismatches stored count */
+test_return_t
+rzx_playback_frame_returns_corrupt_on_in_count_mismatch( void )
+{
+  libspectrum_rzx *rzx = libspectrum_rzx_alloc();
+  libspectrum_snap *snap = NULL;
+  libspectrum_byte in_bytes[2] = { 0xaa, 0xbb };
+  libspectrum_byte got;
+  int finished = 0;
+  libspectrum_error error;
+  test_return_t r = TEST_FAIL;
+
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_playback_frame_returns_corrupt_on_in_count_mismatch: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+
+  if( libspectrum_rzx_store_frame( rzx, 10, 2, in_bytes ) ) {
+    fprintf( stderr, "%s: rzx_playback_frame_returns_corrupt_on_in_count_mismatch: store_frame returned error\n",
+             progname );
+    goto done;
+  }
+
+  libspectrum_rzx_stop_input( rzx );
+
+  if( libspectrum_rzx_start_playback( rzx, 0, &snap ) ) {
+    fprintf( stderr, "%s: rzx_playback_frame_returns_corrupt_on_in_count_mismatch: start_playback returned error\n",
+             progname );
+    goto done;
+  }
+
+  /* Read only one of the two expected IN bytes, then call playback_frame */
+  if( libspectrum_rzx_playback( rzx, &got ) ) {
+    fprintf( stderr, "%s: rzx_playback_frame_returns_corrupt_on_in_count_mismatch: playback returned error\n",
+             progname );
+    goto done;
+  }
+
+  error = libspectrum_rzx_playback_frame( rzx, &finished, &snap );
+  if( error != LIBSPECTRUM_ERROR_CORRUPT ) {
+    fprintf( stderr, "%s: rzx_playback_frame_returns_corrupt_on_in_count_mismatch: expected CORRUPT, got %d\n",
+             progname, error );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
