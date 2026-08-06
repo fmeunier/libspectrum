@@ -332,4 +332,13 @@ test_return_t utilities_check_version_current_version_returns_true( void );
 test_return_t utilities_check_version_very_old_required_returns_true( void );
 test_return_t utilities_check_version_future_major_returns_false( void );
 
+/* identify_file */
+test_return_t identify_file_tzx_magic_returns_tape_tzx( void );
+test_return_t identify_file_szx_magic_returns_snapshot_szx( void );
+test_return_t identify_file_rzx_magic_returns_recording_rzx( void );
+test_return_t identify_file_pzx_magic_returns_tape_pzx( void );
+test_return_t identify_file_unknown_buffer_returns_unknown( void );
+test_return_t identify_file_with_class_tzx_returns_type_and_tape_class( void );
+test_return_t identify_file_with_class_szx_returns_type_and_snapshot_class( void );
+
 #endif
