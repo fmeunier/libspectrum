@@ -780,3 +780,272 @@ done:
   libspectrum_rzx_free( rzx );
   return r;
 }
+
+test_return_t
+rzx_iterator_delete_removes_block_from_list( void )
+{
+  libspectrum_rzx *rzx;
+  libspectrum_rzx_iterator it;
+  test_return_t r = TEST_FAIL;
+
+  rzx = libspectrum_rzx_alloc();
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_iterator_delete_removes_block_from_list: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  /* Add snap then start input: gives two blocks */
+  libspectrum_snap *snap = libspectrum_snap_alloc();
+  if( !snap ) {
+    fprintf( stderr, "%s: rzx_iterator_delete_removes_block_from_list: snap_alloc returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_add_snap( rzx, snap, 0 ) ) {
+    fprintf( stderr, "%s: rzx_iterator_delete_removes_block_from_list: add_snap failed\n",
+             progname );
+    libspectrum_snap_free( snap );
+    goto done;
+  }
+
+  libspectrum_rzx_start_input( rzx, 0 );
+
+  libspectrum_rzx_stop_input( rzx );
+
+  /* Delete the snapshot block (first block) */
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_iterator_delete_removes_block_from_list: iterator_begin returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_SNAPSHOT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_iterator_delete_removes_block_from_list: first block should be SNAPSHOT_BLOCK\n",
+             progname );
+    goto done;
+  }
+
+  libspectrum_rzx_iterator_delete( rzx, it );
+
+  /* Now the only remaining block should be the input block */
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_iterator_delete_removes_block_from_list: no block after delete\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_INPUT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_iterator_delete_removes_block_from_list: expected INPUT_BLOCK after delete\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_next( it ) != NULL ) {
+    fprintf( stderr, "%s: rzx_iterator_delete_removes_block_from_list: expected only one block after delete\n",
+             progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_rollback_returns_last_snap_and_removes_trailing_blocks( void )
+{
+  libspectrum_rzx *rzx;
+  libspectrum_snap *snap = NULL;
+  libspectrum_snap *rolled_snap = NULL;
+  libspectrum_rzx_iterator it;
+  test_return_t r = TEST_FAIL;
+
+  rzx = libspectrum_rzx_alloc();
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_rollback_returns_last_snap_and_removes_trailing_blocks: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  snap = libspectrum_snap_alloc();
+  if( !snap ) {
+    fprintf( stderr, "%s: rzx_rollback_returns_last_snap_and_removes_trailing_blocks: snap_alloc returned NULL\n",
+             progname );
+    goto done;
+  }
+
+  /* Add a snapshot, then an input block (snap+input = 2 blocks) */
+  if( libspectrum_rzx_add_snap( rzx, snap, 0 ) ) {
+    fprintf( stderr, "%s: rzx_rollback_returns_last_snap_and_removes_trailing_blocks: add_snap failed\n",
+             progname );
+    libspectrum_snap_free( snap );
+    goto done;
+  }
+
+  /* snap ownership transferred to rzx; don't free separately */
+  snap = NULL;
+
+  libspectrum_rzx_start_input( rzx, 0 );
+
+  libspectrum_rzx_stop_input( rzx );
+
+  /* Rollback: should return snap pointer and leave only the snapshot block */
+  if( libspectrum_rzx_rollback( rzx, &rolled_snap ) != LIBSPECTRUM_ERROR_NONE ) {
+    fprintf( stderr, "%s: rzx_rollback_returns_last_snap_and_removes_trailing_blocks: rollback failed\n",
+             progname );
+    goto done;
+  }
+
+  if( !rolled_snap ) {
+    fprintf( stderr, "%s: rzx_rollback_returns_last_snap_and_removes_trailing_blocks: rolled_snap is NULL\n",
+             progname );
+    goto done;
+  }
+
+  /* After rollback the input block should be gone; only snapshot remains */
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_rollback_returns_last_snap_and_removes_trailing_blocks: iterator_begin returned NULL after rollback\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_SNAPSHOT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_rollback_returns_last_snap_and_removes_trailing_blocks: expected SNAPSHOT_BLOCK after rollback\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_next( it ) != NULL ) {
+    fprintf( stderr, "%s: rzx_rollback_returns_last_snap_and_removes_trailing_blocks: trailing block not removed by rollback\n",
+             progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_rollback_on_rzx_with_no_snap_returns_error( void )
+{
+  libspectrum_rzx *rzx;
+  libspectrum_snap *rolled_snap = NULL;
+  libspectrum_error error;
+  test_return_t r = TEST_FAIL;
+
+  rzx = libspectrum_rzx_alloc();
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_rollback_on_rzx_with_no_snap_returns_error: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  /* No snapshot added -- rollback should return CORRUPT */
+  error = libspectrum_rzx_rollback( rzx, &rolled_snap );
+  if( error != LIBSPECTRUM_ERROR_CORRUPT ) {
+    fprintf( stderr, "%s: rzx_rollback_on_rzx_with_no_snap_returns_error: expected CORRUPT, got %d\n",
+             progname, error );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
+
+test_return_t
+rzx_rollback_to_returns_nth_snap( void )
+{
+  libspectrum_rzx *rzx;
+  libspectrum_snap *snap1 = NULL, *snap2 = NULL;
+  libspectrum_snap *rolled_snap = NULL;
+  libspectrum_rzx_iterator it;
+  test_return_t r = TEST_FAIL;
+
+  rzx = libspectrum_rzx_alloc();
+  if( !rzx ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: rzx_alloc returned NULL\n",
+             progname );
+    return TEST_INCOMPLETE;
+  }
+
+  snap1 = libspectrum_snap_alloc();
+  snap2 = libspectrum_snap_alloc();
+  if( !snap1 || !snap2 ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: snap_alloc returned NULL\n",
+             progname );
+    if( snap1 ) libspectrum_snap_free( snap1 );
+    if( snap2 ) libspectrum_snap_free( snap2 );
+    goto done;
+  }
+
+  /* snap1 | input | snap2 | input */
+  if( libspectrum_rzx_add_snap( rzx, snap1, 0 ) ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: add_snap(1) failed\n", progname );
+    libspectrum_snap_free( snap1 );
+    libspectrum_snap_free( snap2 );
+    goto done;
+  }
+  snap1 = NULL;
+
+  libspectrum_rzx_start_input( rzx, 0 );
+  libspectrum_rzx_stop_input( rzx );
+
+  if( libspectrum_rzx_add_snap( rzx, snap2, 0 ) ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: add_snap(2) failed\n", progname );
+    libspectrum_snap_free( snap2 );
+    goto done;
+  }
+  snap2 = NULL;
+
+  libspectrum_rzx_start_input( rzx, 0 );
+  libspectrum_rzx_stop_input( rzx );
+
+  /* rollback_to(0) should leave only the first snapshot block */
+  if( libspectrum_rzx_rollback_to( rzx, &rolled_snap, 0 ) != LIBSPECTRUM_ERROR_NONE ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: rollback_to failed\n", progname );
+    goto done;
+  }
+
+  if( !rolled_snap ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: rolled_snap is NULL\n", progname );
+    goto done;
+  }
+
+  it = libspectrum_rzx_iterator_begin( rzx );
+  if( !it ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: iterator_begin returned NULL after rollback_to\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_get_type( it ) != LIBSPECTRUM_RZX_SNAPSHOT_BLOCK ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: expected SNAPSHOT_BLOCK after rollback_to(0)\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_rzx_iterator_next( it ) != NULL ) {
+    fprintf( stderr, "%s: rzx_rollback_to_returns_nth_snap: trailing blocks not removed by rollback_to(0)\n",
+             progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_rzx_free( rzx );
+  return r;
+}
