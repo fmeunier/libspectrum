@@ -46,7 +46,9 @@ test_test_SOURCES = \
 	test/utilities.c \
 	test/identify.c
 
-test_test_CFLAGS = -DSRCDIR='"$(srcdir)"'
+# The test program links the static archive to exercise private helpers.
+# On Windows, avoid dllimport declarations for the archive's public symbols.
+test_test_CFLAGS = -DSRCDIR='"$(srcdir)"' -DLIBSPECTRUM_EXPORTS
 
 test_test_DEPENDENCIES = libspectrum.la \
 			 test/complete-tzx.tzx \
