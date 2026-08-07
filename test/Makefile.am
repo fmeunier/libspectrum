@@ -72,6 +72,7 @@ test/wav-stereo-mixdown.wav: test/wav-fixtures.pl
 	$(AM_V_GEN)$(PERL) $< stereo-mixdown > $@.tmp && mv $@.tmp $@
 
 test_test_LDADD = libspectrum.la
+test_test_LDFLAGS = -static
 
 EXTRA_DIST += \
 	test/Makefile.am \

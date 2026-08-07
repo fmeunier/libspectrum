@@ -360,6 +360,10 @@ test_description tests[] = {
   TEST_ENTRY( identify_file_unknown_buffer_returns_unknown, "libspectrum_identify_file: unrecognised data → ID_UNKNOWN" ),
   TEST_ENTRY( identify_file_with_class_tzx_returns_type_and_tape_class, "libspectrum_identify_file_with_class: TZX → type=TAPE_TZX class=TAPE" ),
   TEST_ENTRY( identify_file_with_class_szx_returns_type_and_snapshot_class, "libspectrum_identify_file_with_class: SZX → type=SNAPSHOT_SZX class=SNAPSHOT" ),
+  TEST_ENTRY( split_to_48k_pages_distributes_memory_to_correct_pages, "libspectrum_split_to_48k_pages: distributes each 16K region to pages 5, 2, and 0" ),
+  TEST_ENTRY( split_to_48k_pages_fails_when_page_already_occupied, "libspectrum_split_to_48k_pages: returns LOGIC error when a page is already occupied" ),
+  TEST_ENTRY( write_snap_page_writes_ram_data_to_buffer, "libspectrum_write_snap_page: writes RAM page data to buffer" ),
+  TEST_ENTRY( write_snap_page_fills_0xff_for_absent_page, "libspectrum_write_snap_page: fills 0xff when the page pointer is NULL" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

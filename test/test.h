@@ -381,4 +381,10 @@ test_return_t identify_file_unknown_buffer_returns_unknown( void );
 test_return_t identify_file_with_class_tzx_returns_type_and_tape_class( void );
 test_return_t identify_file_with_class_szx_returns_type_and_snapshot_class( void );
 
+/* snap-read.c */
+test_return_t split_to_48k_pages_distributes_memory_to_correct_pages( void );
+test_return_t split_to_48k_pages_fails_when_page_already_occupied( void );
+test_return_t write_snap_page_writes_ram_data_to_buffer( void );
+test_return_t write_snap_page_fills_0xff_for_absent_page( void );
+
 #endif
