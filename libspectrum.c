@@ -68,11 +68,6 @@ libspectrum_default_error_function( libspectrum_error error,
 libspectrum_error_function_t libspectrum_error_function =
   libspectrum_default_error_function;
 
-#ifdef HAVE_GCRYPT_H
-static void
-gcrypt_log_handler( void *opaque, int level, const char *format, va_list ap );
-#endif				/* #ifdef HAVE_GCRYPT_H */
-
 /* Initialise the library */
 libspectrum_error
 libspectrum_init( void )
@@ -91,17 +86,7 @@ libspectrum_init( void )
       return LIBSPECTRUM_ERROR_LOGIC;	/* FIXME: better error code */
     }
 
-    /* Ugly hack to prevent the 'Secure memory is not locked into
-       core' message appearing */
-    gcry_set_log_handler( gcrypt_log_handler, NULL );
-
-    /* Initialise the 'secure' memory (which probably won't actually
-       be scure, but that doesn't matter as libspectrum's 'security'
-       is bogus anyway) */
-    gcry_control( GCRYCTL_INIT_SECMEM, 16384 );
-
-    /* Restore the default log handler */
-    gcry_set_log_handler( NULL, NULL );
+    gcry_control( GCRYCTL_DISABLE_SECMEM );
 
     gcry_control( GCRYCTL_INITIALIZATION_FINISHED );
   }
@@ -125,14 +110,6 @@ libspectrum_end( void )
   libspectrum_hashtable_cleanup();
 #endif				/* #ifndef HAVE_LIB_GLIB */
 }
-
-#ifdef HAVE_GCRYPT_H
-static void
-gcrypt_log_handler( void *opaque, int level, const char *format, va_list ap )
-{
-  /* Do nothing */
-}
-#endif				/* #ifdef HAVE_GCRYPT_H */
 
 int
 libspectrum_check_version( const char *version )
