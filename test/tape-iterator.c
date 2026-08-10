@@ -398,3 +398,76 @@ done:
   libspectrum_tape_free( tape );
   return r;
 }
+
+/* libspectrum_tape_remove_block removes the given block from the tape */
+test_return_t
+tape_remove_block_from_tape( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+  libspectrum_tape_block *b1, *b2, *b3;
+  libspectrum_tape_iterator it;
+  libspectrum_tape_block *cur;
+  test_return_t r = TEST_FAIL;
+
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_remove_block_from_tape: "
+             "tape_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  b1 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+  b2 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_TONE );
+  b3 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_ROM );
+
+  if( !b1 || !b2 || !b3 ) {
+    fprintf( stderr, "%s: tape_remove_block_from_tape: "
+             "tape_block_alloc returned NULL\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_tape_append_block( tape, b1 );
+  libspectrum_tape_append_block( tape, b2 );
+  libspectrum_tape_append_block( tape, b3 );
+
+  /* Remove the middle block (PURE_TONE) */
+  cur = libspectrum_tape_iterator_init( &it, tape );
+  cur = libspectrum_tape_iterator_next( &it );  /* advance to b2 */
+  libspectrum_tape_remove_block( tape, it );
+
+  /* Verify remaining order: PAUSE, ROM */
+  cur = libspectrum_tape_iterator_init( &it, tape );
+  if( libspectrum_tape_block_type( cur ) != LIBSPECTRUM_TAPE_BLOCK_PAUSE ) {
+    fprintf( stderr, "%s: tape_remove_block_from_tape: "
+             "block[0]: expected PAUSE, got %d\n", progname,
+             libspectrum_tape_block_type( cur ) );
+    goto done;
+  }
+
+  cur = libspectrum_tape_iterator_next( &it );
+  if( !cur ) {
+    fprintf( stderr, "%s: tape_remove_block_from_tape: "
+             "block[1] is NULL, expected ROM\n", progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_type( cur ) != LIBSPECTRUM_TAPE_BLOCK_ROM ) {
+    fprintf( stderr, "%s: tape_remove_block_from_tape: "
+             "block[1]: expected ROM, got %d\n", progname,
+             libspectrum_tape_block_type( cur ) );
+    goto done;
+  }
+
+  cur = libspectrum_tape_iterator_next( &it );
+  if( cur ) {
+    fprintf( stderr, "%s: tape_remove_block_from_tape: "
+             "expected only 2 blocks, but block[2] is not NULL\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
