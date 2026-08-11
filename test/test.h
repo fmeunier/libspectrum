@@ -313,6 +313,7 @@ test_return_t tape_iterator_peek_next_does_not_advance_iterator( void );
 test_return_t tape_position_returns_zero_for_first_block( void );
 test_return_t tape_nth_block_selects_correct_block( void );
 test_return_t tape_insert_block_at_position( void );
+test_return_t tape_remove_block_from_tape( void );
 
 /* tape.c: tape_block_description */
 test_return_t tape_block_description_rom( void );
