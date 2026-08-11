@@ -471,3 +471,165 @@ done:
   libspectrum_tape_free( tape );
   return r;
 }
+
+/* libspectrum_tape_peek_last_block returns the last appended block */
+test_return_t
+tape_peek_last_block_returns_last_appended( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+  libspectrum_tape_block *b1, *b2, *b3, *last;
+  test_return_t r = TEST_FAIL;
+
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_peek_last_block_returns_last_appended: "
+             "tape_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  /* Empty tape: peek_last should return NULL */
+  last = libspectrum_tape_peek_last_block( tape );
+  if( last != NULL ) {
+    fprintf( stderr, "%s: tape_peek_last_block_returns_last_appended: "
+             "expected NULL on empty tape, got non-NULL\n", progname );
+    goto done;
+  }
+
+  b1 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+  b2 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_TONE );
+  b3 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_ROM );
+
+  if( !b1 || !b2 || !b3 ) {
+    fprintf( stderr, "%s: tape_peek_last_block_returns_last_appended: "
+             "tape_block_alloc returned NULL\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_tape_append_block( tape, b1 );
+  last = libspectrum_tape_peek_last_block( tape );
+  if( libspectrum_tape_block_type( last ) != LIBSPECTRUM_TAPE_BLOCK_PAUSE ) {
+    fprintf( stderr, "%s: tape_peek_last_block_returns_last_appended: "
+             "after 1 block: expected PAUSE, got %d\n", progname,
+             libspectrum_tape_block_type( last ) );
+    goto done;
+  }
+
+  libspectrum_tape_append_block( tape, b2 );
+  last = libspectrum_tape_peek_last_block( tape );
+  if( libspectrum_tape_block_type( last ) != LIBSPECTRUM_TAPE_BLOCK_PURE_TONE ) {
+    fprintf( stderr, "%s: tape_peek_last_block_returns_last_appended: "
+             "after 2 blocks: expected PURE_TONE, got %d\n", progname,
+             libspectrum_tape_block_type( last ) );
+    goto done;
+  }
+
+  libspectrum_tape_append_block( tape, b3 );
+  last = libspectrum_tape_peek_last_block( tape );
+  if( libspectrum_tape_block_type( last ) != LIBSPECTRUM_TAPE_BLOCK_ROM ) {
+    fprintf( stderr, "%s: tape_peek_last_block_returns_last_appended: "
+             "after 3 blocks: expected ROM, got %d\n", progname,
+             libspectrum_tape_block_type( last ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
+
+/* libspectrum_tape_select_next_block advances current block and wraps around */
+test_return_t
+tape_select_next_block_advances_and_wraps( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+  libspectrum_tape_block *b1, *b2, *b3, *selected;
+  int pos = -1;
+  test_return_t r = TEST_FAIL;
+
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "tape_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  b1 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+  b2 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_TONE );
+  b3 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+
+  if( !b1 || !b2 || !b3 ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "tape_block_alloc returned NULL\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_tape_append_block( tape, b1 );
+  libspectrum_tape_append_block( tape, b2 );
+  libspectrum_tape_append_block( tape, b3 );
+
+  /* Initially at block 0 */
+  if( libspectrum_tape_position( &pos, tape ) || pos != 0 ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "expected initial position 0, got %d\n", progname, pos );
+    goto done;
+  }
+
+  /* Advance to block 1 */
+  selected = libspectrum_tape_select_next_block( tape );
+  if( !selected ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "select_next_block returned NULL advancing to block 1\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_block_type( selected ) != LIBSPECTRUM_TAPE_BLOCK_PURE_TONE ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "block 1: expected PURE_TONE, got %d\n", progname,
+             libspectrum_tape_block_type( selected ) );
+    goto done;
+  }
+  if( libspectrum_tape_position( &pos, tape ) || pos != 1 ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "expected position 1, got %d\n", progname, pos );
+    goto done;
+  }
+
+  /* Advance to block 2 */
+  selected = libspectrum_tape_select_next_block( tape );
+  if( !selected ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "select_next_block returned NULL advancing to block 2\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_position( &pos, tape ) || pos != 2 ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "expected position 2, got %d\n", progname, pos );
+    goto done;
+  }
+
+  /* Advance past the last block: should wrap around to block 0 */
+  selected = libspectrum_tape_select_next_block( tape );
+  if( !selected ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "select_next_block returned NULL on wrap-around\n", progname );
+    goto done;
+  }
+  if( libspectrum_tape_position( &pos, tape ) || pos != 0 ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "expected wrap-around to position 0, got %d\n", progname, pos );
+    goto done;
+  }
+  if( libspectrum_tape_block_type( selected ) != LIBSPECTRUM_TAPE_BLOCK_PAUSE ) {
+    fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
+             "wrap-around: expected PAUSE (b1), got %d\n", progname,
+             libspectrum_tape_block_type( selected ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}

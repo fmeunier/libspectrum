@@ -302,6 +302,8 @@ test_description tests[] = {
   TEST_ENTRY( tape_nth_block_selects_correct_block, "Tape nth_block: selects correct block and updates position" ),
   TEST_ENTRY( tape_insert_block_at_position, "Tape insert_block: inserts block at given position" ),
   TEST_ENTRY( tape_remove_block_from_tape, "Tape remove_block: removes middle block, leaving remaining blocks in order" ),
+  TEST_ENTRY( tape_peek_last_block_returns_last_appended, "Tape peek_last_block: returns the last appended block" ),
+  TEST_ENTRY( tape_select_next_block_advances_and_wraps, "Tape select_next_block: advances current block and wraps at end" ),
   TEST_ENTRY( tape_block_description_rom,              "libspectrum_tape_block_description: ROM block -> \"Standard Speed Data\"" ),
   TEST_ENTRY( tape_block_description_turbo,            "libspectrum_tape_block_description: Turbo block -> \"Turbo Speed Data\"" ),
   TEST_ENTRY( tape_block_description_pure_tone,        "libspectrum_tape_block_description: Pure Tone block -> \"Pure Tone\"" ),
