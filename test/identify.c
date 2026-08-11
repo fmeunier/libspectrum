@@ -384,3 +384,74 @@ identify_file_with_class_szx_returns_type_and_snapshot_class( void )
 
   return TEST_PASS;
 }
+
+/* --- libspectrum_identify_file_raw tests --- */
+
+/* Helper: call libspectrum_identify_file_raw and verify expected type. */
+static test_return_t
+check_identify_file_raw( const char *label, const unsigned char *buf,
+                         size_t len, const char *filename,
+                         libspectrum_id_t expected_type )
+{
+  libspectrum_id_t got_type;
+  libspectrum_error err =
+    libspectrum_identify_file_raw( &got_type, filename, buf, len );
+
+  if( err ) {
+    fprintf( stderr, "%s: identify_file_raw(%s): unexpected error %d\n",
+             progname, label, err );
+    return TEST_FAIL;
+  }
+
+  if( got_type != expected_type ) {
+    fprintf( stderr,
+             "%s: identify_file_raw(%s): expected type %d, got %d\n",
+             progname, label, expected_type, got_type );
+    return TEST_FAIL;
+  }
+
+  return TEST_PASS;
+}
+
+test_return_t
+identify_file_raw_tzx_magic_returns_tape_tzx( void )
+{
+  static const unsigned char tzx_magic[] = {
+    'Z','X','T','a','p','e','!', 0x1a, 0x01, 0x14
+  };
+  return check_identify_file_raw( "TZX magic", tzx_magic, sizeof( tzx_magic ),
+                                   "test.tzx", LIBSPECTRUM_ID_TAPE_TZX );
+}
+
+test_return_t
+identify_file_raw_gz_magic_returns_compressed_gz( void )
+{
+  /* Unlike identify_file_with_class, identify_file_raw does NOT decompress.
+     A GZ buffer must be identified as COMPRESSED_GZ, not the inner type. */
+  static const unsigned char gz_magic[] = {
+    0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00
+  };
+  return check_identify_file_raw( "GZ magic", gz_magic, sizeof( gz_magic ),
+                                   "test.gz", LIBSPECTRUM_ID_COMPRESSED_GZ );
+}
+
+test_return_t
+identify_file_raw_sna_filename_returns_snapshot_sna( void )
+{
+  /* SNA has no magic bytes; identification relies on filename extension. */
+  static const unsigned char dummy[] = { 0x00, 0x00, 0x00, 0x00 };
+  return check_identify_file_raw( "SNA filename", dummy, sizeof( dummy ),
+                                   "spectrum.sna",
+                                   LIBSPECTRUM_ID_SNAPSHOT_SNA );
+}
+
+test_return_t
+identify_file_raw_unknown_buffer_returns_unknown( void )
+{
+  static const unsigned char random_data[] = {
+    0xde, 0xad, 0xbe, 0xef, 0x12, 0x34, 0x56, 0x78
+  };
+  return check_identify_file_raw( "unknown data", random_data,
+                                   sizeof( random_data ),
+                                   NULL, LIBSPECTRUM_ID_UNKNOWN );
+}

@@ -380,6 +380,10 @@ test_return_t identify_file_pzx_magic_returns_tape_pzx( void );
 test_return_t identify_file_unknown_buffer_returns_unknown( void );
 test_return_t identify_file_with_class_tzx_returns_type_and_tape_class( void );
 test_return_t identify_file_with_class_szx_returns_type_and_snapshot_class( void );
+test_return_t identify_file_raw_tzx_magic_returns_tape_tzx( void );
+test_return_t identify_file_raw_gz_magic_returns_compressed_gz( void );
+test_return_t identify_file_raw_sna_filename_returns_snapshot_sna( void );
+test_return_t identify_file_raw_unknown_buffer_returns_unknown( void );
 
 /* snap-read.c */
 test_return_t split_to_48k_pages_distributes_memory_to_correct_pages( void );
