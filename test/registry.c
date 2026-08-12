@@ -371,6 +371,11 @@ test_description tests[] = {
   TEST_ENTRY( split_to_48k_pages_fails_when_page_already_occupied, "libspectrum_split_to_48k_pages: returns LOGIC error when a page is already occupied" ),
   TEST_ENTRY( write_snap_page_writes_ram_data_to_buffer, "libspectrum_write_snap_page: writes RAM page data to buffer" ),
   TEST_ENTRY( write_snap_page_fills_0xff_for_absent_page, "libspectrum_write_snap_page: fills 0xff when the page pointer is NULL" ),
+  TEST_ENTRY( tape_block_metadata_data_block_returns_zero, "libspectrum_tape_block_metadata: data blocks (ROM, TURBO, PURE_TONE, PAUSE, STOP48) return 0" ),
+  TEST_ENTRY( tape_block_metadata_metadata_block_returns_one, "libspectrum_tape_block_metadata: metadata blocks (ARCHIVE_INFO, GROUP_START, COMMENT, HARDWARE) return 1" ),
+  TEST_ENTRY( tape_block_length_pause_block_returns_pause_tstates, "libspectrum_tape_block_length: PAUSE block returns stored length_tstates" ),
+  TEST_ENTRY( tape_block_length_pure_tone_returns_pulses_times_length, "libspectrum_tape_block_length: PURE_TONE block returns pulses × pulse_length" ),
+  TEST_ENTRY( tape_block_length_metadata_block_returns_zero, "libspectrum_tape_block_length: GROUP_START (metadata) block returns 0" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

@@ -2415,3 +2415,175 @@ TAPE_DESC_TEST( concat,           CONCAT,           "Glue Block" )
 TAPE_DESC_TEST( rle_pulse,        RLE_PULSE,        "RLE Pulse" )
 TAPE_DESC_TEST( pulse_sequence,   PULSE_SEQUENCE,   "Pulse Sequence" )
 TAPE_DESC_TEST( data_block,       DATA_BLOCK,       "Data Block" )
+
+/* tape_block_metadata: data blocks (ROM, PAUSE, STOP48) return 0 */
+test_return_t
+tape_block_metadata_data_block_returns_zero( void )
+{
+  static const libspectrum_tape_type data_types[] = {
+    LIBSPECTRUM_TAPE_BLOCK_ROM,
+    LIBSPECTRUM_TAPE_BLOCK_TURBO,
+    LIBSPECTRUM_TAPE_BLOCK_PURE_TONE,
+    LIBSPECTRUM_TAPE_BLOCK_PAUSE,
+    LIBSPECTRUM_TAPE_BLOCK_STOP48,
+  };
+  size_t i;
+
+  for( i = 0; i < sizeof( data_types ) / sizeof( data_types[0] ); i++ ) {
+    libspectrum_tape_block *block =
+      libspectrum_tape_block_alloc( data_types[i] );
+    int meta;
+
+    if( !block ) {
+      fprintf( stderr, "%s: tape_block_metadata_data_block_returns_zero: "
+               "block_alloc returned NULL for type 0x%02x\n",
+               progname, (int)data_types[i] );
+      return TEST_INCOMPLETE;
+    }
+
+    meta = libspectrum_tape_block_metadata( block );
+    libspectrum_tape_block_free( block );
+
+    if( meta != 0 ) {
+      fprintf( stderr, "%s: tape_block_metadata_data_block_returns_zero: "
+               "expected 0 for type 0x%02x, got %d\n",
+               progname, (int)data_types[i], meta );
+      return TEST_FAIL;
+    }
+  }
+
+  return TEST_PASS;
+}
+
+/* tape_block_metadata: metadata blocks (ARCHIVE_INFO, GROUP_START, COMMENT)
+   return 1 */
+test_return_t
+tape_block_metadata_metadata_block_returns_one( void )
+{
+  static const libspectrum_tape_type meta_types[] = {
+    LIBSPECTRUM_TAPE_BLOCK_ARCHIVE_INFO,
+    LIBSPECTRUM_TAPE_BLOCK_GROUP_START,
+    LIBSPECTRUM_TAPE_BLOCK_COMMENT,
+    LIBSPECTRUM_TAPE_BLOCK_HARDWARE,
+  };
+  size_t i;
+
+  for( i = 0; i < sizeof( meta_types ) / sizeof( meta_types[0] ); i++ ) {
+    libspectrum_tape_block *block =
+      libspectrum_tape_block_alloc( meta_types[i] );
+    int meta;
+
+    if( !block ) {
+      fprintf( stderr, "%s: tape_block_metadata_metadata_block_returns_one: "
+               "block_alloc returned NULL for type 0x%02x\n",
+               progname, (int)meta_types[i] );
+      return TEST_INCOMPLETE;
+    }
+
+    meta = libspectrum_tape_block_metadata( block );
+    libspectrum_tape_block_free( block );
+
+    if( meta != 1 ) {
+      fprintf( stderr, "%s: tape_block_metadata_metadata_block_returns_one: "
+               "expected 1 for type 0x%02x, got %d\n",
+               progname, (int)meta_types[i], meta );
+      return TEST_FAIL;
+    }
+  }
+
+  return TEST_PASS;
+}
+
+/* tape_block_length: PAUSE block returns the stored length_tstates value */
+test_return_t
+tape_block_length_pause_block_returns_pause_tstates( void )
+{
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+  libspectrum_dword got;
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_block_length_pause_block_returns_pause_tstates: "
+             "block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_tape_block_set_pause_tstates( block, 12345 );
+  got = libspectrum_tape_block_length( block );
+
+  if( got != 12345 ) {
+    fprintf( stderr, "%s: tape_block_length_pause_block_returns_pause_tstates: "
+             "expected 12345, got %lu\n", progname, (unsigned long)got );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+/* tape_block_length: PURE_TONE block returns pulses * pulse_length */
+test_return_t
+tape_block_length_pure_tone_returns_pulses_times_length( void )
+{
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_TONE );
+  libspectrum_dword got;
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_block_length_pure_tone_returns_pulses_times_length: "
+             "block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  /* Set 500 pulses of 100 tstates each → expect 50000 */
+  libspectrum_tape_block_set_count( block, 500 );
+  libspectrum_tape_block_set_pulse_length( block, 100 );
+  got = libspectrum_tape_block_length( block );
+
+  if( got != 50000 ) {
+    fprintf( stderr, "%s: tape_block_length_pure_tone_returns_pulses_times_length: "
+             "expected 50000, got %lu\n", progname, (unsigned long)got );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+/* tape_block_length: metadata blocks (GROUP_START) return 0 */
+test_return_t
+tape_block_length_metadata_block_returns_zero( void )
+{
+  libspectrum_tape_block *block =
+    libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_GROUP_START );
+  libspectrum_dword got;
+  test_return_t r = TEST_FAIL;
+
+  if( !block ) {
+    fprintf( stderr, "%s: tape_block_length_metadata_block_returns_zero: "
+             "block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  got = libspectrum_tape_block_length( block );
+
+  if( got != 0 ) {
+    fprintf( stderr, "%s: tape_block_length_metadata_block_returns_zero: "
+             "expected 0, got %lu\n", progname, (unsigned long)got );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}

@@ -394,4 +394,11 @@ test_return_t split_to_48k_pages_fails_when_page_already_occupied( void );
 test_return_t write_snap_page_writes_ram_data_to_buffer( void );
 test_return_t write_snap_page_fills_0xff_for_absent_page( void );
 
+/* tape.c: tape_block_metadata and tape_block_length */
+test_return_t tape_block_metadata_data_block_returns_zero( void );
+test_return_t tape_block_metadata_metadata_block_returns_one( void );
+test_return_t tape_block_length_pause_block_returns_pause_tstates( void );
+test_return_t tape_block_length_pure_tone_returns_pulses_times_length( void );
+test_return_t tape_block_length_metadata_block_returns_zero( void );
+
 #endif
