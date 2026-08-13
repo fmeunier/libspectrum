@@ -83,7 +83,7 @@ jobs:
 
       - name: (3) Restore apt package cache
         id: apt-cache-load
-        uses: actions/cache/restore@v5
+        uses: actions/cache/restore@v6
         with:
           path: ~/apt-cache
           key: apt-ubuntu-latest-libspectrum-${{ hashFiles('.github/workflows/build_linux_sub.yml') }}
@@ -108,7 +108,7 @@ jobs:
       - name: (5) Save apt package cache
         id: apt-cache-save
         if: steps.apt-cache-load.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v5
+        uses: actions/cache/save@v6
         with:
           path: ~/apt-cache
           key: apt-ubuntu-latest-libspectrum-${{ hashFiles('.github/workflows/build_linux_sub.yml') }}
