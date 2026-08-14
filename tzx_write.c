@@ -283,15 +283,12 @@ tzx_write_pure_tone( libspectrum_tape_block *block, libspectrum_buffer *buffer )
 static void
 tzx_write_pulses( libspectrum_tape_block *block, libspectrum_buffer *buffer )
 {
-  size_t i;
   size_t count = libspectrum_tape_block_count( block );
 
   libspectrum_buffer_write_byte( buffer, LIBSPECTRUM_TAPE_BLOCK_PULSES );
   libspectrum_buffer_write_byte( buffer, count );
-  for( i = 0; i < count; i++ )
-    libspectrum_buffer_write_word(
-                            buffer,
-			    libspectrum_tape_block_pulse_lengths( block, i ) );
+  libspectrum_buffer_write_word_array( buffer, block->types.pulses.lengths,
+                                       count );
 }
 
 static void
