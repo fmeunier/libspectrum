@@ -84,31 +84,47 @@ libspectrum_buffer_is_not_empty( const libspectrum_buffer *buffer )
   return buffer->bytes_used > 0;
 }
 
+static void
+reallocate_to_new_size( libspectrum_buffer *buffer, const size_t size )
+{
+  if( size > buffer->buffer_size - buffer->bytes_used ) {
+    size_t needed = buffer->bytes_used + size;
+    size_t new_size = buffer->buffer_size;
+    do {
+      new_size *= 2;
+    } while( new_size < needed );
+    libspectrum_buffer_reallocate( buffer, new_size );
+  }
+}
+
 void
 libspectrum_buffer_write_byte( libspectrum_buffer *buffer,
                                const libspectrum_byte data )
 {
-  libspectrum_buffer_write( buffer, &data, sizeof( libspectrum_byte ) ) ;
+  reallocate_to_new_size( buffer, 1 );
+  buffer->buffer[ buffer->bytes_used++ ] = data;
 }
 
 void
 libspectrum_buffer_write_word( libspectrum_buffer *buffer,
                                const libspectrum_word data )
 {
-  libspectrum_byte lsb_data[2];
-  libspectrum_byte *ptr = lsb_data;
-  libspectrum_write_word( &ptr, data );
-  libspectrum_buffer_write( buffer, lsb_data, sizeof( lsb_data ) );
+  reallocate_to_new_size( buffer, 2 );
+  buffer->buffer[ buffer->bytes_used     ] =   data        & 0xff;
+  buffer->buffer[ buffer->bytes_used + 1 ] = ( data >> 8 ) & 0xff;
+  buffer->bytes_used += 2;
 }
 
 void
 libspectrum_buffer_write_dword( libspectrum_buffer *buffer,
                                 const libspectrum_dword data )
 {
-  libspectrum_byte lsb_data[4];
-  libspectrum_byte *ptr = lsb_data;
-  libspectrum_write_dword( &ptr, data );
-  libspectrum_buffer_write( buffer, lsb_data, sizeof( lsb_data ) );
+  reallocate_to_new_size( buffer, 4 );
+  buffer->buffer[ buffer->bytes_used     ] =   data         & 0xff;
+  buffer->buffer[ buffer->bytes_used + 1 ] = ( data >>  8 ) & 0xff;
+  buffer->buffer[ buffer->bytes_used + 2 ] = ( data >> 16 ) & 0xff;
+  buffer->buffer[ buffer->bytes_used + 3 ] = ( data >> 24 ) & 0xff;
+  buffer->bytes_used += 4;
 }
 
 void
@@ -116,18 +132,6 @@ libspectrum_buffer_write_buffer( libspectrum_buffer *dest,
                                  const libspectrum_buffer *src )
 {
   if( src ) libspectrum_buffer_write( dest, src->buffer, src->bytes_used );
-}
-
-static void
-reallocate_to_new_size( libspectrum_buffer *buffer, const size_t size )
-{
-  if( size > buffer->buffer_size - buffer->bytes_used ) {
-    size_t new_size = buffer->buffer_size;
-    do {
-      new_size *= 2;
-    } while( new_size - buffer->bytes_used < size );
-    libspectrum_buffer_reallocate( buffer, new_size );
-  }
 }
 
 void
