@@ -142,6 +142,13 @@ libspectrum_buffer_write( libspectrum_buffer *buffer, const void* data,
 }
 
 void
+libspectrum_buffer_ensure_capacity( libspectrum_buffer *buffer,
+                                    const size_t size )
+{
+  reallocate_to_new_size( buffer, size );
+}
+
+void
 libspectrum_buffer_set( libspectrum_buffer *buffer, libspectrum_byte value,
                         const size_t size )
 {
