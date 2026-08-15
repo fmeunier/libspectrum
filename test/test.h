@@ -316,6 +316,7 @@ test_return_t tape_insert_block_at_position( void );
 test_return_t tape_remove_block_from_tape( void );
 test_return_t tape_peek_last_block_returns_last_appended( void );
 test_return_t tape_select_next_block_advances_and_wraps( void );
+test_return_t tape_block_count_returns_correct_count( void );
 
 /* tape.c: tape_block_description */
 test_return_t tape_block_description_rom( void );

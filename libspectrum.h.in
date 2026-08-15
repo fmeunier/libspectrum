@@ -747,6 +747,10 @@ libspectrum_tape_peek_last_block( libspectrum_tape *tape );
 LIBSPECTRUM_API libspectrum_tape_block *
 libspectrum_tape_select_next_block( libspectrum_tape *tape );
 
+/* Return the number of blocks in the tape */
+LIBSPECTRUM_API size_t
+libspectrum_tape_block_count( const libspectrum_tape *tape );
+
 /* Get the position on the tape of the current block */
 LIBSPECTRUM_API libspectrum_error
 libspectrum_tape_position( int *n, libspectrum_tape *tape );
