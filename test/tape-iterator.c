@@ -27,6 +27,7 @@
 #include <stdio.h>
 
 #include "libspectrum.h"
+#include "common.h"
 #include "test.h"
 
 /* libspectrum_tape_iterator_init on an empty tape returns NULL */
@@ -624,6 +625,68 @@ tape_select_next_block_advances_and_wraps( void )
     fprintf( stderr, "%s: tape_select_next_block_advances_and_wraps: "
              "wrap-around: expected PAUSE (b1), got %d\n", progname,
              libspectrum_tape_block_type( selected ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
+
+/* libspectrum_tape_state returns PILOT for a freshly loaded ROM block */
+test_return_t
+tape_state_returns_pilot_for_new_rom_block( void )
+{
+  libspectrum_tape *tape = NULL;
+  libspectrum_tape_state_type state;
+  test_return_t r = TEST_FAIL;
+
+  if( load_tape( &tape, STATIC_TEST_PATH( "standard-tap.tap" ),
+                 LIBSPECTRUM_ERROR_NONE ) != TEST_PASS )
+    return TEST_INCOMPLETE;
+
+  state = libspectrum_tape_state( tape );
+
+  if( state != LIBSPECTRUM_TAPE_STATE_PILOT ) {
+    fprintf( stderr, "%s: tape_state_returns_pilot_for_new_rom_block: "
+             "expected LIBSPECTRUM_TAPE_STATE_PILOT (%d), got %d\n",
+             progname, LIBSPECTRUM_TAPE_STATE_PILOT, state );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
+
+/* libspectrum_tape_set_state updates the state of the current ROM block */
+test_return_t
+tape_set_state_updates_state_of_rom_block( void )
+{
+  libspectrum_tape *tape = NULL;
+  libspectrum_tape_state_type state;
+  test_return_t r = TEST_FAIL;
+
+  if( load_tape( &tape, STATIC_TEST_PATH( "standard-tap.tap" ),
+                 LIBSPECTRUM_ERROR_NONE ) != TEST_PASS )
+    return TEST_INCOMPLETE;
+
+  if( libspectrum_tape_set_state( tape, LIBSPECTRUM_TAPE_STATE_DATA1 ) ) {
+    fprintf( stderr, "%s: tape_set_state_updates_state_of_rom_block: "
+             "tape_set_state returned error\n", progname );
+    goto done;
+  }
+
+  state = libspectrum_tape_state( tape );
+
+  if( state != LIBSPECTRUM_TAPE_STATE_DATA1 ) {
+    fprintf( stderr, "%s: tape_set_state_updates_state_of_rom_block: "
+             "expected LIBSPECTRUM_TAPE_STATE_DATA1 (%d), got %d\n",
+             progname, LIBSPECTRUM_TAPE_STATE_DATA1, state );
     goto done;
   }
 

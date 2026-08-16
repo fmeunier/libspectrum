@@ -401,4 +401,8 @@ test_return_t tape_block_length_pause_block_returns_pause_tstates( void );
 test_return_t tape_block_length_pure_tone_returns_pulses_times_length( void );
 test_return_t tape_block_length_metadata_block_returns_zero( void );
 
+/* tape-iterator.c: tape_state and tape_set_state */
+test_return_t tape_state_returns_pilot_for_new_rom_block( void );
+test_return_t tape_set_state_updates_state_of_rom_block( void );
+
 #endif
