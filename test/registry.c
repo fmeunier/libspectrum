@@ -300,6 +300,7 @@ test_description tests[] = {
   TEST_ENTRY( tape_iterator_peek_next_does_not_advance_iterator, "Tape iterator: peek_next does not advance iterator" ),
   TEST_ENTRY( tape_position_returns_zero_for_first_block, "Tape position: returns 0 for first block" ),
   TEST_ENTRY( tape_nth_block_selects_correct_block, "Tape nth_block: selects correct block and updates position" ),
+  TEST_ENTRY( tape_insert_block_into_empty_tape_sets_current_block, "Tape insert_block: inserting into empty tape sets current_block" ),
   TEST_ENTRY( tape_insert_block_at_position, "Tape insert_block: inserts block at given position" ),
   TEST_ENTRY( tape_remove_block_from_tape, "Tape remove_block: removes middle block, leaving remaining blocks in order" ),
   TEST_ENTRY( tape_peek_last_block_returns_last_appended, "Tape peek_last_block: returns the last appended block" ),

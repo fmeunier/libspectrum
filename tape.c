@@ -1395,6 +1395,12 @@ libspectrum_tape_insert_block( libspectrum_tape *tape,
   tape->blocks = g_slist_insert( tape->blocks, block, position );
   tape->last_block = g_slist_last( tape->blocks );
 
+  /* If we previously didn't have a tape loaded, point to the first block */
+  if( !tape->state.current_block ) {
+    tape->state.current_block = tape->blocks;
+    libspectrum_tape_block_init( tape->blocks->data, &(tape->state) );
+  }
+
   return LIBSPECTRUM_ERROR_NONE;
 }
 
