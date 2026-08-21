@@ -300,6 +300,8 @@ test_return_t timings_plus3_processor_speed_and_frame_timing( void );
 test_return_t timings_tc2048_processor_speed_and_frame_timing( void );
 test_return_t timings_scorpion_processor_speed_and_frame_timing( void );
 test_return_t timings_unknown_machine_returns_zero_for_all_frame_timings( void );
+test_return_t timings_48k_frame_timing_accessors( void );
+test_return_t timings_unknown_machine_frame_accessors_return_zero( void );
 
 /* tape.c: tape_present and tape_clear */
 test_return_t tape_present_returns_false_for_empty_tape( void );
