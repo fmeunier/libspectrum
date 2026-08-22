@@ -381,6 +381,9 @@ test_description tests[] = {
   TEST_ENTRY( tape_block_length_metadata_block_returns_zero, "libspectrum_tape_block_length: GROUP_START (metadata) block returns 0" ),
   TEST_ENTRY( tape_state_returns_pilot_for_new_rom_block, "libspectrum_tape_state: returns PILOT for freshly loaded ROM block" ),
   TEST_ENTRY( tape_set_state_updates_state_of_rom_block, "libspectrum_tape_set_state: updates state of current ROM block" ),
+  TEST_ENTRY( tape_current_block_returns_null_on_empty_tape, "libspectrum_tape_current_block: returns NULL for tape with no current block" ),
+  TEST_ENTRY( tape_current_block_returns_first_block_after_init, "libspectrum_tape_current_block: returns first appended block after iterator_init" ),
+  TEST_ENTRY( tape_block_set_type_changes_block_type, "libspectrum_tape_block_set_type: changes block type from PAUSE to PURE_TONE" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );

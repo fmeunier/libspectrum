@@ -753,3 +753,112 @@ done:
   libspectrum_tape_free( tape );
   return r;
 }
+
+/* libspectrum_tape_current_block returns NULL on a tape with no current block */
+test_return_t
+tape_current_block_returns_null_on_empty_tape( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+  libspectrum_tape_block *block;
+  test_return_t r = TEST_FAIL;
+
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_current_block_returns_null_on_empty_tape: "
+             "tape_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  block = libspectrum_tape_current_block( tape );
+
+  if( block != NULL ) {
+    fprintf( stderr, "%s: tape_current_block_returns_null_on_empty_tape: "
+             "expected NULL for empty tape, got non-NULL\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
+
+/* libspectrum_tape_current_block returns first block after iterator_init */
+test_return_t
+tape_current_block_returns_first_block_after_init( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+  libspectrum_tape_block *appended, *current;
+  libspectrum_tape_iterator it;
+  test_return_t r = TEST_FAIL;
+
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_current_block_returns_first_block_after_init: "
+             "tape_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  appended = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+  if( !appended ) {
+    fprintf( stderr, "%s: tape_current_block_returns_first_block_after_init: "
+             "tape_block_alloc returned NULL\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_INCOMPLETE;
+  }
+
+  libspectrum_tape_append_block( tape, appended );
+  libspectrum_tape_iterator_init( &it, tape );
+
+  current = libspectrum_tape_current_block( tape );
+
+  if( current != appended ) {
+    fprintf( stderr, "%s: tape_current_block_returns_first_block_after_init: "
+             "current block does not match appended block\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
+
+/* libspectrum_tape_block_set_type changes the block type */
+test_return_t
+tape_block_set_type_changes_block_type( void )
+{
+  libspectrum_tape_block *block;
+  test_return_t r = TEST_FAIL;
+
+  block = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+  if( !block ) {
+    fprintf( stderr, "%s: tape_block_set_type_changes_block_type: "
+             "tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_PAUSE ) {
+    fprintf( stderr, "%s: tape_block_set_type_changes_block_type: "
+             "initial type should be PAUSE (%d), got %d\n", progname,
+             LIBSPECTRUM_TAPE_BLOCK_PAUSE,
+             (int)libspectrum_tape_block_type( block ) );
+    goto done;
+  }
+
+  libspectrum_tape_block_set_type( block, LIBSPECTRUM_TAPE_BLOCK_PURE_TONE );
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_PURE_TONE ) {
+    fprintf( stderr, "%s: tape_block_set_type_changes_block_type: "
+             "after set_type, expected PURE_TONE (%d), got %d\n", progname,
+             LIBSPECTRUM_TAPE_BLOCK_PURE_TONE,
+             (int)libspectrum_tape_block_type( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
