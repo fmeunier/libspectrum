@@ -292,6 +292,8 @@ test_description tests[] = {
   TEST_ENTRY( timings_tc2048_processor_speed_and_frame_timing, "Timings: TC2048 processor speed and frame timing (Timex SCLD 50 Hz)" ),
   TEST_ENTRY( timings_scorpion_processor_speed_and_frame_timing, "Timings: Scorpion processor speed and frame timing" ),
   TEST_ENTRY( timings_unknown_machine_returns_zero_for_all_frame_timings, "Timings: UNKNOWN machine returns zero for all frame timings" ),
+  TEST_ENTRY( timings_48k_frame_timing_accessors, "Timings: 48K frame timing accessors (left_border, horizontal_screen, right_border, horizontal_retrace, top_border, vertical_screen, bottom_border, vertical_retrace, top_left_pixel)" ),
+  TEST_ENTRY( timings_unknown_machine_frame_accessors_return_zero, "Timings: UNKNOWN machine frame timing accessors all return zero" ),
   TEST_ENTRY( tape_present_returns_false_for_empty_tape, "libspectrum_tape_present returns 0 for empty tape" ),
   TEST_ENTRY( tape_present_true_after_load_and_false_after_clear, "libspectrum_tape_present/tape_clear: present after load, absent after clear" ),
   TEST_ENTRY( tape_iterator_init_on_empty_tape_returns_null, "Tape iterator: init on empty tape returns NULL" ),
