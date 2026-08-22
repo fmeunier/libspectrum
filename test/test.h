@@ -312,6 +312,7 @@ test_return_t tape_iterator_peek_next_returns_null_at_last_block( void );
 test_return_t tape_iterator_peek_next_does_not_advance_iterator( void );
 test_return_t tape_position_returns_zero_for_first_block( void );
 test_return_t tape_nth_block_selects_correct_block( void );
+test_return_t tape_insert_block_into_empty_tape_sets_current_block( void );
 test_return_t tape_insert_block_at_position( void );
 test_return_t tape_remove_block_from_tape( void );
 test_return_t tape_peek_last_block_returns_last_appended( void );

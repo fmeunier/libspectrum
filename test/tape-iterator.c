@@ -331,6 +331,63 @@ done:
   return r;
 }
 
+/* libspectrum_tape_insert_block into an empty tape sets current_block */
+test_return_t
+tape_insert_block_into_empty_tape_sets_current_block( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+  libspectrum_tape_block *block;
+  test_return_t r = TEST_FAIL;
+
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_insert_block_into_empty_tape_sets_current_block: "
+             "tape_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  block = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_ROM );
+  if( !block ) {
+    fprintf( stderr, "%s: tape_insert_block_into_empty_tape_sets_current_block: "
+             "tape_block_alloc returned NULL\n", progname );
+    libspectrum_tape_free( tape );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_insert_block( tape, block, 0 ) ) {
+    fprintf( stderr, "%s: tape_insert_block_into_empty_tape_sets_current_block: "
+             "tape_insert_block returned error\n", progname );
+    goto done;
+  }
+
+  /* After inserting into an empty tape, present() must be true */
+  if( !libspectrum_tape_present( tape ) ) {
+    fprintf( stderr, "%s: tape_insert_block_into_empty_tape_sets_current_block: "
+             "tape_present returned false after insert\n", progname );
+    goto done;
+  }
+
+  /* current_block must be set (tape is playable) */
+  if( !libspectrum_tape_current_block( tape ) ) {
+    fprintf( stderr, "%s: tape_insert_block_into_empty_tape_sets_current_block: "
+             "tape_current_block returned NULL after insert into empty tape\n",
+             progname );
+    goto done;
+  }
+
+  if( libspectrum_tape_block_type( libspectrum_tape_current_block( tape ) ) !=
+      LIBSPECTRUM_TAPE_BLOCK_ROM ) {
+    fprintf( stderr, "%s: tape_insert_block_into_empty_tape_sets_current_block: "
+             "expected current block type ROM\n", progname );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
+
 /* libspectrum_tape_insert_block inserts a block at the given position */
 test_return_t
 tape_insert_block_at_position( void )
