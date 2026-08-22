@@ -75,7 +75,7 @@ jobs:
           echo "Use fake glib: ${{ inputs.use_fake_glib && 'yes' || 'no' }}"
 
       - name: (2) Check out repository code
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           repository: ${{ env.LIBSPECTRUM_REPO }}
           ref: ${{ env.LIBSPECTRUM_BRANCH }}
