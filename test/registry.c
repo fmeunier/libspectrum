@@ -376,6 +376,10 @@ test_description tests[] = {
   TEST_ENTRY( tape_block_length_pause_block_returns_pause_tstates, "libspectrum_tape_block_length: PAUSE block returns stored length_tstates" ),
   TEST_ENTRY( tape_block_length_pure_tone_returns_pulses_times_length, "libspectrum_tape_block_length: PURE_TONE block returns pulses × pulse_length" ),
   TEST_ENTRY( tape_block_length_metadata_block_returns_zero, "libspectrum_tape_block_length: GROUP_START (metadata) block returns 0" ),
+  TEST_ENTRY( tape_state_on_fresh_tape_returns_invalid, "libspectrum_tape_alloc/tape_free: allocation and deallocation succeeds" ),
+  TEST_ENTRY( tape_set_state_and_get_state_round_trip, "libspectrum_tape_block_free: free a standalone block without tape" ),
+  TEST_ENTRY( tape_block_type_returns_type_set_at_alloc, "libspectrum_tape_block_type: returns type set at alloc (PURE_TONE)" ),
+  TEST_ENTRY( tape_block_alloc_several_types, "libspectrum_tape_block_alloc: allocates blocks of 8 different types with correct type" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
