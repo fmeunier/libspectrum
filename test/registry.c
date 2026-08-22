@@ -376,6 +376,9 @@ test_description tests[] = {
   TEST_ENTRY( tape_block_length_pause_block_returns_pause_tstates, "libspectrum_tape_block_length: PAUSE block returns stored length_tstates" ),
   TEST_ENTRY( tape_block_length_pure_tone_returns_pulses_times_length, "libspectrum_tape_block_length: PURE_TONE block returns pulses × pulse_length" ),
   TEST_ENTRY( tape_block_length_metadata_block_returns_zero, "libspectrum_tape_block_length: GROUP_START (metadata) block returns 0" ),
+  TEST_ENTRY( tape_current_block_returns_null_on_empty_tape, "libspectrum_tape_current_block: returns NULL for tape with no current block" ),
+  TEST_ENTRY( tape_current_block_returns_first_block_after_init, "libspectrum_tape_current_block: returns first appended block after iterator_init" ),
+  TEST_ENTRY( tape_block_set_type_changes_block_type, "libspectrum_tape_block_set_type: changes block type from PAUSE to PURE_TONE" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
