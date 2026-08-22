@@ -1315,6 +1315,13 @@ libspectrum_tape_select_next_block( libspectrum_tape *tape )
   return block;
 }
   
+/* Return the total number of blocks in the tape. */
+size_t
+libspectrum_tape_count( const libspectrum_tape *tape )
+{
+  return (size_t)g_slist_length( tape->blocks );
+}
+
 /* Get the position on the tape of the current block */
 libspectrum_error
 libspectrum_tape_position( int *n, libspectrum_tape *tape )

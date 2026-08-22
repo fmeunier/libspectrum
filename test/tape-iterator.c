@@ -961,3 +961,53 @@ tape_block_alloc_several_types( void )
 
   return TEST_PASS;
 }
+
+test_return_t
+tape_count_returns_correct_count( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+  libspectrum_tape_block *b1, *b2, *b3;
+  test_return_t r = TEST_FAIL;
+
+  if( !tape ) return TEST_INCOMPLETE;
+
+  if( libspectrum_tape_count( tape ) != 0 ) {
+    fprintf( stderr, "%s: tape_count_returns_correct_count: "
+             "expected 0 for empty tape, got %lu\n", progname,
+             (unsigned long)libspectrum_tape_count( tape ) );
+    goto done;
+  }
+
+  b1 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PAUSE );
+  b2 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_TONE );
+  b3 = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_DATA );
+
+  if( !b1 || !b2 || !b3 ) {
+    r = TEST_INCOMPLETE;
+    goto done;
+  }
+
+  libspectrum_tape_append_block( tape, b1 );
+  if( libspectrum_tape_count( tape ) != 1 ) {
+    fprintf( stderr, "%s: tape_count_returns_correct_count: "
+             "expected 1 after one append, got %lu\n", progname,
+             (unsigned long)libspectrum_tape_count( tape ) );
+    goto done;
+  }
+
+  libspectrum_tape_append_block( tape, b2 );
+  libspectrum_tape_append_block( tape, b3 );
+
+  if( libspectrum_tape_count( tape ) != 3 ) {
+    fprintf( stderr, "%s: tape_count_returns_correct_count: "
+             "expected 3 after three appends, got %lu\n", progname,
+             (unsigned long)libspectrum_tape_count( tape ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_free( tape );
+  return r;
+}
