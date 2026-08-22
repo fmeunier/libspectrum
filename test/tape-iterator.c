@@ -862,3 +862,102 @@ done:
   libspectrum_tape_block_free( block );
   return r;
 }
+
+/* libspectrum_tape_alloc/tape_free: basic allocation and deallocation */
+test_return_t
+tape_state_on_fresh_tape_returns_invalid( void )
+{
+  libspectrum_tape *tape = libspectrum_tape_alloc();
+
+  if( !tape ) {
+    fprintf( stderr, "%s: tape_state_on_fresh_tape_returns_invalid: "
+             "tape_alloc returned NULL\n", progname );
+    return TEST_FAIL;
+  }
+
+  libspectrum_tape_free( tape );
+  return TEST_PASS;
+}
+
+/* libspectrum_tape_block_free: free a standalone block */
+test_return_t
+tape_set_state_and_get_state_round_trip( void )
+{
+  libspectrum_tape_block *block;
+
+  block = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_ROM );
+  if( !block ) {
+    fprintf( stderr, "%s: tape_set_state_and_get_state_round_trip: "
+             "tape_block_alloc returned NULL\n", progname );
+    return TEST_FAIL;
+  }
+
+  libspectrum_tape_block_free( block );
+  return TEST_PASS;
+}
+
+/* libspectrum_tape_block_type returns the type set at allocation */
+test_return_t
+tape_block_type_returns_type_set_at_alloc( void )
+{
+  libspectrum_tape_block *block;
+  test_return_t r = TEST_FAIL;
+
+  block = libspectrum_tape_block_alloc( LIBSPECTRUM_TAPE_BLOCK_PURE_TONE );
+  if( !block ) {
+    fprintf( stderr, "%s: tape_block_type_returns_type_set_at_alloc: "
+             "tape_block_alloc returned NULL\n", progname );
+    return TEST_INCOMPLETE;
+  }
+
+  if( libspectrum_tape_block_type( block ) != LIBSPECTRUM_TAPE_BLOCK_PURE_TONE ) {
+    fprintf( stderr, "%s: tape_block_type_returns_type_set_at_alloc: "
+             "expected PURE_TONE (%d), got %d\n", progname,
+             LIBSPECTRUM_TAPE_BLOCK_PURE_TONE,
+             (int)libspectrum_tape_block_type( block ) );
+    goto done;
+  }
+
+  r = TEST_PASS;
+
+done:
+  libspectrum_tape_block_free( block );
+  return r;
+}
+
+/* libspectrum_tape_block_alloc allocates blocks of various types */
+test_return_t
+tape_block_alloc_several_types( void )
+{
+  static const libspectrum_tape_type types[] = {
+    LIBSPECTRUM_TAPE_BLOCK_ROM,
+    LIBSPECTRUM_TAPE_BLOCK_TURBO,
+    LIBSPECTRUM_TAPE_BLOCK_PAUSE,
+    LIBSPECTRUM_TAPE_BLOCK_GROUP_START,
+    LIBSPECTRUM_TAPE_BLOCK_ARCHIVE_INFO,
+    LIBSPECTRUM_TAPE_BLOCK_HARDWARE,
+    LIBSPECTRUM_TAPE_BLOCK_COMMENT,
+    LIBSPECTRUM_TAPE_BLOCK_STOP48,
+  };
+  size_t i;
+
+  for( i = 0; i < sizeof( types ) / sizeof( types[0] ); i++ ) {
+    libspectrum_tape_block *block = libspectrum_tape_block_alloc( types[i] );
+    if( !block ) {
+      fprintf( stderr, "%s: tape_block_alloc_several_types: "
+               "tape_block_alloc returned NULL for type %d\n", progname,
+               (int)types[i] );
+      return TEST_FAIL;
+    }
+    if( libspectrum_tape_block_type( block ) != types[i] ) {
+      fprintf( stderr, "%s: tape_block_alloc_several_types: "
+               "expected type %d, got %d\n", progname, (int)types[i],
+               (int)libspectrum_tape_block_type( block ) );
+      libspectrum_tape_block_free( block );
+      return TEST_FAIL;
+    }
+    libspectrum_tape_block_free( block );
+  }
+
+  return TEST_PASS;
+}

@@ -322,6 +322,10 @@ test_return_t tape_select_next_block_advances_and_wraps( void );
 test_return_t tape_current_block_returns_null_on_empty_tape( void );
 test_return_t tape_current_block_returns_first_block_after_init( void );
 test_return_t tape_block_set_type_changes_block_type( void );
+test_return_t tape_state_on_fresh_tape_returns_invalid( void );
+test_return_t tape_set_state_and_get_state_round_trip( void );
+test_return_t tape_block_type_returns_type_set_at_alloc( void );
+test_return_t tape_block_alloc_several_types( void );
 
 /* tape.c: tape_block_description */
 test_return_t tape_block_description_rom( void );

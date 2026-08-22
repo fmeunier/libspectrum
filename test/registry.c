@@ -384,6 +384,10 @@ test_description tests[] = {
   TEST_ENTRY( tape_current_block_returns_null_on_empty_tape, "libspectrum_tape_current_block: returns NULL for tape with no current block" ),
   TEST_ENTRY( tape_current_block_returns_first_block_after_init, "libspectrum_tape_current_block: returns first appended block after iterator_init" ),
   TEST_ENTRY( tape_block_set_type_changes_block_type, "libspectrum_tape_block_set_type: changes block type from PAUSE to PURE_TONE" ),
+  TEST_ENTRY( tape_state_on_fresh_tape_returns_invalid, "libspectrum_tape_alloc/tape_free: allocation and deallocation succeeds" ),
+  TEST_ENTRY( tape_set_state_and_get_state_round_trip, "libspectrum_tape_block_free: free a standalone block without tape" ),
+  TEST_ENTRY( tape_block_type_returns_type_set_at_alloc, "libspectrum_tape_block_type: returns type set at alloc (PURE_TONE)" ),
+  TEST_ENTRY( tape_block_alloc_several_types, "libspectrum_tape_block_alloc: allocates blocks of 8 different types with correct type" ),
 };
 
 size_t test_count = ARRAY_SIZE( tests );
