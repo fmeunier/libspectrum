@@ -1584,6 +1584,13 @@ libspectrum_tape_state( libspectrum_tape *tape )
 {
   libspectrum_tape_block *block =
     libspectrum_tape_iterator_current( tape->state.current_block );
+  if( !block ) {
+    libspectrum_print_error(
+      LIBSPECTRUM_ERROR_INVALID,
+      "libspectrum_tape_state: tape has no current block"
+    );
+    return LIBSPECTRUM_TAPE_STATE_INVALID;
+  }
   switch( block->type ) {
 
     case LIBSPECTRUM_TAPE_BLOCK_PURE_DATA: return tape->state.block_state.pure_data.state;
@@ -1605,6 +1612,13 @@ libspectrum_tape_set_state( libspectrum_tape *tape, libspectrum_tape_state_type 
 {
   libspectrum_tape_block *block =
     libspectrum_tape_iterator_current( tape->state.current_block );
+  if( !block ) {
+    libspectrum_print_error(
+      LIBSPECTRUM_ERROR_INVALID,
+      "libspectrum_tape_set_state: tape has no current block"
+    );
+    return LIBSPECTRUM_ERROR_INVALID;
+  }
   switch( block->type ) {
 
     case LIBSPECTRUM_TAPE_BLOCK_PURE_DATA: tape->state.block_state.pure_data.state = state; break;
