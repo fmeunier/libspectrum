@@ -345,6 +345,9 @@ libspectrum_buffer_write( libspectrum_buffer *buffer, const void *data,
 LIBSPECTRUM_API void
 libspectrum_buffer_set( libspectrum_buffer *buffer, libspectrum_byte value,
                         size_t size );
+LIBSPECTRUM_API void
+libspectrum_buffer_ensure_capacity( libspectrum_buffer *buffer,
+                                    size_t size );
 
 LIBSPECTRUM_API size_t
 libspectrum_buffer_get_data_size( const libspectrum_buffer *buffer );

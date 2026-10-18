@@ -3047,6 +3047,9 @@ write_z80r_chunk( libspectrum_buffer *buffer, libspectrum_buffer *data,
   libspectrum_dword tstates;
   libspectrum_byte flags, tstates_remaining;
 
+  /* Z80R chunk is always 37 bytes; pre-reserve to avoid repeated reallocs */
+  libspectrum_buffer_ensure_capacity( data, 37 );
+
   libspectrum_buffer_write_byte( data, libspectrum_snap_f   ( snap ) );
   libspectrum_buffer_write_byte( data, libspectrum_snap_a   ( snap ) );
   libspectrum_buffer_write_word( data, libspectrum_snap_bc  ( snap ) );
@@ -3207,6 +3210,9 @@ static void
 write_amxm_chunk( libspectrum_buffer *buffer, libspectrum_buffer *data,
                   libspectrum_snap *snap )
 {
+  /* AMXM chunk is always 7 bytes: 1 type + 3 CTRLA + 3 CTRLB */
+  libspectrum_buffer_ensure_capacity( data, 7 );
+
   if( libspectrum_snap_kempston_mouse_active( snap ) )
     libspectrum_buffer_write_byte( data, ZXSTM_KEMPSTON );
   else
