@@ -337,6 +337,10 @@ LIBSPECTRUM_API void
 libspectrum_buffer_write_dword( libspectrum_buffer *buffer,
                                 libspectrum_dword data );
 LIBSPECTRUM_API void
+libspectrum_buffer_write_word_array( libspectrum_buffer *buffer,
+                                     const libspectrum_dword *data,
+                                     size_t count );
+LIBSPECTRUM_API void
 libspectrum_buffer_write_buffer( libspectrum_buffer *dest,
                                  const libspectrum_buffer *src );
 LIBSPECTRUM_API void

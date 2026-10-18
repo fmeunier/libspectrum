@@ -152,6 +152,28 @@ libspectrum_buffer_set( libspectrum_buffer *buffer, libspectrum_byte value,
   buffer->bytes_used += size;
 }
 
+/* Write an array of 'count' values as little-endian 16-bit words in a single
+   allocation step.  The high 16 bits of each dword are discarded, matching
+   the behaviour of calling libspectrum_buffer_write_word() in a loop. */
+void
+libspectrum_buffer_write_word_array( libspectrum_buffer *buffer,
+                                     const libspectrum_dword *data,
+                                     size_t count )
+{
+  size_t i;
+  libspectrum_byte *dest;
+
+  reallocate_to_new_size( buffer, 2 * count );
+
+  dest = buffer->buffer + buffer->bytes_used;
+  for( i = 0; i < count; i++ ) {
+    *dest++ = data[i] & 0xff;
+    *dest++ = ( data[i] >> 8 ) & 0xff;
+  }
+
+  buffer->bytes_used += 2 * count;
+}
+
 size_t
 libspectrum_buffer_get_data_size( const libspectrum_buffer *buffer )
 {
