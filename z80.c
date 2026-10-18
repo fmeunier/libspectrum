@@ -1447,9 +1447,12 @@ write_extended_header( libspectrum_buffer *buffer, int *flags,
 
   libspectrum_buffer_write_byte( buffer,
                                libspectrum_snap_out_ay_registerport( snap ) );
-  for( i = 0; i < 16; i++ )
-    libspectrum_buffer_write_byte( buffer,
-                                   libspectrum_snap_ay_registers( snap, i ) );
+  {
+    libspectrum_byte regs[16];
+    for( i = 0; i < 16; i++ )
+      regs[i] = libspectrum_snap_ay_registers( snap, i );
+    libspectrum_buffer_write( buffer, regs, 16 );
+  }
 
   quarter_states =
     libspectrum_timings_tstates_per_frame(
