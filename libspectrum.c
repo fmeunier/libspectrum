@@ -348,7 +348,6 @@ libspectrum_machine_capabilities( libspectrum_machine type )
 
   case LIBSPECTRUM_MACHINE_SE:
     return LIBSPECTRUM_MACHINE_CAPABILITY_AY                |
-    /* FIXME: SE needs to have this capability to be considered a 128k machine */
            LIBSPECTRUM_MACHINE_CAPABILITY_128_MEMORY        |
            LIBSPECTRUM_MACHINE_CAPABILITY_TIMEX_VIDEO       |
            LIBSPECTRUM_MACHINE_CAPABILITY_KEMPSTON_JOYSTICK |
