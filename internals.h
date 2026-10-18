@@ -355,12 +355,6 @@ libspectrum_sign_data( libspectrum_byte **signature, size_t *signature_length,
 
 /* Utility functions */
 
-libspectrum_dword 
-libspectrum_ms_to_tstates( libspectrum_dword ms );
-
-libspectrum_dword 
-libspectrum_tstates_to_ms( libspectrum_dword tstates );
-
 void
 libspectrum_set_pause_ms( libspectrum_tape_block *block,
                           libspectrum_dword pause_ms );
@@ -368,9 +362,6 @@ libspectrum_set_pause_ms( libspectrum_tape_block *block,
 void
 libspectrum_set_pause_tstates( libspectrum_tape_block *block,
                                libspectrum_dword pause_tstates );
-
-size_t
-libspectrum_bits_to_bytes( size_t bits );
 
 extern const int LIBSPECTRUM_BITS_IN_BYTE;
 
